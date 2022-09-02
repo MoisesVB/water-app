@@ -1,0 +1,9 @@
+<div class="border border-white bg-black rounded text-white h-full w-full">
+    <div class="p-10">
+        <h1 class="font-bold mb-8 text-xl">Please tell us your intake goal:</h1>
+        <input type="text" class="border border-white rounded bg-black p-1" (input)="onInput($event)">
+        <button
+            class="font-bold border border-white p-1 px-4 rounded ml-4 hover:text-black hover:bg-white transition-all duration-300 disabled:cursor-not-allowed disabled:hover:bg-black disabled:hover:text-white"
+            (click)="defineGoalNotifier.emit(inputValue)" [disabled]="validate()">SAVE</button>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+<div
+    class="text-white border border-white rounded absolute left-1/2 top-1/2 w-2/6 mx-auto h-2/4 -translate-x-1/2 -translate-y-1/2">
+    <div class="p-2">
+        <div class="flex items-center">
+            <h3 class="text-2xl font-bold ml-2">Settings Menu</h3>
+            <svg (click)="closeSettingsNotifier.emit()" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                fill="currentColor" class="h-10 w-10 fill-blue-300 cursor-pointer ml-auto" viewBox="0 0 16 16">
+                <path
+                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+            </svg>
+        </div>
+        <hr class="border-0.5 border-white rounded mt-2">
+        <div class="flex justify-between p-6 items-center">
+            <label class="text-lg" for="reminder">Remind me every:</label>
+            <select name="reminder" id="reminder" class="bg-black border border-white rounded p-1 w-32"
+                (change)="changeReminderNotifier.emit($event)">
+                <option value="15" [defaultSelected]="selectedReminder === 15">15 minutes</option>
+                <option value="30" [defaultSelected]="selectedReminder === 30">30 minutes</option>
+                <option value="60" [defaultSelected]="selectedReminder === 60">1 hour
+                </option>
+            </select>
+        </div>
+        <hr class="border-0.5 border-white rounded w-full mx-auto">
+
+        <div class="flex justify-between p-6 items-center">
+            <label class="text-lg">Change goal:</label>
+            <button
+                class="border border-white p-1 w-32 rounded ml-4 hover:text-black hover:bg-white transition-all duration-300"
+                (click)="changeGoalNotifier.emit()">CHANGE</button>
+        </div>
+
+        <hr class="border-0.5 border-white rounded w-full mx-auto">
+
+        <div class="flex justify-between p-6 items-center">
+            <label class="text-lg">Reset data:</label>
+            <button
+                class="border border-red-900 bg-red-700 p-1 w-32 rounded ml-4 hover:bg-red-800 transition-all duration-300"
+                (click)="deleteDataNotifier.emit()">RESET</button>
+        </div>
+    </div>
+</div>
