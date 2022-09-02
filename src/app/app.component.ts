@@ -67,7 +67,12 @@ export class AppComponent implements OnInit {
 
   intervalNotify() {
     setInterval(() => {
-      new Notification("Drink Water!", { body: "Drink water to stay healthy!" });
+      const notification = new Notification("Drink Water!", { body: "Drink water to stay healthy!", requireInteraction: true });
+
+      // go to tab when clicking notification
+      notification.onclick = () => {
+        window.focus();
+      }
     }, 1000 * 60 * this.selectedReminder)
     // 1000 * 60 * ${desired minutes}
   }
