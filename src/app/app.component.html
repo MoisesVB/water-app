@@ -19,8 +19,8 @@
     </app-progress-bar>
 
     <div class="flex mt-28 justify-center gap-5">
-      <app-card *ngFor="let cup of cupsInfo" [cup]="cup" (selectIntakeNotifier)="selectIntake($event)"
-        (unselectExceptNotifier)="unselectExcept($event)" (unselectNotifier)="unselect($event)">
+      <app-card *ngFor="let cup of cupsInfo" [cup]="cup" [selectedCup]="selectedCup"
+        (handleClickNotifier)="handleClick($event)">
       </app-card>
     </div>
 

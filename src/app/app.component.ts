@@ -80,15 +80,15 @@ export class AppComponent implements OnInit {
     // 1000 * 60 * ${desired minutes}
   }
 
+  // properties
   isGoalDefined = false;
   goal: number = 0;
   intake: number = 0;
-  selectedIntake: number = 0;
+  selectedCup?: number;
   isSettingsOpen = false;
-
   selectedReminder = 0;
-
   intervals?: number[];
+  progressBarPercentage: number = 0;
 
   toggleSettings() {
     this.isSettingsOpen = !this.isSettingsOpen;
@@ -115,71 +115,56 @@ export class AppComponent implements OnInit {
 
   cupsInfo: Cup[] = [
     {
-      capacity: 100,
-      selected: false
+      id: 1,
+      capacity: 100
     },
     {
-      capacity: 200,
-      selected: false
+      id: 2,
+      capacity: 200
     },
     {
-      capacity: 250,
-      selected: false
+      id: 3,
+      capacity: 250
     },
     {
-      capacity: 500,
-      selected: false
+      id: 4,
+      capacity: 500
     }
   ]
 
-  defineGoal(toSet: number) {
+  defineGoal(goal: number) {
     this.isGoalDefined = true;
-    this.goal = toSet;
+    this.goal = goal;
 
     // store to localstorage
     this.service.addGoal(this.goal);
     this.setProgressBarPercentage();
   }
 
-  selectIntake(intake: number) {
-    this.selectedIntake = intake;
-  }
-
-  unselectExcept(cup: Cup) {
-    const valueToHold = cup.capacity;
-
-    this.cupsInfo = this.cupsInfo.map(arrCup => {
-      if (arrCup.capacity !== valueToHold && arrCup.selected) {
-        arrCup.selected = false;
+  handleClick(cupId: number) {
+    // toggle selected status of clicked cup
+    this.cupsInfo = this.cupsInfo.map((cup: Cup) => {
+      // if the clicked cup is not already selected then assign it as selected
+      if (cup.id === cupId) {
+        this.selectedCup = cupId;
       }
 
-      return arrCup;
-    })
-  }
-
-  unselect(cup: Cup) {
-    const valueToUnselect = cup.capacity;
-
-    this.cupsInfo = this.cupsInfo.map(arrCup => {
-      if (arrCup.capacity === valueToUnselect && arrCup.selected) {
-        arrCup.selected = false;
-      }
-
-      return arrCup;
+      return cup;
     })
   }
 
   addIntake() {
-    this.intake += this.selectedIntake!;
+    const tempCup = this.cupsInfo.find((cup: Cup) => cup.id === this.selectedCup);
+    this.intake += tempCup?.capacity!;
 
     // store to localstorage
     this.service.addIntake(this.intake);
   }
 
-  progressBarPercentage: number = 0;
-
   setProgressBarPercentage() {
-    this.progressBarPercentage = (this.intake * 100) / this.goal >= 100 ? 100 : (this.intake * 100) / this.goal;
+    const formula = (this.intake * 100) / this.goal;
+
+    this.progressBarPercentage = formula >= 100 ? 100 : formula;
   }
 
   deleteData() {
