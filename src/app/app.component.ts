@@ -117,11 +117,16 @@ export class AppComponent implements OnInit {
 
   configData: ConfigData = {
     isGoalDefined: false,
-    isSettingsOpen: false
+    isSettingsOpen: false,
+    isLogOpen: true // turn off later
   }
 
   toggleSettings() {
     this.configData.isSettingsOpen = !this.configData.isSettingsOpen;
+  }
+
+  toggleLog() {
+    this.configData.isLogOpen = !this.configData.isLogOpen;
   }
 
   changeGoals() {

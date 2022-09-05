@@ -4,10 +4,10 @@
     </app-goal-modal>
   </div>
 
-  <div *ngIf="configData.isGoalDefined && !configData.isSettingsOpen" class="max-w-xl mx-auto">
+  <div *ngIf="configData.isGoalDefined && !configData.isSettingsOpen && !configData.isLogOpen" class="max-w-xl mx-auto">
     <div class="absolute right-0 p-4">
       <div class="flex gap-4">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+        <svg (click)="toggleLog()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
           class="h-7 w-7 fill-blue-300 cursor-pointer" viewBox="0 0 16 16">
           <path
             d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
@@ -42,4 +42,7 @@
     (changeReminderNotifier)="changeReminder($event)" [selectedReminder]="userData.selectedReminder"
     (deleteDataNotifier)="deleteData()">
   </app-settings-modal>
+
+  <app-log-modal [isLogOpen]="configData.isLogOpen" (closeLogNotifier)="toggleLog()">
+  </app-log-modal>
 </div>

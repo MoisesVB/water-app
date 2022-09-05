@@ -7,6 +7,7 @@ import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 import { CardComponent } from './card/card.component';
 import { SubmitIntakeComponent } from './submit-intake/submit-intake.component';
 import { SettingsModalComponent } from './settings-modal/settings-modal.component';
+import { LogModalComponent } from './log-modal/log-modal.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { SettingsModalComponent } from './settings-modal/settings-modal.componen
     CardComponent,
     SubmitIntakeComponent,
     SettingsModalComponent,
+    LogModalComponent,
   ],
   imports: [
     BrowserModule
