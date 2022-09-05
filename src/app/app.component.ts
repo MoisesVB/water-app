@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Cup } from './cup';
 import { StoreLocalService } from './store-local.service';
 
 @Component({
@@ -66,7 +67,7 @@ export class AppComponent implements OnInit {
   }
 
   intervalNotify() {
-    const interval = setInterval(() => {
+    const interval = window.setInterval(() => {
       const notification = new Notification("Drink Water!", { body: "Drink water to stay healthy!", requireInteraction: true });
 
       // go to tab when clicking notification
@@ -79,7 +80,6 @@ export class AppComponent implements OnInit {
     // 1000 * 60 * ${desired minutes}
   }
 
-  title = 'Drink Water';
   isGoalDefined = false;
   goal: number = 0;
   intake: number = 0;
@@ -88,7 +88,7 @@ export class AppComponent implements OnInit {
 
   selectedReminder = 0;
 
-  intervals?: any[];
+  intervals?: number[];
 
   toggleSettings() {
     this.isSettingsOpen = !this.isSettingsOpen;
@@ -113,7 +113,7 @@ export class AppComponent implements OnInit {
     this.intervalNotify(); // set interval again for the new updated value
   }
 
-  cupsInfo = [
+  cupsInfo: Cup[] = [
     {
       capacity: 100,
       selected: false
@@ -145,7 +145,7 @@ export class AppComponent implements OnInit {
     this.selectedIntake = intake;
   }
 
-  unselectExcept(cup: any) {
+  unselectExcept(cup: Cup) {
     const valueToHold = cup.capacity;
 
     this.cupsInfo = this.cupsInfo.map(arrCup => {
@@ -157,7 +157,7 @@ export class AppComponent implements OnInit {
     })
   }
 
-  unselect(cup: any) {
+  unselect(cup: Cup) {
     const valueToUnselect = cup.capacity;
 
     this.cupsInfo = this.cupsInfo.map(arrCup => {
