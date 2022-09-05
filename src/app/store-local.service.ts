@@ -35,7 +35,7 @@ export class StoreLocalService {
     localStorage.setItem("currentDay", new Date().getDate().toString());
   }
 
-  findCurrentDay() {
+  findStoredDay() {
     return localStorage.getItem("currentDay");
   }
 

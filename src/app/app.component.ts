@@ -13,11 +13,19 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const currentDay = parseInt(this.service.findCurrentDay()!);
+    this.handleDate();
+    this.loadGoal();
+    this.loadIntake();
+    this.loadReminder();
+    this.requestNotificationPermission();
+  }
+
+  handleDate() {
+    const storedDay = parseInt(this.service.findStoredDay()!);
     const today = new Date().getDate();
 
     // if there's a day stored and this day is outdated
-    if (currentDay && currentDay !== today) {
+    if (storedDay && storedDay !== today) {
       // clear intake because it's another day
       this.service.addIntake(0); // putting 0 to intake
 
@@ -26,28 +34,40 @@ export class AppComponent implements OnInit {
     } else { // if there's no day stored
       this.service.addCurrentDay();
     }
+  }
 
-    if (this.service.findGoal()) {
-      this.defineGoal(parseInt(this.service.findGoal()!));
+  loadGoal() {
+    const goal = this.service.findGoal();
+
+    if (goal) {
+      this.defineGoal(parseInt(goal));
     }
+  }
 
-    if (this.service.findIntake()) {
-      this.intake = parseInt(this.service.findIntake()!);
+  loadIntake() {
+    const intake = this.service.findIntake();
+
+    if (intake) {
+      this.intake = parseInt(intake);
       this.setProgressBarPercentage();
     }
+  }
 
-    if (this.service.findReminder()) {
-      this.selectedReminder = parseInt(this.service.findReminder()!);
+  loadReminder() {
+    const reminder = this.service.findReminder();
+
+    if (reminder) {
+      this.selectedReminder = parseInt(reminder);
     } else {
       this.service.addReminder(60);
       this.selectedReminder = 60;
     }
+  }
 
-    Notification.requestPermission().then((result) => {
-      console.log(result);
+  requestNotificationPermission() {
+    Notification.requestPermission().then(() => {
+      this.notifyMe();
     });
-
-    this.notifyMe();
   }
 
   notifyMe() {
