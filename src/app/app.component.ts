@@ -66,7 +66,7 @@ export class AppComponent implements OnInit {
   }
 
   intervalNotify() {
-    setInterval(() => {
+    const interval = setInterval(() => {
       const notification = new Notification("Drink Water!", { body: "Drink water to stay healthy!", requireInteraction: true });
 
       // go to tab when clicking notification
@@ -74,6 +74,8 @@ export class AppComponent implements OnInit {
         window.focus();
       }
     }, 1000 * 60 * this.selectedReminder)
+
+    this.intervals?.push(interval);
     // 1000 * 60 * ${desired minutes}
   }
 
@@ -85,6 +87,8 @@ export class AppComponent implements OnInit {
   isSettingsOpen = false;
 
   selectedReminder = 0;
+
+  intervals?: any[];
 
   toggleSettings() {
     this.isSettingsOpen = !this.isSettingsOpen;
@@ -102,6 +106,11 @@ export class AppComponent implements OnInit {
 
     // store reminder value in localstorage
     this.service.addReminder(this.selectedReminder);
+
+    this.intervals?.map(item => clearInterval(item)); // remove intervals in array
+    this.intervals = []; // empty array after
+
+    this.intervalNotify(); // set interval again for the new updated value
   }
 
   cupsInfo = [
