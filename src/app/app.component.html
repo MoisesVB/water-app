@@ -1,10 +1,10 @@
 <div class="bg-black h-screen w-screen">
-  <div class="flex justify-center items-center h-full w-full" *ngIf="!isGoalDefined">
-    <app-goal-modal [isGoalDefined]="isGoalDefined" (defineGoalNotifier)="defineGoal($event)">
+  <div class="flex justify-center items-center h-full w-full" *ngIf="!configData.isGoalDefined">
+    <app-goal-modal [isGoalDefined]="configData.isGoalDefined" (defineGoalNotifier)="defineGoal($event)">
     </app-goal-modal>
   </div>
 
-  <div *ngIf="isGoalDefined && !isSettingsOpen" class="max-w-xl mx-auto">
+  <div *ngIf="configData.isGoalDefined && !configData.isSettingsOpen" class="max-w-xl mx-auto">
     <div>
       <svg (click)="toggleSettings()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
         class="h-7 w-7 fill-blue-300 cursor-pointer absolute top-4 right-4 hover:animate-spin-finite"
@@ -15,11 +15,12 @@
           d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
       </svg>
     </div>
-    <app-progress-bar [goal]="goal" [intake]="intake" [progressBarPercentage]="progressBarPercentage">
+    <app-progress-bar [goal]="userData.goal" [intake]="userData.intake"
+      [progressBarPercentage]="processData.progressBarPercentage">
     </app-progress-bar>
 
     <div class="flex mt-28 justify-center gap-5">
-      <app-card *ngFor="let cup of cupsInfo" [cup]="cup" [selectedCup]="selectedCup"
+      <app-card *ngFor="let cup of cupsInfo" [cup]="cup" [selectedCup]="userData.selectedCup"
         (handleClickNotifier)="handleClick($event)">
       </app-card>
     </div>
@@ -28,8 +29,9 @@
     </app-submit-intake>
   </div>
 
-  <app-settings-modal *ngIf="isSettingsOpen && isGoalDefined" (closeSettingsNotifier)="toggleSettings()"
-    (changeGoalNotifier)="changeGoals()" (changeReminderNotifier)="changeReminder($event)"
-    [selectedReminder]="selectedReminder" (deleteDataNotifier)="deleteData()">
+  <app-settings-modal *ngIf="configData.isSettingsOpen && configData.isGoalDefined"
+    (closeSettingsNotifier)="toggleSettings()" (changeGoalNotifier)="changeGoals()"
+    (changeReminderNotifier)="changeReminder($event)" [selectedReminder]="userData.selectedReminder"
+    (deleteDataNotifier)="deleteData()">
   </app-settings-modal>
 </div>

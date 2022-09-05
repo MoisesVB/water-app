@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { ConfigData } from './config-data';
 import { Cup } from './cup';
+import { ProcessData } from './process-data';
 import { StoreLocalService } from './store-local.service';
+import { UserData } from './user-data';
 
 @Component({
   selector: 'app-root',
@@ -48,7 +51,7 @@ export class AppComponent implements OnInit {
     const intake = this.service.findIntake();
 
     if (intake) {
-      this.intake = parseInt(intake);
+      this.userData.intake = parseInt(intake);
       this.setProgressBarPercentage();
     }
   }
@@ -57,10 +60,10 @@ export class AppComponent implements OnInit {
     const reminder = this.service.findReminder();
 
     if (reminder) {
-      this.selectedReminder = parseInt(reminder);
+      this.userData.selectedReminder = parseInt(reminder);
     } else {
       this.service.addReminder(60);
-      this.selectedReminder = 60;
+      this.userData.selectedReminder = 60;
     }
   }
 
@@ -94,41 +97,48 @@ export class AppComponent implements OnInit {
       notification.onclick = () => {
         window.focus();
       }
-    }, 1000 * 60 * this.selectedReminder)
+    }, 1000 * 60 * this.userData.selectedReminder)
 
-    this.intervals?.push(interval);
+    this.processData.intervals?.push(interval);
     // 1000 * 60 * ${desired minutes}
   }
 
-  // properties
-  isGoalDefined = false;
-  goal: number = 0;
-  intake: number = 0;
-  selectedCup?: number;
-  isSettingsOpen = false;
-  selectedReminder = 0;
-  intervals?: number[];
-  progressBarPercentage: number = 0;
+  userData: UserData = {
+    goal: 0,
+    intake: 0,
+    selectedCup: undefined,
+    selectedReminder: 0,
+  }
+
+  processData: ProcessData = {
+    progressBarPercentage: 0,
+    intervals: []
+  }
+
+  configData: ConfigData = {
+    isGoalDefined: false,
+    isSettingsOpen: false
+  }
 
   toggleSettings() {
-    this.isSettingsOpen = !this.isSettingsOpen;
+    this.configData.isSettingsOpen = !this.configData.isSettingsOpen;
   }
 
   changeGoals() {
     this.toggleSettings();
-    this.isGoalDefined = false;
+    this.configData.isGoalDefined = false;
   }
 
   changeReminder(event: Event) {
     const value = (event.target as HTMLSelectElement).value;
 
-    this.selectedReminder = parseInt(value);
+    this.userData.selectedReminder = parseInt(value);
 
     // store reminder value in localstorage
-    this.service.addReminder(this.selectedReminder);
+    this.service.addReminder(this.userData.selectedReminder);
 
-    this.intervals?.map(item => clearInterval(item)); // remove intervals in array
-    this.intervals = []; // empty array after
+    this.processData.intervals?.map(item => clearInterval(item)); // remove intervals in array
+    this.processData.intervals = []; // empty array after
 
     this.intervalNotify(); // set interval again for the new updated value
   }
@@ -153,11 +163,11 @@ export class AppComponent implements OnInit {
   ]
 
   defineGoal(goal: number) {
-    this.isGoalDefined = true;
-    this.goal = goal;
+    this.configData.isGoalDefined = true;
+    this.userData.goal = goal;
 
     // store to localstorage
-    this.service.addGoal(this.goal);
+    this.service.addGoal(this.userData.goal);
     this.setProgressBarPercentage();
   }
 
@@ -166,7 +176,7 @@ export class AppComponent implements OnInit {
     this.cupsInfo = this.cupsInfo.map((cup: Cup) => {
       // if the clicked cup is not already selected then assign it as selected
       if (cup.id === cupId) {
-        this.selectedCup = cupId;
+        this.userData.selectedCup = cupId;
       }
 
       return cup;
@@ -174,18 +184,18 @@ export class AppComponent implements OnInit {
   }
 
   addIntake() {
-    const tempCup = this.cupsInfo.find((cup: Cup) => cup.id === this.selectedCup);
-    this.intake += tempCup?.capacity!;
+    const tempCup = this.cupsInfo.find((cup: Cup) => cup.id === this.userData.selectedCup);
+    this.userData.intake += tempCup?.capacity!;
 
     // store to localstorage
-    this.service.addIntake(this.intake);
+    this.service.addIntake(this.userData.intake);
     this.setProgressBarPercentage();
   }
 
   setProgressBarPercentage() {
-    const formula = (this.intake * 100) / this.goal;
+    const formula = (this.userData.intake * 100) / this.userData.goal;
 
-    this.progressBarPercentage = formula >= 100 ? 100 : formula;
+    this.processData.progressBarPercentage = formula >= 100 ? 100 : formula;
   }
 
   deleteData() {
