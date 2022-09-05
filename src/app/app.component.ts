@@ -179,6 +179,7 @@ export class AppComponent implements OnInit {
 
     // store to localstorage
     this.service.addIntake(this.intake);
+    this.setProgressBarPercentage();
   }
 
   setProgressBarPercentage() {
