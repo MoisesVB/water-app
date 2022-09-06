@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfigData } from './config-data';
 import { Cup } from './cup';
+import { History } from './history';
 import { ProcessData } from './process-data';
 import { StoreLocalService } from './store-local.service';
 import { UserData } from './user-data';
@@ -12,7 +13,7 @@ import { UserData } from './user-data';
 export class AppComponent implements OnInit {
 
   constructor(
-    private service: StoreLocalService
+    public service: StoreLocalService
   ) { }
 
   ngOnInit() {
@@ -118,7 +119,7 @@ export class AppComponent implements OnInit {
   configData: ConfigData = {
     isGoalDefined: false,
     isSettingsOpen: false,
-    isLogOpen: true // turn off later
+    isLogOpen: false // turn off later
   }
 
   toggleSettings() {
@@ -190,10 +191,12 @@ export class AppComponent implements OnInit {
 
   addIntake() {
     const tempCup = this.cupsInfo.find((cup: Cup) => cup.id === this.userData.selectedCup);
-    this.userData.intake += tempCup?.capacity!;
 
     // store to localstorage
-    this.service.addIntake(this.userData.intake);
+    this.service.addIntake(tempCup?.capacity!);
+
+    // push local intake to be the same as stored
+    this.userData.intake = parseInt(this.service.findIntake()!);
     this.setProgressBarPercentage();
   }
 
@@ -201,6 +204,19 @@ export class AppComponent implements OnInit {
     const formula = (this.userData.intake * 100) / this.userData.goal;
 
     this.processData.progressBarPercentage = formula >= 100 ? 100 : formula;
+  }
+
+  deleteHistory(history: History) {
+    this.service.destroyHistory(history.id);
+    this.deleteIntake(history.intake);
+  }
+
+  deleteIntake(intake: number) {
+    this.service.destroyIntake(intake);
+
+    // push local intake to be the same as stored
+    this.userData.intake = parseInt(this.service.findIntake()!);
+    this.setProgressBarPercentage();
   }
 
   deleteData() {

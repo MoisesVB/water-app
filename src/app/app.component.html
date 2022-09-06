@@ -43,6 +43,7 @@
     (deleteDataNotifier)="deleteData()">
   </app-settings-modal>
 
-  <app-log-modal [isLogOpen]="configData.isLogOpen" (closeLogNotifier)="toggleLog()">
+  <app-log-modal [history]="this.service.findHistory()" [isLogOpen]="configData.isLogOpen"
+    (closeLogNotifier)="toggleLog()" (deleteHistoryNotifier)="deleteHistory($event)">
   </app-log-modal>
 </div>

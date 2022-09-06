@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { History } from '../history';
 
 @Component({
   selector: 'app-log-modal',
@@ -13,5 +14,9 @@ export class LogModalComponent implements OnInit {
 
   @Input() isLogOpen!: boolean;
 
+  @Input() history!: History[];
+
   @Output() closeLogNotifier = new EventEmitter();
+
+  @Output() deleteHistoryNotifier = new EventEmitter<History>();
 }
