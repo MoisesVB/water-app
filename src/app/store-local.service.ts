@@ -31,33 +31,45 @@ export class StoreLocalService {
   }
 
   addIntakeToHistory(intake: number) {
-    let history: History[] = this.findHistory();
+    let history: History = this.findHistory();
 
     const id = uuidv4();
-    const date = new Date().toLocaleString();
+    const date = new Date().toLocaleDateString();
+    const hour = new Date().toLocaleTimeString();
 
-    const temp: History = {
+    const temp = {
       id: id,
-      date: date,
+      hour: hour,
       intake: intake
     }
 
     if (!history) {
-      history = [];
+      history = {};
     }
 
-    history.push(temp);
+    if (!history.hasOwnProperty(`${date}`)) {
+      history[`${date}`] = [temp]
+    } else if (history.hasOwnProperty(`${date}`)) {
+      history[`${date}`].push(temp);
+    }
+
     localStorage.setItem("history", JSON.stringify(history));
   }
 
-  findHistory(): History[] {
+  findHistory(): History {
     return JSON.parse(localStorage.getItem("history")!);
   }
 
   destroyHistory(id: string) {
     let history = this.findHistory();
 
-    history = history.filter(h => h.id !== id);
+    for (let key in history) {
+      history[key] = history[key].filter(obj => obj.id !== id);
+
+      if (history[key].length <= 0) {
+        delete history[key];
+      }
+    }
 
     localStorage.setItem("history", JSON.stringify(history));
   }

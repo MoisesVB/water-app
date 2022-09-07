@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfigData } from './config-data';
 import { Cup } from './cup';
-import { History } from './history';
+import { HistoryData } from './history';
 import { ProcessData } from './process-data';
 import { StoreLocalService } from './store-local.service';
 import { UserData } from './user-data';
@@ -31,7 +31,9 @@ export class AppComponent implements OnInit {
     // if there's a day stored and this day is outdated
     if (storedDay && storedDay !== today) {
       // clear intake because it's another day
-      this.service.addIntake(0); // putting 0 to intake
+
+      // restoring intake to 0
+      this.service.destroyIntake(parseInt(this.service.findIntake()!));
 
       // update day to today
       this.service.addCurrentDay();
@@ -206,7 +208,7 @@ export class AppComponent implements OnInit {
     this.processData.progressBarPercentage = formula >= 100 ? 100 : formula;
   }
 
-  deleteHistory(history: History) {
+  deleteHistory(history: HistoryData) {
     this.service.destroyHistory(history.id);
     this.deleteIntake(history.intake);
   }

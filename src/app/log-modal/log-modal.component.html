@@ -12,18 +12,19 @@
     <hr class="border-0.5 border-white rounded mt-2">
 
     <div class="p-4 overflow-y-auto h-96 scroll">
-      <div *ngFor="let h of history">
-        <div class="flex items-center py-2">
-          <p>{{ h.date }}</p>
-          <br>
-          <p class="ml-4">{{ h.intake }}ml</p>
-          <svg (click)="deleteHistoryNotifier.emit(h)" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+      <div *ngFor="let prop of sortByDate(history)">
+        <h3 class="font-semibold text-lg">{{ prop | date:'mediumDate' }}</h3>
+        <div class="flex items-center py-2" *ngFor="let obj of history[prop]">
+          <p class="mr-2">{{ obj.hour }}</p>
+          <p>-</p>
+          <p class="ml-2">{{ obj.intake }}ml</p>
+          <svg (click)="deleteHistoryNotifier.emit(obj)" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
             fill="currentColor" class="h-5 w-5 fill-red-500 cursor-pointer ml-auto" viewBox="0 0 16 16">
             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
             <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z" />
           </svg>
         </div>
-        <hr class="border-1 border-gray-500">
+        <hr class="border-1 border-gray-500 my-4">
       </div>
     </div>
   </div>

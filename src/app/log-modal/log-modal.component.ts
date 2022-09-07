@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { History } from '../history';
+import { History, HistoryData } from '../history';
 
 @Component({
   selector: 'app-log-modal',
@@ -9,14 +9,19 @@ export class LogModalComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   @Input() isLogOpen!: boolean;
 
-  @Input() history!: History[];
+  @Input() history!: History;
 
   @Output() closeLogNotifier = new EventEmitter();
 
-  @Output() deleteHistoryNotifier = new EventEmitter<History>();
+  @Output() deleteHistoryNotifier = new EventEmitter<HistoryData>();
+
+  sortByDate(history: History) {
+    return Object.keys(history).sort((a, b) => {
+      return +new Date(a) - +new Date(b);
+    });
+  }
 }
