@@ -13,7 +13,8 @@
 
     <div class="p-4 overflow-y-auto h-96 scroll">
       <div *ngFor="let prop of sortByDate(history)">
-        <h3 class="font-semibold text-lg">{{ prop | date:'mediumDate' }}</h3>
+        <h3 class="font-semibold text-lg">{{ prop | date:'mediumDate' }} - {{ countIntake(history[prop])
+          }}ml</h3>
         <div class="flex items-center py-2" *ngFor="let obj of history[prop]">
           <p class="mr-2">{{ obj.hour }}</p>
           <p>-</p>

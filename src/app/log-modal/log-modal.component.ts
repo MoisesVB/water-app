@@ -32,4 +32,8 @@ export class LogModalComponent implements OnInit {
   getTodayDate() {
     return new Date().toLocaleDateString();
   }
+
+  countIntake(data: HistoryData[]) {
+    return data.reduce((acc, obj) => acc + obj.intake, 0);
+  }
 }
