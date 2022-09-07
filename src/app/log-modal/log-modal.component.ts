@@ -20,8 +20,16 @@ export class LogModalComponent implements OnInit {
   @Output() deleteHistoryNotifier = new EventEmitter<HistoryData>();
 
   sortByDate(history: History) {
-    return Object.keys(history).sort((a, b) => {
-      return +new Date(a) - +new Date(b);
-    });
+    if (history) {
+      return Object.keys(history).sort((a, b) => {
+        return +new Date(a) - +new Date(b);
+      });
+    }
+
+    return history;
+  }
+
+  getTodayDate() {
+    return new Date().toLocaleDateString();
   }
 }
