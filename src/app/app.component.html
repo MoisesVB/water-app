@@ -1,10 +1,11 @@
-<div class="bg-black h-screen w-screen">
+<div class="bg-black min-h-screen w-screen">
   <div class="flex justify-center items-center h-full w-full" *ngIf="!configData.isGoalDefined">
     <app-goal-modal [isGoalDefined]="configData.isGoalDefined" (defineGoalNotifier)="defineGoal($event)">
     </app-goal-modal>
   </div>
 
-  <div *ngIf="configData.isGoalDefined && !configData.isSettingsOpen && !configData.isLogOpen" class="max-w-xl mx-auto">
+  <div *ngIf="configData.isGoalDefined && !configData.isSettingsOpen && !configData.isLogOpen"
+    class="max-w-xl w-4/6 mx-auto">
     <div class="absolute right-0 p-4">
       <div class="flex gap-4">
         <svg (click)="toggleLog()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -27,7 +28,7 @@
       [progressBarPercentage]="processData.progressBarPercentage">
     </app-progress-bar>
 
-    <div class="flex mt-28 justify-center gap-5">
+    <div class="flex mt-28 pb-4 gap-5 overflow-x-auto scroll justify-start">
       <app-card *ngFor="let cup of cupsInfo" [cup]="cup" [selectedCup]="userData.selectedCup"
         (handleClickNotifier)="handleClick($event)">
       </app-card>
