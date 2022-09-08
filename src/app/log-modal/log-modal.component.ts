@@ -36,4 +36,12 @@ export class LogModalComponent implements OnInit {
   countIntake(data: HistoryData[]) {
     return data.reduce((acc, obj) => acc + obj.intake, 0);
   }
+
+  getHistoryLength(history: History) {
+    if (history) {
+      return Object.keys(history).length;
+    }
+
+    return 0;
+  }
 }
