@@ -225,5 +225,20 @@ export class AppComponent implements OnInit {
     this.service.destroyAllData();
 
     // reset all variables here
+    this.userData.goal = 0;
+    this.userData.intake = 0;
+    this.userData.selectedCup = undefined;
+
+    this.processData.intervals = [];
+    this.processData.progressBarPercentage = 0;
+
+    this.configData.isGoalDefined = false;
+    this.configData.isSettingsOpen = false;
+
+    this.handleDate();
+    this.loadGoal();
+    this.loadIntake();
+    this.loadReminder();
+    this.requestNotificationPermission();
   }
 }
