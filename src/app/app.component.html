@@ -1,10 +1,11 @@
 <div class="bg-black min-h-screen w-screen">
-  <div class="flex flex-col justify-center h-screen max-w-sm mx-auto" *ngIf="!configData.isGoalDefined">
+  <div class=" flex flex-col justify-center h-screen max-w-sm mx-auto" *ngIf="!configData.isGoalDefined">
     <app-goal-modal [isGoalDefined]="configData.isGoalDefined" (defineGoalNotifier)="defineGoal($event)">
     </app-goal-modal>
   </div>
 
-  <div *ngIf="configData.isGoalDefined && !configData.isSettingsOpen && !configData.isLogOpen"
+  <div
+    *ngIf="configData.isGoalDefined && !configData.isSettingsOpen && !configData.isLogOpen && !configData.isCupModalOpen"
     class="max-w-xl w-4/6 mx-auto">
     <div class="absolute right-0 p-4">
       <div class="flex gap-4">
@@ -32,6 +33,19 @@
       <app-card *ngFor="let cup of cupsInfo" [cup]="cup" [selectedCup]="userData.selectedCup"
         (handleClickNotifier)="handleClick($event)">
       </app-card>
+
+      <div (click)="toggleCupModal()"
+        class="border border-white px-8 h-32 rounded cursor-pointer hover:animate-pulse text-white flex flex-col justify-center items-center">
+        <div class="flex flex-col items-center h-full w-full justify-around">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="h-12 w-12 fill-blue-300" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path
+              d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+          </svg>
+          <h3 class="font-bold select-none">Custom</h3>
+        </div>
+      </div>
     </div>
 
     <app-submit-intake (addIntakeNotifier)="addIntake()">
@@ -41,10 +55,14 @@
   <app-settings-modal *ngIf="configData.isSettingsOpen && configData.isGoalDefined"
     (closeSettingsNotifier)="toggleSettings()" (changeGoalNotifier)="changeGoals()"
     (changeReminderNotifier)="changeReminder($event)" [selectedReminder]="userData.selectedReminder"
-    (deleteDataNotifier)="deleteData()">
+    (deleteDataNotifier)="deleteData()" [cups]="cupsInfo" (deleteCustomCupNotifier)="destroyCup($event)">
   </app-settings-modal>
 
   <app-log-modal [history]="this.service.findHistory()" [isLogOpen]="configData.isLogOpen"
     (closeLogNotifier)="toggleLog()" (deleteHistoryNotifier)="deleteHistory($event)">
   </app-log-modal>
+
+  <app-cup-modal [isCupModalOpen]="configData.isCupModalOpen" (closeCupModalNotifier)="toggleCupModal()"
+    (createCupNotifier)="addCup($event)">
+  </app-cup-modal>
 </div>

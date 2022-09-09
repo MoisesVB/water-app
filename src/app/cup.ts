@@ -1,4 +1,5 @@
 export interface Cup {
-    id: number;
+    id: string;
     capacity: number;
+    isCustom: boolean;
 }

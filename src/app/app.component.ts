@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.handleDate();
     this.loadGoal();
+    this.handleCups();
     this.loadIntake();
     this.loadReminder();
     this.requestNotificationPermission();
@@ -68,6 +69,34 @@ export class AppComponent implements OnInit {
       this.service.addReminder(60);
       this.userData.selectedReminder = 60;
     }
+  }
+
+  handleCups() {
+    if (this.service.findCups()) {
+      this.loadCups();
+    } else {
+      this.service.addCup(100, false);
+      this.service.addCup(200, false);
+      this.service.addCup(250, false);
+      this.service.addCup(500, false);
+
+      this.loadCups();
+    }
+  }
+
+  loadCups() {
+    this.cupsInfo = this.service.findCups();
+  }
+
+  addCup(capacity: string) {
+    this.service.addCup(parseInt(capacity), true);
+    this.loadCups();
+    this.userData.selectedCup = undefined;
+  }
+
+  destroyCup(id: string) {
+    this.service.destroyCup(id);
+    this.loadCups();
   }
 
   requestNotificationPermission() {
@@ -121,7 +150,12 @@ export class AppComponent implements OnInit {
   configData: ConfigData = {
     isGoalDefined: false,
     isSettingsOpen: false,
-    isLogOpen: false
+    isLogOpen: false,
+    isCupModalOpen: false
+  }
+
+  toggleCupModal() {
+    this.configData.isCupModalOpen = !this.configData.isCupModalOpen;
   }
 
   toggleSettings() {
@@ -151,24 +185,7 @@ export class AppComponent implements OnInit {
     this.intervalNotify(); // set interval again for the new updated value
   }
 
-  cupsInfo: Cup[] = [
-    {
-      id: 1,
-      capacity: 100
-    },
-    {
-      id: 2,
-      capacity: 200
-    },
-    {
-      id: 3,
-      capacity: 250
-    },
-    {
-      id: 4,
-      capacity: 500
-    }
-  ]
+  cupsInfo: Cup[] = [];
 
   defineGoal(goal: number) {
     this.configData.isGoalDefined = true;
@@ -179,7 +196,7 @@ export class AppComponent implements OnInit {
     this.setProgressBarPercentage();
   }
 
-  handleClick(cupId: number) {
+  handleClick(cupId: string) {
     // toggle selected status of clicked cup
     this.cupsInfo = this.cupsInfo.map((cup: Cup) => {
       // if the clicked cup is not already selected then assign it as selected
@@ -236,9 +253,11 @@ export class AppComponent implements OnInit {
 
     this.configData.isGoalDefined = false;
     this.configData.isSettingsOpen = false;
+    this.cupsInfo = [];
 
     this.handleDate();
     this.loadGoal();
+    this.handleCups();
     this.loadIntake();
     this.loadReminder();
     this.requestNotificationPermission();

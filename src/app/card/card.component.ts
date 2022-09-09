@@ -13,6 +13,7 @@ export class CardComponent implements OnInit {
   }
 
   @Input() cup!: Cup;
-  @Input() selectedCup?: number;
-  @Output() handleClickNotifier = new EventEmitter<number>();
+  @Input() selectedCup?: string;
+
+  @Output() handleClickNotifier = new EventEmitter<string>();
 }

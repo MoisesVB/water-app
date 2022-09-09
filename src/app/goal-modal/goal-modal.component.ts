@@ -24,4 +24,9 @@ export class GoalModalComponent implements OnInit {
   validate() {
     return parseInt(this.inputValue) ? false : true;
   }
+
+  handleSetGoal() {
+    this.defineGoalNotifier.emit(this.inputValue);
+    this.inputValue = '';
+  }
 }

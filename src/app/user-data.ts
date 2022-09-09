@@ -1,6 +1,6 @@
 export interface UserData {
     goal: number;
     intake: number;
-    selectedCup?: number;
+    selectedCup?: string;
     selectedReminder: number;
 }

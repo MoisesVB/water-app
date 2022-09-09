@@ -7,7 +7,7 @@
                 (input)="onInput($event)" placeholder="Type your goal...">
             <button
                 class="font-bold border border-white p-1 min-w-max w-2/6 rounded hover:text-black hover:bg-white transition-all duration-300 disabled:cursor-not-allowed disabled:hover:bg-black disabled:hover:text-white disabled:opacity-60"
-                (click)="defineGoalNotifier.emit(inputValue)" [disabled]="validate()">SAVE</button>
+                (click)="handleSetGoal()" [disabled]="validate()">SAVE</button>
         </div>
     </div>
 </div>

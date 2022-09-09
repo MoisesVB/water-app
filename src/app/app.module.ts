@@ -8,6 +8,7 @@ import { CardComponent } from './card/card.component';
 import { SubmitIntakeComponent } from './submit-intake/submit-intake.component';
 import { SettingsModalComponent } from './settings-modal/settings-modal.component';
 import { LogModalComponent } from './log-modal/log-modal.component';
+import { CupModalComponent } from './cup-modal/cup-modal.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { LogModalComponent } from './log-modal/log-modal.component';
     SubmitIntakeComponent,
     SettingsModalComponent,
     LogModalComponent,
+    CupModalComponent,
   ],
   imports: [
     BrowserModule

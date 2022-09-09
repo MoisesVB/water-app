@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
 import { History } from './history';
+import { Cup } from './cup';
 
 @Injectable({
   providedIn: 'root'
@@ -105,5 +106,35 @@ export class StoreLocalService {
 
   destroyAllData() {
     localStorage.clear();
+  }
+
+  addCup(capacity: number, isCustom: boolean) {
+    let cups = this.findCups();
+
+    const newCup: Cup = {
+      id: uuidv4(),
+      capacity: capacity,
+      isCustom: isCustom
+    }
+
+    if (!cups) {
+      cups = [];
+    }
+
+    cups.push(newCup);
+
+    localStorage.setItem('cups', JSON.stringify(cups));
+  }
+
+  findCups(): Cup[] {
+    return JSON.parse(localStorage.getItem('cups')!);
+  }
+
+  destroyCup(id: string) {
+    const cups = this.findCups();
+
+    const newCups = cups.filter(cup => cup.id !== id);
+
+    localStorage.setItem('cups', JSON.stringify(newCups));
   }
 }
