@@ -192,14 +192,16 @@ export class AppComponent implements OnInit {
   }
 
   addIntake() {
-    const tempCup = this.cupsInfo.find((cup: Cup) => cup.id === this.userData.selectedCup);
+    if (this.userData.selectedCup) {
+      const tempCup = this.cupsInfo.find((cup: Cup) => cup.id === this.userData.selectedCup);
 
-    // store to localstorage
-    this.service.addIntake(tempCup?.capacity!);
+      // store to localstorage
+      this.service.addIntake(tempCup?.capacity!);
 
-    // push local intake to be the same as stored
-    this.userData.intake = parseInt(this.service.findIntake()!);
-    this.setProgressBarPercentage();
+      // push local intake to be the same as stored
+      this.userData.intake = parseInt(this.service.findIntake()!);
+      this.setProgressBarPercentage();
+    }
   }
 
   setProgressBarPercentage() {
