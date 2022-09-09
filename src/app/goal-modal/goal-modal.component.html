@@ -1,9 +1,13 @@
-<div class="border border-white bg-black rounded text-white h-full w-full">
-    <div class="p-10">
+<div class="flex justify-center border border-white bg-black rounded text-white max-h-44 h-screen overflow-y-auto">
+    <div class="py-10 px-4">
         <h1 class="font-bold mb-8 text-xl">Please tell us your intake goal:</h1>
-        <input type="text" class="border border-white rounded bg-black p-1" (input)="onInput($event)">
-        <button
-            class="font-bold border border-white p-1 px-4 rounded ml-4 hover:text-black hover:bg-white transition-all duration-300 disabled:cursor-not-allowed disabled:hover:bg-black disabled:hover:text-white"
-            (click)="defineGoalNotifier.emit(inputValue)" [disabled]="validate()">SAVE</button>
+        <div class="flex flex-nowrap gap-4">
+            <input type="text"
+                class="border border-white rounded bg-black p-1 w-4/6 placeholder:font-bold placeholder:opacity-70"
+                (input)="onInput($event)" placeholder="Type your goal...">
+            <button
+                class="font-bold border border-white p-1 min-w-max w-2/6 rounded hover:text-black hover:bg-white transition-all duration-300 disabled:cursor-not-allowed disabled:hover:bg-black disabled:hover:text-white disabled:opacity-60"
+                (click)="defineGoalNotifier.emit(inputValue)" [disabled]="validate()">SAVE</button>
+        </div>
     </div>
 </div>
