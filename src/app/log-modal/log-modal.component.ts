@@ -21,9 +21,12 @@ export class LogModalComponent implements OnInit {
 
   sortByDate(history: History) {
     if (history) {
-      return Object.keys(history).sort((a, b) => {
+      const arr = Object.keys(history).sort((a, b) => {
         return +new Date(a) - +new Date(b);
       });
+
+      // returning from most recent date to oldest
+      return arr.reverse();
     }
 
     return history;
