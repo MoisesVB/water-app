@@ -1,3 +1,4 @@
+import { trigger, transition, style, animate, state } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { ConfigData } from './config-data';
 import { Cup } from './cup';
@@ -9,6 +10,31 @@ import { UserData } from './user-data';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
+  animations: [
+    trigger('focusBlur', [
+      state('focus', style({
+        opacity: 1,
+      })),
+      state('blur', style({
+        opacity: 0.1,
+      })),
+      transition('focus => blur', [
+        animate(300)
+      ]),
+      transition('blur => focus', [
+        animate(300)
+      ])
+    ]),
+    trigger('leaveEnter', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate(300, style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate(300, style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class AppComponent implements OnInit {
 

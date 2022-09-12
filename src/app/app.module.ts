@@ -9,6 +9,7 @@ import { SubmitIntakeComponent } from './submit-intake/submit-intake.component';
 import { SettingsModalComponent } from './settings-modal/settings-modal.component';
 import { LogModalComponent } from './log-modal/log-modal.component';
 import { CupModalComponent } from './cup-modal/cup-modal.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { CupModalComponent } from './cup-modal/cup-modal.component';
     CupModalComponent,
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

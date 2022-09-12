@@ -1,11 +1,9 @@
 <div class="bg-black min-h-screen w-screen">
-  <div class=" flex flex-col justify-center h-screen max-w-sm mx-auto" *ngIf="!configData.isGoalDefined">
-    <app-goal-modal [isGoalDefined]="configData.isGoalDefined" (defineGoalNotifier)="defineGoal($event)">
-    </app-goal-modal>
-  </div>
+  <app-goal-modal [isGoalDefined]="configData.isGoalDefined" (defineGoalNotifier)="defineGoal($event)">
+  </app-goal-modal>
 
-  <div
-    *ngIf="configData.isGoalDefined && !configData.isSettingsOpen && !configData.isLogOpen && !configData.isCupModalOpen"
+  <div *ngIf="configData.isGoalDefined" [@leaveEnter]
+    [@focusBlur]="!configData.isSettingsOpen && !configData.isLogOpen && !configData.isCupModalOpen ? 'focus' : 'blur'"
     class="max-w-xl w-4/6 mx-auto">
     <div class="absolute right-0 p-4">
       <div class="flex gap-4">
@@ -52,10 +50,10 @@
     </app-submit-intake>
   </div>
 
-  <app-settings-modal *ngIf="configData.isSettingsOpen && configData.isGoalDefined"
-    (closeSettingsNotifier)="toggleSettings()" (changeGoalNotifier)="changeGoals()"
-    (changeReminderNotifier)="changeReminder($event)" [selectedReminder]="userData.selectedReminder"
-    (deleteDataNotifier)="deleteData()" [cups]="cupsInfo" (deleteCustomCupNotifier)="destroyCup($event)">
+  <app-settings-modal [isSettingsOpen]="configData.isSettingsOpen" (closeSettingsNotifier)="toggleSettings()"
+    (changeGoalNotifier)="changeGoals()" (changeReminderNotifier)="changeReminder($event)"
+    [selectedReminder]="userData.selectedReminder" (deleteDataNotifier)="deleteData()" [cups]="cupsInfo"
+    (deleteCustomCupNotifier)="destroyCup($event)">
   </app-settings-modal>
 
   <app-log-modal [history]="this.service.findHistory()" [isLogOpen]="configData.isLogOpen"
