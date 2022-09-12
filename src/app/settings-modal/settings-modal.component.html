@@ -1,5 +1,5 @@
 <div *ngIf="isSettingsOpen" [@leaveEnter]
-    class="text-white border border-white rounded fixed left-1/2 top-1/2 w-full max-w-xl mx-auto max-h-96 h-full -translate-x-1/2 -translate-y-1/2 overflow-y-auto bg-black">
+    class="text-white border border-white rounded fixed left-1/2 top-1/2 w-full max-w-xl mx-auto max-h-96 h-full -translate-x-1/2 -translate-y-1/2 bg-black">
     <div class="p-2 select-none">
         <div class="flex items-center">
             <h3 class="text-2xl font-bold ml-2">Settings Menu</h3>
@@ -12,52 +12,54 @@
 
         <hr class="border border-blue-300 rounded mt-2 opacity-20">
 
-        <div class="flex justify-between p-6 items-center">
-            <label class="text-lg" for="reminder">Remind me every:</label>
-            <select name="reminder" id="reminder" class="bg-black border border-white rounded p-1 w-32"
-                (change)="changeReminderNotifier.emit($event)">
-                <option value="15" [defaultSelected]="selectedReminder === 15">15 minutes</option>
-                <option value="30" [defaultSelected]="selectedReminder === 30">30 minutes</option>
-                <option value="60" [defaultSelected]="selectedReminder === 60">1 hour
-                </option>
-            </select>
-        </div>
-        <hr class="border border-blue-300 rounded w-full mx-auto opacity-10">
+        <div class="overflow-y-auto scroll h-80">
+            <div class="flex justify-between p-6 items-center">
+                <label class="text-lg" for="reminder">Remind me every:</label>
+                <select name="reminder" id="reminder" class="bg-black border border-white rounded p-1 w-32"
+                    (change)="changeReminderNotifier.emit($event)">
+                    <option value="15" [defaultSelected]="selectedReminder === 15">15 minutes</option>
+                    <option value="30" [defaultSelected]="selectedReminder === 30">30 minutes</option>
+                    <option value="60" [defaultSelected]="selectedReminder === 60">1 hour
+                    </option>
+                </select>
+            </div>
+            <hr class="border border-blue-300 rounded w-full mx-auto opacity-10">
 
-        <div class="flex justify-between p-6 items-center">
-            <label class="text-lg">Change goal:</label>
-            <button
-                class="border border-white p-1 w-32 rounded ml-4 hover:text-black hover:bg-white transition-all duration-300"
-                (click)="changeGoalNotifier.emit()">CHANGE</button>
-        </div>
-
-        <hr class="border border-blue-300 rounded w-full mx-auto opacity-10">
-
-        <div class="flex justify-between p-6 items-center">
-            <label class="text-lg">Reset data:</label>
-            <button
-                class="border border-red-900 bg-red-700 p-1 w-32 rounded ml-4 hover:bg-red-800 transition-all duration-300"
-                (click)="deleteDataNotifier.emit()">RESET</button>
-        </div>
-
-        <hr class="border border-blue-300 rounded w-full mx-auto opacity-10">
-
-        <div class="flex flex-col p-6">
-            <label class="text-lg mb-4">Custom cups</label>
-
-            <div *ngFor="let cup of cups">
-                <div *ngIf="cup.isCustom" class="flex justify-between py-2">
-                    <p class="ml-2">{{ cup.capacity }}ml</p>
-                    <svg (click)="deleteCustomCupNotifier.emit(cup.id)" xmlns="http://www.w3.org/2000/svg" width="16"
-                        height="16" fill="currentColor" class="h-5 w-5 fill-red-500 cursor-pointer ml-auto"
-                        viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z" />
-                    </svg>
-                </div>
+            <div class="flex justify-between p-6 items-center">
+                <label class="text-lg">Change goal:</label>
+                <button
+                    class="border border-white p-1 w-32 rounded ml-4 hover:text-black hover:bg-white transition-all duration-300"
+                    (click)="changeGoalNotifier.emit()">CHANGE</button>
             </div>
 
-            <h3 *ngIf="!customCupsIsPresent()" class="text-sm opacity-75">No custom cups here yet!</h3>
+            <hr class="border border-blue-300 rounded w-full mx-auto opacity-10">
+
+            <div class="flex justify-between p-6 items-center">
+                <label class="text-lg">Reset data:</label>
+                <button
+                    class="border border-red-900 bg-red-700 p-1 w-32 rounded ml-4 hover:bg-red-800 transition-all duration-300"
+                    (click)="deleteDataNotifier.emit()">RESET</button>
+            </div>
+
+            <hr class="border border-blue-300 rounded w-full mx-auto opacity-10">
+
+            <div class="flex flex-col p-6">
+                <label class="text-lg mb-4">Custom cups</label>
+
+                <div *ngFor="let cup of cups">
+                    <div *ngIf="cup.isCustom" class="flex justify-between py-2">
+                        <p class="ml-2">{{ cup.capacity }}ml</p>
+                        <svg (click)="deleteCustomCupNotifier.emit(cup.id)" xmlns="http://www.w3.org/2000/svg"
+                            width="16" height="16" fill="currentColor"
+                            class="h-5 w-5 fill-red-500 cursor-pointer ml-auto" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <h3 *ngIf="!customCupsIsPresent()" class="text-sm opacity-75">No custom cups here yet!</h3>
+            </div>
         </div>
     </div>
 </div>
