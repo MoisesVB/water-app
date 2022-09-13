@@ -309,6 +309,8 @@ export class AppComponent implements OnInit {
 
     this.configData.isGoalDefined = false;
     this.configData.isSettingsOpen = false;
+    this.configData.isLogOpen = false;
+    this.configData.isCupModalOpen = false;
     this.cupsInfo = [];
 
     this.handleDate();
