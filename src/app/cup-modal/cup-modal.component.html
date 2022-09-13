@@ -21,11 +21,11 @@
                 <h3 class="font-semibold text-lg">Cup size</h3>
                 <input type="text"
                     class="border border-white rounded bg-black p-1 w-full placeholder:font-bold placeholder:opacity-70"
-                    (input)="onInput($event)" placeholder="Type the size...">
+                    placeholder="Type the size..." [formControl]="cup" required>
             </div>
             <button
                 class="font-bold border border-white p-1 min-w-max w-full rounded hover:text-black hover:bg-white transition-all duration-300 disabled:cursor-not-allowed disabled:hover:bg-black disabled:hover:text-white disabled:opacity-60"
-                (click)="createCup()" [disabled]="validate()">CREATE</button>
+                type="button" (click)="createCup()" [disabled]="!cup.valid">CREATE</button>
         </div>
     </div>
 </div>

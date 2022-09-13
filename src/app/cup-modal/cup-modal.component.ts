@@ -1,5 +1,7 @@
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { validateCup } from 'src/shared/cup.validator';
 
 @Component({
   selector: 'app-cup-modal',
@@ -23,13 +25,11 @@ export class CupModalComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  capacity: string = '';
-
   @Input() isCupModalOpen!: boolean;
 
   @Output() closeCupModalNotifier = new EventEmitter<MouseEvent>();
 
-  @Output() createCupNotifier = new EventEmitter<string>();
+  @Output() createCupNotifier = new EventEmitter();
 
   @HostListener('document:keydown.escape', ['$event'])
   closeCupModalOnEsc() {
@@ -38,17 +38,16 @@ export class CupModalComponent implements OnInit {
     }
   }
 
-  onInput(event: Event) {
-    this.capacity = (event.target as HTMLInputElement).value;
-  }
-
-  validate() {
-    return parseInt(this.capacity) ? false : true;
-  }
+  cup = new FormControl('', [
+    Validators.pattern(/^\d+$/), // accepts only  numbers
+    Validators.maxLength(5),
+    Validators.required,
+    validateCup
+  ]);
 
   createCup() {
-    this.createCupNotifier.emit(this.capacity);
+    this.createCupNotifier.emit(this.cup.value);
     this.closeCupModalNotifier.emit();
-    this.capacity = '';
+    this.cup.reset();
   }
 }
