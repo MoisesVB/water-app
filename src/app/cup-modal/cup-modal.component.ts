@@ -38,6 +38,13 @@ export class CupModalComponent implements OnInit {
     }
   }
 
+  @HostListener('document:keydown.enter', ['$event'])
+  createCupOnEnter() {
+    if (this.isCupModalOpen && this.cup.valid) {
+      this.createCup();
+    }
+  }
+
   cup = new FormControl('', [
     Validators.pattern(/^\d+$/), // accepts only  numbers
     Validators.maxLength(5),
