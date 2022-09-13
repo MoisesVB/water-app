@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { History, HistoryData } from '../history';
 
 @Component({
@@ -30,6 +30,13 @@ export class LogModalComponent implements OnInit {
   @Output() closeLogNotifier = new EventEmitter();
 
   @Output() deleteHistoryNotifier = new EventEmitter<HistoryData>();
+
+  @HostListener('document:keydown.escape', ['$event'])
+  closeLogOnEsc() {
+    if (this.isLogOpen) {
+      this.closeLogNotifier.emit();
+    }
+  }
 
   sortByDate(history: History) {
     if (history) {
