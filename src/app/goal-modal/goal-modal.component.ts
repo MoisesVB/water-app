@@ -1,5 +1,5 @@
 import { trigger, transition, style, animate } from '@angular/animations';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { validateGoal } from 'src/shared/goal.validator';
 
@@ -23,6 +23,13 @@ export class GoalModalComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  @HostListener('document:keydown.enter', ['$event'])
+  defineGoalOnEnter() {
+    if (!this.isGoalDefined && this.goal.valid) {
+      this.handleSetGoal();
+    }
   }
 
   goal = new FormControl('', [
