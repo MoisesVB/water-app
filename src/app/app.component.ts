@@ -6,6 +6,7 @@ import { HistoryData } from './history';
 import { ProcessData } from './process-data';
 import { StoreLocalService } from './store-local.service';
 import { UserData } from './user-data';
+import { Constants } from './constants';
 
 @Component({
   selector: 'app-root',
@@ -238,8 +239,14 @@ export class AppComponent implements OnInit {
     if (this.userData.selectedCup) {
       const tempCup = this.cupsInfo.find((cup: Cup) => cup.id === this.userData.selectedCup);
 
-      // store to localstorage
-      this.service.addIntake(tempCup?.capacity!);
+      if (tempCup?.capacity! + this.userData.intake > Constants.MAX_WATER_TARGET) {
+        const leftIntake = Constants.MAX_WATER_TARGET - this.userData.intake;
+
+        // store to localstorage
+        this.service.addIntake(leftIntake);
+      } else {
+        this.service.addIntake(tempCup?.capacity!);
+      }
 
       // push local intake to be the same as stored
       const desiredIntake = parseInt(this.service.findIntake()!);
