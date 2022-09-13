@@ -1,5 +1,5 @@
 import { trigger, transition, style, animate } from '@angular/animations';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { Cup } from '../cup';
 
 @Component({
@@ -22,6 +22,13 @@ export class SettingsModalComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  closeSettingsOnEsc() {
+    if (this.isSettingsOpen) {
+      this.closeSettingsNotifier.emit();
+    }
   }
 
   @Output() closeSettingsNotifier = new EventEmitter();
