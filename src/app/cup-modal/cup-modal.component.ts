@@ -1,5 +1,5 @@
 import { trigger, transition, style, animate } from '@angular/animations';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-cup-modal',
@@ -30,6 +30,13 @@ export class CupModalComponent implements OnInit {
   @Output() closeCupModalNotifier = new EventEmitter<MouseEvent>();
 
   @Output() createCupNotifier = new EventEmitter<string>();
+
+  @HostListener('document:keydown.escape', ['$event'])
+  closeCupModalOnEsc() {
+    if (this.isCupModalOpen) {
+      this.closeCupModalNotifier.emit();
+    }
+  }
 
   onInput(event: Event) {
     this.capacity = (event.target as HTMLInputElement).value;
