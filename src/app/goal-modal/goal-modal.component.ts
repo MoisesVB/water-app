@@ -1,5 +1,7 @@
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { validateGoal } from 'src/shared/goal.validator';
 
 @Component({
   selector: 'app-goal-modal',
@@ -23,22 +25,18 @@ export class GoalModalComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  inputValue: string = '';
+  goal = new FormControl('', [
+    Validators.pattern(/^\d+$/), // accepts only  numbers
+    Validators.maxLength(5),
+    Validators.required,
+    validateGoal
+  ]);
 
   @Input() isGoalDefined!: boolean;
   @Output() defineGoalNotifier = new EventEmitter();
 
-  onInput(event: Event) {
-    this.inputValue = (event.target as HTMLInputElement).value;
-  }
-
-  // validate if input is not empty and if it's a number
-  validate() {
-    return parseInt(this.inputValue) ? false : true;
-  }
-
   handleSetGoal() {
-    this.defineGoalNotifier.emit(this.inputValue);
-    this.inputValue = '';
+    this.defineGoalNotifier.emit(this.goal.value);
+    this.goal.reset();
   }
 }

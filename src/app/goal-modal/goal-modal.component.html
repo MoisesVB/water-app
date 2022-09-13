@@ -5,10 +5,10 @@
         <div class="flex flex-nowrap gap-4">
             <input type="text"
                 class="border border-white rounded bg-black p-1 w-4/6 placeholder:font-bold placeholder:opacity-70"
-                (input)="onInput($event)" placeholder="Type your goal...">
+                placeholder="Type your goal..." [formControl]="goal" required>
             <button
                 class="font-bold border border-white p-1 min-w-max w-2/6 rounded hover:text-black hover:bg-white transition-all duration-300 disabled:cursor-not-allowed disabled:hover:bg-black disabled:hover:text-white disabled:opacity-60"
-                (click)="handleSetGoal()" [disabled]="validate()">SAVE</button>
+                type="button" (click)="handleSetGoal()" [disabled]="!goal.valid">SAVE</button>
         </div>
     </div>
 </div>

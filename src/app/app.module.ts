@@ -10,6 +10,7 @@ import { SettingsModalComponent } from './settings-modal/settings-modal.componen
 import { LogModalComponent } from './log-modal/log-modal.component';
 import { CupModalComponent } from './cup-modal/cup-modal.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,11 +21,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SubmitIntakeComponent,
     SettingsModalComponent,
     LogModalComponent,
-    CupModalComponent,
+    CupModalComponent
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
