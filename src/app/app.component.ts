@@ -242,9 +242,28 @@ export class AppComponent implements OnInit {
       this.service.addIntake(tempCup?.capacity!);
 
       // push local intake to be the same as stored
-      this.userData.intake = parseInt(this.service.findIntake()!);
-      this.setProgressBarPercentage();
+      const desiredIntake = parseInt(this.service.findIntake()!);
+
+      this.countUp(desiredIntake);
     }
+  }
+
+  countUp(desiredIntake: number) {
+    const cupSize = desiredIntake - this.userData.intake;
+    let multiplier = Math.ceil((cupSize * 0.02)); // get 2 percent and round up number
+
+    const counter: number = window.setInterval(() => {
+      this.userData.intake += multiplier;
+
+      if (this.userData.intake === desiredIntake) {
+        clearInterval(counter);
+        this.setProgressBarPercentage();
+      } else if (this.userData.intake > desiredIntake) {
+        clearInterval(counter);
+        this.userData.intake = desiredIntake;
+        this.setProgressBarPercentage();
+      }
+    }, 10)
   }
 
   setProgressBarPercentage() {
