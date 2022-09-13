@@ -158,7 +158,7 @@ export class AppComponent implements OnInit {
       }
     }, 1000 * 60 * this.userData.selectedReminder)
 
-    this.processData.intervals?.push(interval);
+    this.processData.reminderIntervals?.push(interval);
     // 1000 * 60 * ${desired minutes}
   }
 
@@ -171,7 +171,8 @@ export class AppComponent implements OnInit {
 
   processData: ProcessData = {
     progressBarPercentage: 0,
-    intervals: []
+    reminderIntervals: [],
+    countUpInterval: undefined
   }
 
   configData: ConfigData = {
@@ -206,8 +207,8 @@ export class AppComponent implements OnInit {
     // store reminder value in localstorage
     this.service.addReminder(this.userData.selectedReminder);
 
-    this.processData.intervals?.map(item => clearInterval(item)); // remove intervals in array
-    this.processData.intervals = []; // empty array after
+    this.processData.reminderIntervals?.map(item => clearInterval(item)); // remove intervals in array
+    this.processData.reminderIntervals = []; // empty array after
 
     this.intervalNotify(); // set interval again for the new updated value
   }
@@ -236,7 +237,8 @@ export class AppComponent implements OnInit {
   }
 
   addIntake() {
-    if (this.userData.selectedCup) {
+    // if a cup is selected and there's not a count up occurring
+    if (this.userData.selectedCup && !this.processData.countUpInterval) {
       const tempCup = this.cupsInfo.find((cup: Cup) => cup.id === this.userData.selectedCup);
 
       if (tempCup?.capacity! + this.userData.intake > Constants.MAX_WATER_TARGET) {
@@ -263,14 +265,18 @@ export class AppComponent implements OnInit {
     const cupSize = desiredIntake - this.userData.intake;
     let multiplier = Math.ceil((cupSize * 0.02)); // get 2 percent and round up number
 
-    const counter: number = window.setInterval(() => {
+    this.processData.countUpInterval = window.setInterval(() => {
       this.userData.intake += multiplier;
 
       if (this.userData.intake === desiredIntake) {
-        clearInterval(counter);
+        clearInterval(this.processData.countUpInterval);
+        this.processData.countUpInterval = undefined;
+
         this.setProgressBarPercentage();
       } else if (this.userData.intake > desiredIntake) {
-        clearInterval(counter);
+        clearInterval(this.processData.countUpInterval);
+        this.processData.countUpInterval = undefined;
+
         this.userData.intake = desiredIntake;
         this.setProgressBarPercentage();
       }
@@ -304,7 +310,7 @@ export class AppComponent implements OnInit {
     this.userData.intake = 0;
     this.userData.selectedCup = undefined;
 
-    this.processData.intervals = [];
+    this.processData.reminderIntervals = [];
     this.processData.progressBarPercentage = 0;
 
     this.configData.isGoalDefined = false;

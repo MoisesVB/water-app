@@ -1,4 +1,5 @@
 export interface ProcessData {
     progressBarPercentage: number;
-    intervals?: number[];
+    reminderIntervals?: number[];
+    countUpInterval?: number;
 }
