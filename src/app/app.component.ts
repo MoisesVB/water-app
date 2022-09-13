@@ -242,8 +242,12 @@ export class AppComponent implements OnInit {
       if (tempCup?.capacity! + this.userData.intake > Constants.MAX_WATER_TARGET) {
         const leftIntake = Constants.MAX_WATER_TARGET - this.userData.intake;
 
-        // store to localstorage
-        this.service.addIntake(leftIntake);
+        if (leftIntake > 0) {
+          // store to localstorage
+          this.service.addIntake(leftIntake);
+        } else {
+          return;
+        }
       } else {
         this.service.addIntake(tempCup?.capacity!);
       }
