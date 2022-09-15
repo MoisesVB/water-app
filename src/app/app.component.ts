@@ -247,11 +247,13 @@ export class AppComponent implements OnInit {
         if (leftIntake > 0) {
           // store to localstorage
           this.service.addIntake(leftIntake);
+          this.service.addActivity(leftIntake);
         } else {
           return;
         }
       } else {
         this.service.addIntake(tempCup?.capacity!);
+        this.service.addActivity(tempCup?.capacity!);
       }
 
       // push local intake to be the same as stored

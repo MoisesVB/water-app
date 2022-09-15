@@ -31,7 +31,6 @@ export class StoreLocalService {
     }
 
     localStorage.setItem("intake", toUpdateIntake.toString());
-    this.addActivity(intake);
   }
 
   getIntake() {
