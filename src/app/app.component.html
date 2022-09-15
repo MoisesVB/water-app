@@ -56,7 +56,7 @@
     (deleteCustomCupNotifier)="deleteCup($event)">
   </app-settings-modal>
 
-  <app-log-modal [activity]="this.service.findActivity()" [isLogOpen]="configData.isLogOpen"
+  <app-log-modal [activity]="this.service.getAllActivity()" [isLogOpen]="configData.isLogOpen"
     (closeLogNotifier)="toggleLog()" (deleteActivityNotifier)="deleteActivity($event)">
   </app-log-modal>
 

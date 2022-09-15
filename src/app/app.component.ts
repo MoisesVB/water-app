@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
   }
 
   handleDate() {
-    const storedDay = parseInt(this.service.findStoredDay()!);
+    const storedDay = parseInt(this.service.getCurrentDay()!);
     const today = new Date().getDate();
 
     // if there's a day stored and this day is outdated
@@ -61,7 +61,7 @@ export class AppComponent implements OnInit {
       // clear intake because it's another day
 
       // restoring intake to 0
-      this.service.destroyIntake(parseInt(this.service.findIntake()!));
+      this.service.deleteIntake(parseInt(this.service.getIntake()!));
 
       // update day to today
       this.service.addCurrentDay();
@@ -71,7 +71,7 @@ export class AppComponent implements OnInit {
   }
 
   loadGoal() {
-    const goal = this.service.findGoal();
+    const goal = this.service.getGoal();
 
     if (goal) {
       this.defineGoal(parseInt(goal));
@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
   }
 
   loadIntake() {
-    const intake = this.service.findIntake();
+    const intake = this.service.getIntake();
 
     if (intake) {
       this.userData.intake = parseInt(intake);
@@ -88,7 +88,7 @@ export class AppComponent implements OnInit {
   }
 
   loadReminder() {
-    const reminder = this.service.findReminder();
+    const reminder = this.service.getReminder();
 
     if (reminder) {
       this.userData.selectedReminder = parseInt(reminder);
@@ -99,7 +99,7 @@ export class AppComponent implements OnInit {
   }
 
   handleCups() {
-    if (this.service.findCups()) {
+    if (this.service.getAllCups()) {
       this.loadCups();
     } else {
       this.service.addCup(100, false);
@@ -112,7 +112,7 @@ export class AppComponent implements OnInit {
   }
 
   loadCups() {
-    this.cupsInfo = this.service.findCups();
+    this.cupsInfo = this.service.getAllCups();
   }
 
   addCup(capacity: string) {
@@ -122,7 +122,7 @@ export class AppComponent implements OnInit {
   }
 
   deleteCup(id: string) {
-    this.service.deleteCup(id);
+    this.service.deleteCupById(id);
     this.loadCups();
   }
 
@@ -255,7 +255,7 @@ export class AppComponent implements OnInit {
       }
 
       // push local intake to be the same as stored
-      const desiredIntake = parseInt(this.service.findIntake()!);
+      const desiredIntake = parseInt(this.service.getIntake()!);
 
       this.countUp(desiredIntake);
     }
@@ -290,20 +290,20 @@ export class AppComponent implements OnInit {
   }
 
   deleteActivity(activity: ActivityData) {
-    this.service.deleteActivity(activity.id);
+    this.service.deleteActivityById(activity.id);
     this.deleteIntake(activity.intake);
   }
 
   deleteIntake(intake: number) {
-    this.service.destroyIntake(intake);
+    this.service.deleteIntake(intake);
 
     // push local intake to be the same as stored
-    this.userData.intake = parseInt(this.service.findIntake()!);
+    this.userData.intake = parseInt(this.service.getIntake()!);
     this.setProgressBarPercentage();
   }
 
   deleteData() {
-    this.service.destroyAllData();
+    this.service.deleteAllData();
 
     // reset all variables here
     this.userData.goal = 0;

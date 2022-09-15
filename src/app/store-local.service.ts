@@ -15,13 +15,13 @@ export class StoreLocalService {
     localStorage.setItem("goal", goal.toString());
   }
 
-  findGoal() {
+  getGoal() {
     return localStorage.getItem("goal");
   }
 
   // intake methods
   addIntake(intake: number) {
-    const storedIntake = parseInt(this.findIntake()!);
+    const storedIntake = parseInt(this.getIntake()!);
     let toUpdateIntake;
 
     if (storedIntake) {
@@ -34,12 +34,12 @@ export class StoreLocalService {
     this.addActivity(intake);
   }
 
-  findIntake() {
+  getIntake() {
     return localStorage.getItem("intake");
   }
 
-  destroyIntake(intake: number) { // decrease intake
-    const storedIntake = parseInt(this.findIntake()!);
+  deleteIntake(intake: number) {
+    const storedIntake = parseInt(this.getIntake()!);
 
     const newIntake = storedIntake - intake;
 
@@ -48,7 +48,7 @@ export class StoreLocalService {
 
   // activity methods
   addActivity(intake: number) {
-    let activity: Activity = this.findActivity();
+    let activity: Activity = this.getAllActivity();
 
     const id = uuidv4();
     const date = new Date().toLocaleDateString();
@@ -73,12 +73,12 @@ export class StoreLocalService {
     localStorage.setItem("activity", JSON.stringify(activity));
   }
 
-  findActivity(): Activity {
+  getAllActivity(): Activity {
     return JSON.parse(localStorage.getItem("activity")!);
   }
 
-  deleteActivity(id: string) {
-    let activity = this.findActivity();
+  deleteActivityById(id: string) {
+    let activity = this.getAllActivity();
 
     for (let key in activity) {
       activity[key] = activity[key].filter(obj => obj.id !== id);
@@ -96,22 +96,22 @@ export class StoreLocalService {
     localStorage.setItem("reminder", value.toString());
   }
 
-  findReminder() {
+  getReminder() {
     return localStorage.getItem("reminder");
   }
 
-  // currentDay methods
+  // day methods
   addCurrentDay() {
     localStorage.setItem("currentDay", new Date().getDate().toString());
   }
 
-  findStoredDay() {
+  getCurrentDay() {
     return localStorage.getItem("currentDay");
   }
 
   // cup methods
   addCup(capacity: number, isCustom: boolean) {
-    let cups = this.findCups();
+    let cups = this.getAllCups();
 
     const newCup: Cup = {
       id: uuidv4(),
@@ -128,19 +128,19 @@ export class StoreLocalService {
     localStorage.setItem('cups', JSON.stringify(cups));
   }
 
-  findCups(): Cup[] {
+  getAllCups(): Cup[] {
     return JSON.parse(localStorage.getItem('cups')!);
   }
 
-  deleteCup(id: string) {
-    const cups = this.findCups();
+  deleteCupById(id: string) {
+    const cups = this.getAllCups();
 
     const newCups = cups.filter(cup => cup.id !== id);
 
     localStorage.setItem('cups', JSON.stringify(newCups));
   }
 
-  destroyAllData() {
+  deleteAllData() {
     localStorage.clear();
   }
 }

@@ -17,10 +17,10 @@ describe('StoreLocalService', () => {
         spyOn(window.localStorage, 'clear').and.callFake(() => (localStore = {}));
     });
 
-    it('#findGoal should find goal', () => {
+    it('#getGoal should find goal', () => {
         window.localStorage.setItem('goal', '2000');
 
-        expect(service.findGoal()).toBe('2000');
+        expect(service.getGoal()).toBe('2000');
     })
 
     it('#addGoal should add goal', () => {
@@ -35,9 +35,9 @@ describe('StoreLocalService', () => {
         expect(window.localStorage.getItem('intake')).toBe('430');
     })
 
-    it('#findIntake should find total intake', () => {
+    it('#getIntake should find total intake', () => {
         window.localStorage.setItem('intake', '123');
 
-        expect(service.findIntake()).toBe('123');
+        expect(service.getIntake()).toBe('123');
     })
 })
