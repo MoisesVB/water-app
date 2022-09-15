@@ -121,8 +121,8 @@ export class AppComponent implements OnInit {
     this.userData.selectedCup = undefined;
   }
 
-  destroyCup(id: string) {
-    this.service.destroyCup(id);
+  deleteCup(id: string) {
+    this.service.deleteCup(id);
     this.loadCups();
   }
 
@@ -290,7 +290,7 @@ export class AppComponent implements OnInit {
   }
 
   deleteHistory(history: HistoryData) {
-    this.service.destroyHistory(history.id);
+    this.service.deleteActivity(history.id);
     this.deleteIntake(history.intake);
   }
 

@@ -53,10 +53,10 @@
   <app-settings-modal [isSettingsOpen]="configData.isSettingsOpen" (closeSettingsNotifier)="toggleSettings()"
     (changeGoalNotifier)="changeGoals()" (changeReminderNotifier)="changeReminder($event)"
     [selectedReminder]="userData.selectedReminder" (deleteDataNotifier)="deleteData()" [cups]="cupsInfo"
-    (deleteCustomCupNotifier)="destroyCup($event)">
+    (deleteCustomCupNotifier)="deleteCup($event)">
   </app-settings-modal>
 
-  <app-log-modal [history]="this.service.findHistory()" [isLogOpen]="configData.isLogOpen"
+  <app-log-modal [history]="this.service.findActivity()" [isLogOpen]="configData.isLogOpen"
     (closeLogNotifier)="toggleLog()" (deleteHistoryNotifier)="deleteHistory($event)">
   </app-log-modal>
 
