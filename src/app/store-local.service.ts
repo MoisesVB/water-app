@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
-import { History } from './history';
+import { Activity } from './activity';
 import { Cup } from './cup';
 
 @Injectable({
@@ -21,15 +21,16 @@ export class StoreLocalService {
 
   // intake methods
   addIntake(intake: number) {
-    let storedIntake = parseInt(this.findIntake()!);
+    const storedIntake = parseInt(this.findIntake()!);
+    let toUpdateIntake;
 
     if (storedIntake) {
-      storedIntake += intake;
+      toUpdateIntake = storedIntake + intake;
     } else {
-      storedIntake = intake;
+      toUpdateIntake = intake;
     }
 
-    localStorage.setItem("intake", storedIntake.toString());
+    localStorage.setItem("intake", toUpdateIntake.toString());
     this.addActivity(intake);
   }
 
@@ -47,7 +48,7 @@ export class StoreLocalService {
 
   // activity methods
   addActivity(intake: number) {
-    let history: History = this.findActivity();
+    let activity: Activity = this.findActivity();
 
     const id = uuidv4();
     const date = new Date().toLocaleDateString();
@@ -59,35 +60,35 @@ export class StoreLocalService {
       intake: intake
     }
 
-    if (!history) {
-      history = {};
+    if (!activity) {
+      activity = {};
     }
 
-    if (!history.hasOwnProperty(`${date}`)) {
-      history[`${date}`] = [temp]
-    } else if (history.hasOwnProperty(`${date}`)) {
-      history[`${date}`].push(temp);
+    if (!activity.hasOwnProperty(`${date}`)) {
+      activity[`${date}`] = [temp]
+    } else if (activity.hasOwnProperty(`${date}`)) {
+      activity[`${date}`].push(temp);
     }
 
-    localStorage.setItem("history", JSON.stringify(history));
+    localStorage.setItem("activity", JSON.stringify(activity));
   }
 
-  findActivity(): History {
-    return JSON.parse(localStorage.getItem("history")!);
+  findActivity(): Activity {
+    return JSON.parse(localStorage.getItem("activity")!);
   }
 
   deleteActivity(id: string) {
-    let history = this.findActivity();
+    let activity = this.findActivity();
 
-    for (let key in history) {
-      history[key] = history[key].filter(obj => obj.id !== id);
+    for (let key in activity) {
+      activity[key] = activity[key].filter(obj => obj.id !== id);
 
-      if (history[key].length <= 0) {
-        delete history[key];
+      if (activity[key].length <= 0) {
+        delete activity[key];
       }
     }
 
-    localStorage.setItem("history", JSON.stringify(history));
+    localStorage.setItem("activity", JSON.stringify(activity));
   }
 
   // reminder methods

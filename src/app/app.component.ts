@@ -2,7 +2,7 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
 import { Component, OnInit } from '@angular/core';
 import { ConfigData } from './config-data';
 import { Cup } from './cup';
-import { HistoryData } from './history';
+import { ActivityData } from './activity';
 import { ProcessData } from './process-data';
 import { StoreLocalService } from './store-local.service';
 import { UserData } from './user-data';
@@ -289,9 +289,9 @@ export class AppComponent implements OnInit {
     this.processData.progressBarPercentage = formula >= 100 ? 100 : formula;
   }
 
-  deleteHistory(history: HistoryData) {
-    this.service.deleteActivity(history.id);
-    this.deleteIntake(history.intake);
+  deleteActivity(activity: ActivityData) {
+    this.service.deleteActivity(activity.id);
+    this.deleteIntake(activity.intake);
   }
 
   deleteIntake(intake: number) {

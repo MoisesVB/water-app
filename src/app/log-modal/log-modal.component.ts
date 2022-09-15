@@ -1,6 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
-import { History, HistoryData } from '../history';
+import { Activity, ActivityData } from '../activity';
 
 @Component({
   selector: 'app-log-modal',
@@ -25,11 +25,11 @@ export class LogModalComponent implements OnInit {
 
   @Input() isLogOpen!: boolean;
 
-  @Input() history!: History;
+  @Input() activity!: Activity;
 
   @Output() closeLogNotifier = new EventEmitter();
 
-  @Output() deleteHistoryNotifier = new EventEmitter<HistoryData>();
+  @Output() deleteActivityNotifier = new EventEmitter<ActivityData>();
 
   @HostListener('document:keydown.escape', ['$event'])
   closeLogOnEsc() {
@@ -38,9 +38,9 @@ export class LogModalComponent implements OnInit {
     }
   }
 
-  sortByDate(history: History) {
-    if (history) {
-      const arr = Object.keys(history).sort((a, b) => {
+  sortByDate(activity: Activity) {
+    if (activity) {
+      const arr = Object.keys(activity).sort((a, b) => {
         return +new Date(a) - +new Date(b);
       });
 
@@ -48,20 +48,20 @@ export class LogModalComponent implements OnInit {
       return arr.reverse();
     }
 
-    return history;
+    return activity;
   }
 
   getTodayDate() {
     return new Date().toLocaleDateString();
   }
 
-  countIntake(data: HistoryData[]) {
+  countIntake(data: ActivityData[]) {
     return data.reduce((acc, obj) => acc + obj.intake, 0);
   }
 
-  getHistoryLength(history: History) {
-    if (history) {
-      return Object.keys(history).length;
+  getActivityLength(activity: Activity) {
+    if (activity) {
+      return Object.keys(activity).length;
     }
 
     return 0;

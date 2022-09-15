@@ -17,14 +17,14 @@
     <hr class="border border-blue-300 rounded mt-2 opacity-20">
 
     <div class="p-4 overflow-y-auto h-80 scroll">
-      <div *ngFor="let prop of sortByDate(history)" class="select-none">
-        <h3 class="font-semibold text-lg">{{ prop | date:'mediumDate' }} - {{ countIntake(history[prop])
+      <div *ngFor="let prop of sortByDate(activity)" class="select-none">
+        <h3 class="font-semibold text-lg">{{ prop | date:'mediumDate' }} - {{ countIntake(activity[prop])
           }}ml</h3>
-        <div class="flex items-center py-2" *ngFor="let obj of history[prop]">
+        <div class="flex items-center py-2" *ngFor="let obj of activity[prop]">
           <p class="mr-2">{{ obj.hour }}</p>
           <p>-</p>
           <p class="ml-2">{{ obj.intake }}ml</p>
-          <svg *ngIf="prop === getTodayDate()" (click)="deleteHistoryNotifier.emit(obj)"
+          <svg *ngIf="prop === getTodayDate()" (click)="deleteActivityNotifier.emit(obj)"
             xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
             class="h-5 w-5 fill-red-500 cursor-pointer ml-auto" viewBox="0 0 16 16">
             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -33,7 +33,7 @@
         </div>
         <hr class="border border-blue-300 my-4 opacity-10">
       </div>
-      <div *ngIf="getHistoryLength(history) <= 0"
+      <div *ngIf="getActivityLength(activity) <= 0"
         class="flex flex-col justify-center items-center w-full h-full select-none">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
           class="h-12 w-12 fill-blue-300" viewBox="0 0 16 16">
