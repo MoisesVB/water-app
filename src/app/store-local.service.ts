@@ -20,14 +20,21 @@ export class StoreLocalService {
   // goal methods
   addGoal(goal: number) {
     if (!goal || goal <= 0 || goal > Constants.MAX_WATER_TARGET || typeof goal !== 'number') {
-      throw new Error(`Goal ${goal} is invalid`);
+      throw new Error('Received goal is invalid');
     }
 
     localStorage.setItem("goal", JSON.stringify(goal));
   }
 
   getGoal() {
-    return localStorage.getItem("goal");
+    const goal = localStorage.getItem("goal")!;
+    const goalNumber = parseInt(goal);
+
+    if (!goalNumber || goalNumber <= 0 || goalNumber > Constants.MAX_WATER_TARGET || typeof goalNumber !== 'number') {
+      throw new Error('Goal is invalid');
+    }
+
+    return goal; // return the string
   }
 
   // intake methods
