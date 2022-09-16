@@ -48,7 +48,11 @@ export class StoreLocalService {
       toUpdateIntake = intake;
     }
 
-    localStorage.setItem("intake", toUpdateIntake.toString());
+    if (!toUpdateIntake || toUpdateIntake <= 0 || toUpdateIntake > Constants.MAX_WATER_TARGET || typeof toUpdateIntake !== 'number') {
+      throw new Error('To update intake is invalid');
+    }
+
+    localStorage.setItem("intake", JSON.stringify(toUpdateIntake));
   }
 
   getIntake() {
