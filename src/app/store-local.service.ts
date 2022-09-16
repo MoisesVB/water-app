@@ -28,7 +28,7 @@ export class StoreLocalService {
 
   getGoal() {
     const goal = localStorage.getItem("goal")!;
-    const goalNumber = parseInt(goal);
+    const goalNumber = Number(goal);
 
     if (!goalNumber || goalNumber <= 0 || goalNumber > Constants.MAX_WATER_TARGET || typeof goalNumber !== 'number') {
       throw new Error('Goal is invalid');
@@ -39,7 +39,7 @@ export class StoreLocalService {
 
   // intake methods
   addIntake(intake: number) {
-    const storedIntake = parseInt(this.getIntake()!);
+    const storedIntake = Number(this.getIntake()!);
     let toUpdateIntake;
 
     if (storedIntake) {
@@ -56,11 +56,18 @@ export class StoreLocalService {
   }
 
   getIntake() {
-    return localStorage.getItem("intake");
+    const intake = localStorage.getItem("intake")!;
+    const intakeNumber = Number(intake);
+
+    if (!intakeNumber || intakeNumber <= 0 || intakeNumber > Constants.MAX_WATER_TARGET || typeof intakeNumber !== 'number') {
+      throw new Error('Intake is invalid');
+    }
+
+    return intake;
   }
 
   deleteIntake(intake: number) {
-    const storedIntake = parseInt(this.getIntake()!);
+    const storedIntake = Number(this.getIntake()!);
 
     const newIntake = storedIntake - intake;
 
