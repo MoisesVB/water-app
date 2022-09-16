@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
 import { Activity } from './activity';
+import { Constants } from './constants';
 import { Cup } from './cup';
 
 @Injectable({
@@ -10,9 +11,19 @@ export class StoreLocalService {
 
   constructor() { }
 
+  // services should return strings only
+  // services will receive formatted params (number, string, obj)
+  // components will convert data from one type to another to services and to display into screen
+  // components will validate UI logic and services will validate business logic
+  // in component: first convert the value, pass to service and after update the local value and set UI variable state
+
   // goal methods
   addGoal(goal: number) {
-    localStorage.setItem("goal", goal.toString());
+    if (!goal || goal <= 0 || goal > Constants.MAX_WATER_TARGET || typeof goal !== 'number') {
+      throw new Error(`Goal ${goal} is invalid`);
+    }
+
+    localStorage.setItem("goal", JSON.stringify(goal));
   }
 
   getGoal() {

@@ -74,7 +74,7 @@ export class AppComponent implements OnInit {
     const goal = this.service.getGoal();
 
     if (goal) {
-      this.defineGoal(parseInt(goal));
+      this.defineGoal(goal);
     }
   }
 
@@ -215,12 +215,14 @@ export class AppComponent implements OnInit {
 
   cupsInfo: Cup[] = [];
 
-  defineGoal(goal: number) {
-    this.configData.isGoalDefined = true;
-    this.userData.goal = goal;
+  defineGoal(goal: string) {
+    const goalNumber = parseInt(goal);
 
-    // store to localstorage
-    this.service.addGoal(this.userData.goal);
+    this.service.addGoal(goalNumber);
+
+    this.userData.goal = goalNumber;
+    this.configData.isGoalDefined = true;
+
     this.setProgressBarPercentage();
   }
 
