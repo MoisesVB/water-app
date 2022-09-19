@@ -1,3 +1,4 @@
+import { Activity } from "./activity";
 import { Constants } from "./constants";
 import { StoreLocalService } from "./store-local.service"
 
@@ -315,5 +316,178 @@ describe('StoreLocalService', () => {
 
         expect(todayObj).toBeTruthy();
         expect(todayObj.length).toBe(2);
+    })
+
+    // getAllActivity tests
+    it('#getAllActivity should return activity from localStorage', () => {
+        const activity: Activity = {
+            '1/14/2022': [{ id: 'abcde', hour: '11:00:00 AM', intake: 400 }]
+        }
+
+        window.localStorage.setItem('activity', JSON.stringify(activity));
+
+        expect(JSON.parse(service.getAllActivity()!)).toBeTruthy();
+        expect(Object.keys(JSON.parse(service.getAllActivity()!)).length).toBe(1); // check length of date keys
+        expect(JSON.parse(service.getAllActivity()!)['1/14/2022'].length).toBe(1); // check length of array inside date key
+    })
+
+    it('#getAllActivity should throw error if activity intake is 0', () => {
+        const activity: Activity = {
+            '4/3/2022': [{ id: 'qwert', hour: '12:35:45 PM', intake: 0 }]
+        }
+
+        window.localStorage.setItem('activity', JSON.stringify(activity));
+
+        expect(() => service.getAllActivity()).toThrow(new Error('Invalid activity found'));
+    })
+
+    it('#getAllActivity should throw error if activity intake is negative', () => {
+        const activity: Activity = {
+            '4/3/2022': [{ id: 'qwert', hour: '12:35:45 PM', intake: -10 }]
+        }
+
+        window.localStorage.setItem('activity', JSON.stringify(activity));
+
+        expect(() => service.getAllActivity()).toThrow(new Error('Invalid activity found'));
+    })
+
+    it('#getAllActivity should throw error if activity intake is greater than MAX_WATER_TARGET', () => {
+        const activity: Activity = {
+            '4/3/2022': [{ id: 'qwert', hour: '12:35:45 PM', intake: Constants.MAX_WATER_TARGET + 1 }]
+        }
+
+        window.localStorage.setItem('activity', JSON.stringify(activity));
+
+        expect(() => service.getAllActivity()).toThrow(new Error('Invalid activity found'));
+    })
+
+    it('#getAllActivity should throw error if intake value is decimal', () => {
+        const activity: Activity = {
+            '4/3/2022': [{ id: 'qwert', hour: '12:35:45 PM', intake: 120.50 }]
+        }
+
+        window.localStorage.setItem('activity', JSON.stringify(activity));
+
+        expect(() => service.getAllActivity()).toThrow(new Error('Invalid activity found'));
+    })
+
+    it('#getAllActivity should throw error if activity intake is not compatible with a number', () => {
+        const activity = {
+            '4/3/2022': [{ id: 'qwert', hour: '12:35:45 PM', intake: 'abcde' }]
+        }
+
+        window.localStorage.setItem('activity', JSON.stringify(activity));
+
+        expect(() => service.getAllActivity()).toThrow(new Error('Invalid activity found'));
+    })
+
+    it('#getAllActivity should throw error if activity in localStorage is empty', () => {
+        window.localStorage.setItem('activity', '');
+
+        expect(() => service.getAllActivity()).toThrow(new Error('Error parsing activities'));
+    })
+
+    it('#getAllActivity should throw error if there is no activity key in localStorage', () => {
+        expect(() => service.getAllActivity()).toThrow(new Error('Activity is falsy'));
+    })
+
+    it('#getAllActivity should throw error if date key is not a date', () => {
+        const activity: Activity = {
+            'key': [{ id: 'qwert', hour: '12:35:45 PM', intake: 200 }]
+        }
+
+        window.localStorage.setItem('activity', JSON.stringify(activity));
+
+        expect(() => service.getAllActivity()).toThrow(new Error('Invalid date key'));
+    })
+
+    it('#getAllActivity should throw error if date key is empty', () => {
+        const activity: Activity = {
+            '': [{ id: 'qwert', hour: '12:35:45 PM', intake: 200 }]
+        }
+
+        window.localStorage.setItem('activity', JSON.stringify(activity));
+
+        expect(() => service.getAllActivity()).toThrow(new Error('Invalid date key'));
+    })
+
+    it('#getAllActivity should throw error if date key is a number', () => {
+        const activity: Activity = {
+            12032021: [{ id: 'qwert', hour: '12:35:45 PM', intake: 200 }]
+        }
+
+        window.localStorage.setItem('activity', JSON.stringify(activity));
+
+        expect(() => service.getAllActivity()).toThrow(new Error('Invalid date key'));
+    })
+
+    it('#getAllActivity should throw error if date key is falsy', () => {
+        const activity: Activity = {
+            null: [{ id: 'qwert', hour: '12:35:45 PM', intake: 200 }]
+        }
+
+        window.localStorage.setItem('activity', JSON.stringify(activity));
+
+        expect(() => service.getAllActivity()).toThrow(new Error('Invalid date key'));
+    })
+
+    it('#getAllActivity should throw error if id is a number', () => {
+        const activity = {
+            '1/14/2022': [{ id: 1234, hour: '12:35:45 PM', intake: 200 }]
+        }
+
+        window.localStorage.setItem('activity', JSON.stringify(activity));
+
+        expect(() => service.getAllActivity()).toThrow(new Error('Invalid activity found'));
+    })
+
+    it('#getAllActivity should throw error if id is falsy', () => {
+        const activity = {
+            '1/14/2022': [{ id: null, hour: '12:35:45 PM', intake: 200 }]
+        }
+
+        window.localStorage.setItem('activity', JSON.stringify(activity));
+
+        expect(() => service.getAllActivity()).toThrow(new Error('Invalid activity found'));
+    })
+
+    it('#getAllActivity should throw error if id is empty', () => {
+        const activity = {
+            '1/14/2022': [{ id: '', hour: '12:35:45 PM', intake: 200 }]
+        }
+
+        window.localStorage.setItem('activity', JSON.stringify(activity));
+
+        expect(() => service.getAllActivity()).toThrow(new Error('Invalid activity found'));
+    })
+
+    it('#getAllActivity should throw error if hour is a number', () => {
+        const activity = {
+            '1/14/2022': [{ id: 'qewrt', hour: 123500, intake: 200 }]
+        }
+
+        window.localStorage.setItem('activity', JSON.stringify(activity));
+
+        expect(() => service.getAllActivity()).toThrow(new Error('Invalid activity found'));
+    })
+
+    it('#getAllActivity should throw error if hour is falsy', () => {
+        const activity = {
+            '1/14/2022': [{ id: 'qewrt', hour: null, intake: 200 }]
+        }
+
+        window.localStorage.setItem('activity', JSON.stringify(activity));
+
+        expect(() => service.getAllActivity()).toThrow(new Error('Invalid activity found'));
+    })
+
+    it('#getAllActivity should throw error if hour is empty', () => {
+        const activity = {
+            '1/14/2022': [{ id: 'qewrt', hour: '', intake: 200 }]
+        }
+
+        window.localStorage.setItem('activity', JSON.stringify(activity));
+
+        expect(() => service.getAllActivity()).toThrow(new Error('Invalid activity found'));
     })
 })

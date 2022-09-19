@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
-import { ActivityData } from './activity';
+import { Activity, ActivityData } from './activity';
 import { Constants } from './constants';
 import { Cup } from './cup';
 
@@ -125,7 +125,33 @@ export class StoreLocalService {
   }
 
   getAllActivity() {
-    return localStorage.getItem("activity");
+    const activity = localStorage.getItem("activity")!;
+    let formattedActivity: Activity = {};
+
+    try {
+      formattedActivity = JSON.parse(activity);
+    } catch (err) {
+      throw new Error('Error parsing activities');
+    }
+
+    if (!formattedActivity || Object.keys(formattedActivity).length <= 0) {
+      throw new Error('Activity is falsy');
+    }
+
+    for (let dateKey in formattedActivity) {
+      if (!dateKey || !Date.parse(dateKey) || Number.isInteger(Number(dateKey))) {
+        throw new Error('Invalid date key');
+      }
+
+      formattedActivity[dateKey].forEach(obj => {
+        if (!obj.id || !obj.hour || !obj.intake || typeof obj.id !== 'string' || typeof obj.hour !== 'string' ||
+          obj.intake <= 0 || obj.intake > Constants.MAX_WATER_TARGET || !Number.isInteger(obj.intake)) {
+          throw new Error('Invalid activity found');
+        }
+      })
+    }
+
+    return activity;
   }
 
   deleteActivityById(id: string) {
