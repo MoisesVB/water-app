@@ -67,11 +67,19 @@ export class StoreLocalService {
   }
 
   deleteIntake(intake: number) {
+    if (!intake || intake <= 0 || intake > Constants.MAX_WATER_TARGET || typeof intake !== 'number') {
+      throw new Error('Intake to delete is invalid');
+    }
+
     const storedIntake = Number(this.getIntake()!);
 
-    const newIntake = storedIntake - intake;
+    const newIntake = Number((storedIntake - intake).toFixed(2));
 
-    localStorage.setItem("intake", newIntake.toString());
+    if (!newIntake || newIntake <= 0 || newIntake > Constants.MAX_WATER_TARGET || typeof newIntake !== 'number') {
+      throw new Error('Intake to delete is invalid');
+    }
+
+    localStorage.setItem("intake", JSON.stringify(newIntake));
   }
 
   // activity methods

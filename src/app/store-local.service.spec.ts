@@ -229,4 +229,66 @@ describe('StoreLocalService', () => {
     it('#getIntake should throw error if there is no intake key in localStorage', () => {
         expect(() => service.getIntake()).toThrow(new Error('Intake is invalid'));
     })
+
+    // deleteIntake tests
+    it('#deleteIntake should delete intake of localStorage', () => {
+        spyOn(service, 'getIntake').and.callFake(() => window.localStorage.getItem('intake')!);
+
+        window.localStorage.setItem('intake', '500');
+        service.deleteIntake(250);
+
+        expect(window.localStorage.getItem('intake')).toBe('250');
+        expect(Number(window.localStorage.getItem('intake')!)).toBeGreaterThan(0);
+        expect(Number(window.localStorage.getItem('intake')!)).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
+        expect(window.localStorage.getItem('intake')).toBeTruthy();
+    })
+
+    it('#deleteIntake should throw error if number is 0', () => {
+        expect(() => service.deleteIntake(0)).toThrow(new Error('Intake to delete is invalid'));
+    })
+
+    it('#deleteIntake should throw error if number is negative', () => {
+        expect(() => service.deleteIntake(-1)).toThrow(new Error('Intake to delete is invalid'));
+    })
+
+    it('#deleteIntake should throw error if number is greater than MAX_WATER_TARGET', () => {
+        expect(() => service.deleteIntake(Constants.MAX_WATER_TARGET + 1)).toThrow(new Error('Intake to delete is invalid'));
+    })
+
+    it('#deleteIntake should delete intake if number is decimal', () => {
+        spyOn(service, 'getIntake').and.callFake(() => window.localStorage.getItem('intake')!);
+
+        window.localStorage.setItem('intake', '1000');
+        service.deleteIntake(540.3);
+
+        expect(window.localStorage.getItem('intake')).toBe('459.7');
+        expect(Number(window.localStorage.getItem('intake')!)).toBeGreaterThan(0);
+        expect(Number(window.localStorage.getItem('intake')!)).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
+        expect(window.localStorage.getItem('intake')).toBeTruthy();
+    })
+
+    it('#deleteIntake should delete intake two times (subtraction) in localStorage', () => {
+        spyOn(service, 'getIntake').and.callFake(() => window.localStorage.getItem('intake')!);
+
+        window.localStorage.setItem('intake', '1500');
+        service.deleteIntake(250);
+        service.deleteIntake(100);
+
+        expect(window.localStorage.getItem('intake')).toBe('1150');
+        expect(Number(window.localStorage.getItem('intake')!)).toBeGreaterThan(0);
+        expect(Number(window.localStorage.getItem('intake')!)).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
+        expect(window.localStorage.getItem('intake')).toBeTruthy();
+    })
+
+    it('#deleteIntake should throw error if intake is deleted two times and the subtraction is less than 0', () => {
+        spyOn(service, 'getIntake').and.callFake(() => window.localStorage.getItem('intake')!);
+        window.localStorage.setItem('intake', '1000');
+
+        expect(() => {
+            const half = Math.ceil(Number(window.localStorage.getItem('intake')) / 2);
+
+            service.deleteIntake(half);
+            service.deleteIntake(half + 1);
+        }).toThrow(new Error('Intake to delete is invalid'));
+    })
 })
