@@ -265,4 +265,55 @@ describe('StoreLocalService', () => {
             service.deleteIntake(half + 1);
         }).toThrow(new Error('Intake to delete is invalid'));
     })
+
+    // addActivity tests
+    it('#addActivity should add activity to localStorage', () => {
+        spyOn(service, 'getAllActivity').and.callFake(() => window.localStorage.getItem('activity')!);
+
+        service.addActivity(230);
+
+        const date = new Date().toLocaleDateString(); // today date
+        const obj = JSON.parse(window.localStorage.getItem('activity')!);
+        const todayObj = obj[`${date}`][0];
+
+        expect(obj[`${date}`]).toBeTruthy();
+
+        expect(todayObj.id).toBeTruthy();
+        expect(todayObj.hour).toBeTruthy();
+
+        expect(todayObj.intake).toBe(230);
+        expect(todayObj.intake).toBeGreaterThan(0);
+        expect(todayObj.intake).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
+        expect(todayObj.intake).toBeTruthy();
+    })
+
+    it('#addActivity should throw error if number is 0', () => {
+        expect(() => service.addActivity(0)).toThrow(new Error('Intake is invalid'));
+    })
+
+    it('#addActivity should throw error if number is negative', () => {
+        expect(() => service.addActivity(-1)).toThrow(new Error('Intake is invalid'));
+    })
+
+    it('#addActivity should throw error if number is greater than MAX_WATER_TARGET', () => {
+        expect(() => service.addActivity(Constants.MAX_WATER_TARGET + 1)).toThrow(new Error('Intake is invalid'));
+    })
+
+    it('#addActivity should throw error if number is decimal', () => {
+        expect(() => service.addActivity(324.44)).toThrow(new Error('Intake is invalid'));
+    })
+
+    it('#addActivity should add activity two times in localStorage', () => {
+        spyOn(service, 'getAllActivity').and.callFake(() => window.localStorage.getItem('activity')!);
+
+        service.addActivity(230);
+        service.addActivity(500);
+
+        const date = new Date().toLocaleDateString(); // today date
+        const obj = JSON.parse(window.localStorage.getItem('activity')!);
+        const todayObj = obj[`${date}`];
+
+        expect(todayObj).toBeTruthy();
+        expect(todayObj.length).toBe(2);
+    })
 })

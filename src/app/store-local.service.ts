@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
-import { Activity } from './activity';
+import { ActivityData } from './activity';
 import { Constants } from './constants';
 import { Cup } from './cup';
 
@@ -16,6 +16,7 @@ export class StoreLocalService {
   // components will convert data from one type to another to services and to display into screen
   // components will validate UI logic and services will validate business logic
   // in component: first convert the value, pass to service and after update the local value and set UI variable state
+  // services should validate params and processed data to check for errors 
 
   // goal methods
   addGoal(goal: number) {
@@ -88,7 +89,11 @@ export class StoreLocalService {
 
   // activity methods
   addActivity(intake: number) {
-    let activity: Activity = this.getAllActivity();
+    if (!intake || intake <= 0 || intake > Constants.MAX_WATER_TARGET || !Number.isInteger(intake)) {
+      throw new Error('Intake is invalid');
+    }
+
+    let activity = JSON.parse(this.getAllActivity()!);
 
     const id = uuidv4();
     const date = new Date().toLocaleDateString();
@@ -110,18 +115,24 @@ export class StoreLocalService {
       activity[`${date}`].push(temp);
     }
 
+    const pushedActivity = activity[`${date}`].filter((act: ActivityData) => act === temp);
+
+    if (!activity || !activity.hasOwnProperty(`${date}`) || activity[`${date}`].length <= 0 || !pushedActivity) {
+      throw new Error('Error in adding activity');
+    }
+
     localStorage.setItem("activity", JSON.stringify(activity));
   }
 
-  getAllActivity(): Activity {
-    return JSON.parse(localStorage.getItem("activity")!);
+  getAllActivity() {
+    return localStorage.getItem("activity");
   }
 
   deleteActivityById(id: string) {
-    let activity = this.getAllActivity();
+    let activity = JSON.parse(this.getAllActivity()!);
 
     for (let key in activity) {
-      activity[key] = activity[key].filter(obj => obj.id !== id);
+      activity[key] = activity[key].filter((obj: ActivityData) => obj.id !== id);
 
       if (activity[key].length <= 0) {
         delete activity[key];
