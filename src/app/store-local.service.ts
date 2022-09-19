@@ -19,7 +19,7 @@ export class StoreLocalService {
 
   // goal methods
   addGoal(goal: number) {
-    if (!goal || goal <= 0 || goal > Constants.MAX_WATER_TARGET || typeof goal !== 'number') {
+    if (!goal || goal <= 0 || goal > Constants.MAX_WATER_TARGET || !Number.isInteger(goal)) {
       throw new Error('Received goal is invalid');
     }
 
@@ -30,7 +30,7 @@ export class StoreLocalService {
     const goal = localStorage.getItem("goal")!;
     const goalNumber = Number(goal);
 
-    if (!goalNumber || goalNumber <= 0 || goalNumber > Constants.MAX_WATER_TARGET || typeof goalNumber !== 'number') {
+    if (!goalNumber || goalNumber <= 0 || goalNumber > Constants.MAX_WATER_TARGET || !Number.isInteger(goalNumber)) {
       throw new Error('Goal is invalid');
     }
 
@@ -39,6 +39,10 @@ export class StoreLocalService {
 
   // intake methods
   addIntake(intake: number) {
+    if (!intake || intake <= 0 || intake > Constants.MAX_WATER_TARGET || !Number.isInteger(intake)) {
+      throw new Error('To update intake is invalid');
+    }
+
     const storedIntake = Number(this.getIntake()!);
     let toUpdateIntake;
 
@@ -48,7 +52,7 @@ export class StoreLocalService {
       toUpdateIntake = intake;
     }
 
-    if (!toUpdateIntake || toUpdateIntake <= 0 || toUpdateIntake > Constants.MAX_WATER_TARGET || typeof toUpdateIntake !== 'number') {
+    if (!toUpdateIntake || toUpdateIntake <= 0 || toUpdateIntake > Constants.MAX_WATER_TARGET || !Number.isInteger(toUpdateIntake)) {
       throw new Error('To update intake is invalid');
     }
 
@@ -59,7 +63,7 @@ export class StoreLocalService {
     const intake = localStorage.getItem("intake")!;
     const intakeNumber = Number(intake);
 
-    if (!intakeNumber || intakeNumber <= 0 || intakeNumber > Constants.MAX_WATER_TARGET || typeof intakeNumber !== 'number') {
+    if (!intakeNumber || intakeNumber <= 0 || intakeNumber > Constants.MAX_WATER_TARGET || !Number.isInteger(intakeNumber)) {
       throw new Error('Intake is invalid');
     }
 
@@ -67,15 +71,15 @@ export class StoreLocalService {
   }
 
   deleteIntake(intake: number) {
-    if (!intake || intake <= 0 || intake > Constants.MAX_WATER_TARGET || typeof intake !== 'number') {
+    if (!intake || intake <= 0 || intake > Constants.MAX_WATER_TARGET || !Number.isInteger(intake)) {
       throw new Error('Intake to delete is invalid');
     }
 
     const storedIntake = Number(this.getIntake()!);
 
-    const newIntake = Number((storedIntake - intake).toFixed(2));
+    const newIntake = storedIntake - intake;
 
-    if (!newIntake || newIntake <= 0 || newIntake > Constants.MAX_WATER_TARGET || typeof newIntake !== 'number') {
+    if (!newIntake || newIntake <= 0 || newIntake > Constants.MAX_WATER_TARGET || !Number.isInteger(newIntake)) {
       throw new Error('Intake to delete is invalid');
     }
 

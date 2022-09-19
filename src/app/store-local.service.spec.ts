@@ -40,13 +40,8 @@ describe('StoreLocalService', () => {
         expect(() => service.addGoal(Constants.MAX_WATER_TARGET + 1)).toThrow(new Error('Received goal is invalid'));
     })
 
-    it('#addGoal should add goal if number is decimal', () => {
-        service.addGoal(2340.50);
-
-        expect(window.localStorage.getItem('goal')).toBe('2340.5');
-        expect(Number(window.localStorage.getItem('goal')!)).toBeGreaterThan(0);
-        expect(Number(window.localStorage.getItem('goal')!)).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
-        expect(window.localStorage.getItem('goal')).toBeTruthy();
+    it('#addGoal should throw error if number is decimal', () => {
+        expect(() => service.addGoal(2340.50)).toThrow(new Error('Received goal is invalid'));
     })
 
     it('#addGoal should override goal in localStorage', () => {
@@ -87,13 +82,10 @@ describe('StoreLocalService', () => {
         expect(() => service.getGoal()).toThrow(new Error('Goal is invalid'));
     })
 
-    it('#getGoal should return goal if value is decimal', () => {
-        window.localStorage.setItem('goal', '2340.5');
+    it('#getGoal should throw error if goal value is decimal', () => {
+        window.localStorage.setItem('goal', '2340.56');
 
-        expect(service.getGoal()).toBe('2340.5');
-        expect(Number(service.getGoal()!)).toBeGreaterThan(0);
-        expect(Number(service.getGoal()!)).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
-        expect(service.getGoal()).toBeTruthy();
+        expect(() => service.getGoal()).toThrow(new Error('Goal is invalid'));
     })
 
     it('#getGoal should throw error if goal value is not compatible with a number', () => {
@@ -144,15 +136,8 @@ describe('StoreLocalService', () => {
         expect(() => service.addIntake(Constants.MAX_WATER_TARGET + 1)).toThrow(new Error('To update intake is invalid'));
     })
 
-    it('#addIntake should add intake if number is decimal', () => {
-        spyOn(service, 'getIntake').and.callFake(() => window.localStorage.getItem('intake')!);
-
-        service.addIntake(324.2);
-
-        expect(window.localStorage.getItem('intake')).toBe('324.2');
-        expect(Number(window.localStorage.getItem('intake')!)).toBeGreaterThan(0);
-        expect(Number(window.localStorage.getItem('intake')!)).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
-        expect(window.localStorage.getItem('intake')).toBeTruthy();
+    it('#addIntake should throw error if number is decimal', () => {
+        expect(() => service.addIntake(324.44)).toThrow(new Error('To update intake is invalid'));
     })
 
     it('#addIntake should add intake two times (sum) in localStorage', () => {
@@ -205,13 +190,10 @@ describe('StoreLocalService', () => {
         expect(() => service.getIntake()).toThrow(new Error('Intake is invalid'));
     })
 
-    it('#getIntake should return intake if value is decimal', () => {
-        window.localStorage.setItem('intake', '500.5');
+    it('#getIntake should throw error if value is decimal', () => {
+        window.localStorage.setItem('intake', '500.50');
 
-        expect(service.getIntake()).toBe('500.5');
-        expect(Number(service.getIntake()!)).toBeGreaterThan(0);
-        expect(Number(service.getIntake()!)).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
-        expect(service.getIntake()).toBeTruthy();
+        expect(() => service.getIntake()).toThrow(new Error('Intake is invalid'));
     })
 
     it('#getIntake should throw error if intake value is not compatible with a number', () => {
@@ -255,16 +237,8 @@ describe('StoreLocalService', () => {
         expect(() => service.deleteIntake(Constants.MAX_WATER_TARGET + 1)).toThrow(new Error('Intake to delete is invalid'));
     })
 
-    it('#deleteIntake should delete intake if number is decimal', () => {
-        spyOn(service, 'getIntake').and.callFake(() => window.localStorage.getItem('intake')!);
-
-        window.localStorage.setItem('intake', '1000');
-        service.deleteIntake(540.3);
-
-        expect(window.localStorage.getItem('intake')).toBe('459.7');
-        expect(Number(window.localStorage.getItem('intake')!)).toBeGreaterThan(0);
-        expect(Number(window.localStorage.getItem('intake')!)).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
-        expect(window.localStorage.getItem('intake')).toBeTruthy();
+    it('#deleteIntake should throw error if number is decimal', () => {
+        expect(() => service.deleteIntake(540.3)).toThrow(new Error('Intake to delete is invalid'));
     })
 
     it('#deleteIntake should delete intake two times (subtraction) in localStorage', () => {
