@@ -155,14 +155,32 @@ export class StoreLocalService {
   }
 
   deleteActivityById(id: string) {
+    if (!id || typeof id !== 'string') {
+      throw new Error('Id is invalid');
+    }
+
     let activity = JSON.parse(this.getAllActivity()!);
 
-    for (let key in activity) {
-      activity[key] = activity[key].filter((obj: ActivityData) => obj.id !== id);
+    let activityToDelete: ActivityData | undefined;
 
-      if (activity[key].length <= 0) {
-        delete activity[key];
+    for (let key in activity) {
+      activityToDelete = activity[key].find((obj: ActivityData) => obj.id === id);
+
+      if (activityToDelete) {
+        break;
       }
+    }
+
+    if (activityToDelete) {
+      for (let key in activity) {
+        activity[key] = activity[key].filter((obj: ActivityData) => obj.id !== id);
+
+        if (activity[key].length <= 0) {
+          delete activity[key];
+        }
+      }
+    } else {
+      throw new Error('Activity to delete not found');
     }
 
     localStorage.setItem("activity", JSON.stringify(activity));

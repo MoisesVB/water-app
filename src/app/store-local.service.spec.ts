@@ -490,4 +490,56 @@ describe('StoreLocalService', () => {
 
         expect(() => service.getAllActivity()).toThrow(new Error('Invalid activity found'));
     })
+
+    // deleteActivityById tests
+    it('#deleteActivityById should delete activity of localStorage', () => {
+        spyOn(service, 'getAllActivity').and.callFake(() => window.localStorage.getItem('activity')!);
+
+        const activity: Activity = {
+            '1/14/2022': [{
+                id: 'abcde',
+                hour: '11:00:00 AM',
+                intake: 400
+            },
+            {
+                id: '900ff',
+                hour: '4:23:30 PM',
+                intake: 550
+            }],
+            '4/30/2022': [{ id: '5tytt', hour: '9:43:42 AM', intake: 100 }]
+        }
+
+        window.localStorage.setItem('activity', JSON.stringify(activity));
+        service.deleteActivityById('900ff');
+
+        expect(Object.keys(JSON.parse(window.localStorage.getItem('activity')!)).length).toBe(2);
+        expect(JSON.parse(window.localStorage.getItem('activity')!)['1/14/2022'].length).toBe(1);
+        expect(JSON.parse(window.localStorage.getItem('activity')!)['1/14/2022'][1]).toBeUndefined();
+    })
+
+    it('#deleteActivityById should throw error if id is invalid', () => {
+        expect(() => service.deleteActivityById('')).toThrow(new Error('Id is invalid'));
+    })
+
+    it('#deleteActivityById should throw error if activity with passed id does not exist', () => {
+        spyOn(service, 'getAllActivity').and.callFake(() => window.localStorage.getItem('activity')!);
+
+        const activity: Activity = {
+            '1/14/2022': [{
+                id: 'abcde',
+                hour: '11:00:00 AM',
+                intake: 400
+            },
+            {
+                id: '900ff',
+                hour: '4:23:30 PM',
+                intake: 550
+            }],
+            '4/30/2022': [{ id: '5tytt', hour: '9:43:42 AM', intake: 100 }]
+        }
+
+        window.localStorage.setItem('activity', JSON.stringify(activity));
+
+        expect(() => service.deleteActivityById('efgh')).toThrow(new Error('Activity to delete not found'));
+    })
 })
