@@ -50,6 +50,8 @@ export class AppComponent implements OnInit {
     this.loadIntake();
     this.loadReminder();
     this.requestNotificationPermission();
+
+    this.userData.activity = JSON.parse(this.service.getAllActivity());
   }
 
   handleDate() {
@@ -112,7 +114,7 @@ export class AppComponent implements OnInit {
   }
 
   loadCups() {
-    this.cupsInfo = this.service.getAllCups();
+    this.cupsInfo = JSON.parse(this.service.getAllCups());
   }
 
   addCup(capacity: string) {
@@ -167,6 +169,7 @@ export class AppComponent implements OnInit {
     intake: 0,
     selectedCup: undefined,
     selectedReminder: 0,
+    activity: {}
   }
 
   processData: ProcessData = {
@@ -313,6 +316,7 @@ export class AppComponent implements OnInit {
     this.userData.goal = 0;
     this.userData.intake = 0;
     this.userData.selectedCup = undefined;
+    this.userData.activity = {};
 
     this.processData.reminderIntervals = [];
     this.processData.progressBarPercentage = 0;
