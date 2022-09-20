@@ -208,7 +208,13 @@ export class StoreLocalService {
 
   // day methods
   addCurrentDay() {
-    localStorage.setItem("currentDay", new Date().getDate().toString());
+    const date = new Date().getDate();
+
+    if (!date || date <= 0 || date > 31 || !Number.isInteger(date)) {
+      throw new Error('Date is invalid');
+    }
+
+    localStorage.setItem("currentDay", JSON.stringify(date));
   }
 
   getCurrentDay() {

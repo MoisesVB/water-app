@@ -618,4 +618,38 @@ describe('StoreLocalService', () => {
     it('#getReminder should throw error if there is no reminder key in localStorage', () => {
         expect(() => service.getReminder()).toThrow(new Error('Reminder is invalid'));
     })
+
+    // addCurrentDay tests
+    it('#addCurrentDay should add current day to localStorage', () => {
+        const fixedDate = new Date(2022, 1, 15); // year, month, day
+        jasmine.clock().install();
+        jasmine.clock().mockDate(fixedDate);
+
+        service.addCurrentDay();
+
+        expect(window.localStorage.getItem('currentDay')).toBe('15');
+        expect(Number(window.localStorage.getItem('currentDay')!)).toBeGreaterThan(0);
+        expect(Number(window.localStorage.getItem('currentDay')!)).toBeLessThanOrEqual(31);
+        expect(window.localStorage.getItem('currentDay')).toBeTruthy();
+
+        jasmine.clock().uninstall();
+    })
+
+    it('#addCurrentDay should override current day in localStorage', () => {
+        const fixedDate = new Date(2022, 1, 31);
+        jasmine.clock().install();
+        jasmine.clock().mockDate(fixedDate);
+
+        const newDate = new Date(2022, 5, 4);
+        jasmine.clock().mockDate(newDate);
+
+        service.addCurrentDay();
+
+        expect(window.localStorage.getItem('currentDay')).toBe('4');
+        expect(Number(window.localStorage.getItem('currentDay')!)).toBeGreaterThan(0);
+        expect(Number(window.localStorage.getItem('currentDay')!)).toBeLessThanOrEqual(31);
+        expect(window.localStorage.getItem('currentDay')).toBeTruthy();
+
+        jasmine.clock().uninstall();
+    })
 })
