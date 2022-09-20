@@ -652,4 +652,54 @@ describe('StoreLocalService', () => {
 
         jasmine.clock().uninstall();
     })
+
+    // getCurrentDay tests
+    it('#getCurrentDay should return current day from localStorage', () => {
+        window.localStorage.setItem('currentDay', '23');
+
+        expect(service.getCurrentDay()).toBe('23');
+        expect(Number(service.getCurrentDay()!)).toBeGreaterThan(0);
+        expect(Number(service.getCurrentDay()!)).toBeLessThanOrEqual(31);
+        expect(service.getCurrentDay()).toBeTruthy();
+    })
+
+    it('#getCurrentDay should throw error if current day is 0', () => {
+        window.localStorage.setItem('currentDay', '0');
+
+        expect(() => service.getCurrentDay()).toThrow(new Error('Date is invalid'));
+    })
+
+    it('#getCurrentDay should throw error if current day is negative', () => {
+        window.localStorage.setItem('currentDay', '-4');
+
+        expect(() => service.getCurrentDay()).toThrow(new Error('Date is invalid'));
+    })
+
+    it('#getCurrentDay should throw error if current day is greater than 31', () => {
+        window.localStorage.setItem('currentDay', '32');
+
+        expect(() => service.getCurrentDay()).toThrow(new Error('Date is invalid'));
+    })
+
+    it('#getCurrentDay should throw error if current day is decimal', () => {
+        window.localStorage.setItem('currentDay', '7.5');
+
+        expect(() => service.getCurrentDay()).toThrow(new Error('Date is invalid'));
+    })
+
+    it('#getCurrentDay should throw error if current day is not compatible with a number', () => {
+        window.localStorage.setItem('currentDay', 'abc-123');
+
+        expect(() => service.getCurrentDay()).toThrow(new Error('Date is invalid'));
+    })
+
+    it('#getCurrentDay should throw error if current day in localStorage is empty', () => {
+        window.localStorage.setItem('currentDay', '');
+
+        expect(() => service.getCurrentDay()).toThrow(new Error('Date is invalid'));
+    })
+
+    it('#getCurrentDay should throw error if there is no current day key in localStorage', () => {
+        expect(() => service.getCurrentDay()).toThrow(new Error('Date is invalid'));
+    })
 })

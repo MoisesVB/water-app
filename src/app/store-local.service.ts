@@ -218,7 +218,14 @@ export class StoreLocalService {
   }
 
   getCurrentDay() {
-    return localStorage.getItem("currentDay");
+    const currentDay = localStorage.getItem("currentDay");
+    const currentDayNumber = Number(currentDay);
+
+    if (!currentDayNumber || currentDayNumber <= 0 || currentDayNumber > 31 || !Number.isInteger(currentDayNumber)) {
+      throw new Error('Date is invalid');
+    }
+
+    return currentDay;
   }
 
   // cup methods
