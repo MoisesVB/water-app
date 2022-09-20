@@ -702,4 +702,54 @@ describe('StoreLocalService', () => {
     it('#getCurrentDay should throw error if there is no current day key in localStorage', () => {
         expect(() => service.getCurrentDay()).toThrow(new Error('Date is invalid'));
     })
+
+    // addCup tests
+    it('#addCup should add cup to localStorage', () => {
+        spyOn(service, 'getAllCups').and.callFake(() => window.localStorage.getItem('cups')!);
+
+        service.addCup(350, true);
+
+        const cups = JSON.parse(window.localStorage.getItem('cups')!);
+
+        expect(cups).toBeTruthy();
+        expect(cups.length).toBe(1);
+
+        expect(cups[0].id).toBeTruthy();
+
+        expect(cups[0].capacity).toBe(350);
+        expect(cups[0].capacity).toBeGreaterThan(0);
+        expect(cups[0].capacity).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
+        expect(cups[0].capacity).toBeTruthy();
+
+        expect(cups[0].isCustom).toBeTrue();
+        expect(cups[0].isCustom).toBeTruthy();
+    })
+
+    it('#addCup should throw error if capacity is 0', () => {
+        expect(() => service.addCup(0, false)).toThrow(new Error('Invalid cup values'));
+    })
+
+    it('#addCup should throw error if capacity is negative', () => {
+        expect(() => service.addCup(-1, true)).toThrow(new Error('Invalid cup values'));
+    })
+
+    it('#addCup should throw error if capacity is greater than MAX_WATER_TARGET', () => {
+        expect(() => service.addCup(Constants.MAX_WATER_TARGET + 1, false)).toThrow(new Error('Invalid cup values'));
+    })
+
+    it('#addCup should throw error if capacity is decimal', () => {
+        expect(() => service.addCup(324.44, true)).toThrow(new Error('Invalid cup values'));
+    })
+
+    it('#addCup should add cup two times in localStorage', () => {
+        spyOn(service, 'getAllCups').and.callFake(() => window.localStorage.getItem('cups')!);
+
+        service.addCup(200, false);
+        service.addCup(350, true);
+
+        const cups = JSON.parse(window.localStorage.getItem('cups')!);
+
+        expect(cups).toBeTruthy();
+        expect(cups.length).toBe(2);
+    })
 })
