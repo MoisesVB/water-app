@@ -300,13 +300,13 @@ export class StoreLocalService {
   }
 
   deleteAllData() {
-    if (!localStorage || Object.keys(localStorage).length <= 0) {
+    if (!localStorage.getItem('goal') && !localStorage.getItem('intake') && !localStorage.getItem('cups') && !localStorage.getItem('reminder') && !localStorage.getItem('activity') && !localStorage.getItem('currentDay')) {
       throw new Error('LocalStorage is empty');
     }
 
     localStorage.clear();
 
-    if (localStorage || Object.keys(localStorage).length > 0) {
+    if (localStorage.getItem('goal') || localStorage.getItem('intake') || localStorage.getItem('cups') || localStorage.getItem('reminder') || localStorage.getItem('activity') || localStorage.getItem('currentDay')) {
       throw new Error('LocalStorage is not empty');
     }
   }

@@ -6,10 +6,12 @@ import { StoreLocalService } from "./store-local.service"
 describe('StoreLocalService', () => {
     let service: StoreLocalService
 
+    let localStore: { [key: string]: any };
+
     beforeEach(() => {
         service = new StoreLocalService();
 
-        let localStore: { [key: string]: any } = {};
+        localStore = {};
 
         spyOn(window.localStorage, 'getItem').and.callFake((key) =>
             key in localStore ? localStore[key] : null
@@ -887,5 +889,30 @@ describe('StoreLocalService', () => {
         window.localStorage.setItem('cups', JSON.stringify(cups));
 
         expect(() => service.deleteCupById('efgh')).toThrow(new Error('Cup to delete not found'));
+    })
+
+    // deleteAllData tests
+    it('#deleteAllData should delete localStorage data', () => {
+        window.localStorage.setItem('goal', '2000');
+        window.localStorage.setItem('intake', '1800');
+
+        service.deleteAllData();
+
+        expect(Object.keys(localStore).length).toBe(0);
+    })
+
+    it('#deleteAllData should throw error if localStorage is empty', () => {
+        expect(() => service.deleteAllData()).toThrow(new Error('LocalStorage is empty'));
+    })
+
+    it('#deleteAllData should delete localStorage data and data added after deletion will be stored on localStorage', () => {
+        window.localStorage.setItem('goal', '2000');
+        window.localStorage.setItem('reminder', '60');
+
+        service.deleteAllData();
+
+        window.localStorage.setItem('intake', '1000');
+
+        expect(Object.keys(localStore).length).toBe(1);
     })
 })
