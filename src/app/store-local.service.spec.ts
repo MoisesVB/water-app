@@ -542,4 +542,36 @@ describe('StoreLocalService', () => {
 
         expect(() => service.deleteActivityById('efgh')).toThrow(new Error('Activity to delete not found'));
     })
+
+    // addReminder tests
+    it('#addReminder should add reminder to localStorage', () => {
+        service.addReminder(30);
+
+        expect(window.localStorage.getItem('reminder')).toBe('30');
+        expect(Number(window.localStorage.getItem('reminder')!)).toBeGreaterThanOrEqual(0);
+        expect(Number(window.localStorage.getItem('reminder')!)).toBeLessThanOrEqual(1440);
+        expect(window.localStorage.getItem('reminder')).toBeTruthy();
+    })
+
+    it('#addReminder should throw error if reminder is negative', () => {
+        expect(() => service.addReminder(-1)).toThrow(new Error('Received reminder is invalid'));
+    })
+
+    it('#addReminder should throw error if reminder is greater than 1440', () => {
+        expect(() => service.addReminder(1441)).toThrow(new Error('Received reminder is invalid'));
+    })
+
+    it('#addReminder should throw error if reminder is decimal', () => {
+        expect(() => service.addReminder(60.5)).toThrow(new Error('Received reminder is invalid'));
+    })
+
+    it('#addReminder should override reminder in localStorage', () => {
+        service.addReminder(30);
+        service.addReminder(60);
+
+        expect(window.localStorage.getItem('reminder')).toBe('60');
+        expect(Number(window.localStorage.getItem('reminder')!)).toBeGreaterThanOrEqual(0);
+        expect(Number(window.localStorage.getItem('reminder')!)).toBeLessThanOrEqual(1440);
+        expect(window.localStorage.getItem('reminder')).toBeTruthy();
+    })
 })

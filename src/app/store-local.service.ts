@@ -187,8 +187,12 @@ export class StoreLocalService {
   }
 
   // reminder methods
-  addReminder(value: number) {
-    localStorage.setItem("reminder", value.toString());
+  addReminder(reminder: number) {
+    if (!reminder || reminder < 0 || reminder > 1440 || !Number.isInteger(reminder)) {
+      throw new Error('Received reminder is invalid');
+    }
+
+    localStorage.setItem("reminder", JSON.stringify(reminder));
   }
 
   getReminder() {
