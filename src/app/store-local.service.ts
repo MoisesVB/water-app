@@ -282,7 +282,17 @@ export class StoreLocalService {
   }
 
   deleteCupById(id: string) {
+    if (!id || typeof id !== 'string') {
+      throw new Error('Id is invalid');
+    }
+
     const cups: Cup[] = JSON.parse(this.getAllCups()!);
+
+    const cupToDelete = cups.find(cup => cup.id === id);
+
+    if (!cupToDelete) {
+      throw new Error('Cup to delete not found');
+    }
 
     const newCups = cups.filter(cup => cup.id !== id);
 
@@ -290,6 +300,14 @@ export class StoreLocalService {
   }
 
   deleteAllData() {
+    if (!localStorage || Object.keys(localStorage).length <= 0) {
+      throw new Error('LocalStorage is empty');
+    }
+
     localStorage.clear();
+
+    if (localStorage || Object.keys(localStorage).length > 0) {
+      throw new Error('LocalStorage is not empty');
+    }
   }
 }
