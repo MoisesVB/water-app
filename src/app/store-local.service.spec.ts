@@ -861,4 +861,31 @@ describe('StoreLocalService', () => {
 
         expect(() => service.getAllCups()).toThrow(new Error('Invalid cup found'));
     })
+
+    // deleteCupById tests
+    it('#deleteCupById should delete cup of localStorage', () => {
+        spyOn(service, 'getAllCups').and.callFake(() => window.localStorage.getItem('cups')!);
+
+        const cups: Cup[] = [{ id: 'qwert', capacity: 200, isCustom: false }, { id: 'abcde', capacity: 350, isCustom: true }];
+
+        window.localStorage.setItem('cups', JSON.stringify(cups));
+        service.deleteCupById('abcde');
+
+        expect(JSON.parse(window.localStorage.getItem('cups')!).length).toBe(1);
+        expect(JSON.parse(window.localStorage.getItem('cups')!)[1]).toBeUndefined();
+    })
+
+    it('#deleteCupById should throw error if id is invalid', () => {
+        expect(() => service.deleteCupById('')).toThrow(new Error('Id is invalid'));
+    })
+
+    it('#deleteCupById should throw error if activity with passed id does not exist', () => {
+        spyOn(service, 'getAllCups').and.callFake(() => window.localStorage.getItem('cups')!);
+
+        const cups: Cup[] = [{ id: 'qwert', capacity: 200, isCustom: false }, { id: 'abcde', capacity: 350, isCustom: true }];
+
+        window.localStorage.setItem('cups', JSON.stringify(cups));
+
+        expect(() => service.deleteCupById('efgh')).toThrow(new Error('Cup to delete not found'));
+    })
 })
