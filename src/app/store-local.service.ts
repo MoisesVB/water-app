@@ -196,7 +196,14 @@ export class StoreLocalService {
   }
 
   getReminder() {
-    return localStorage.getItem("reminder");
+    const reminder = localStorage.getItem("reminder");
+    const reminderNumber = Number(reminder);
+
+    if (!reminderNumber || reminderNumber < 0 || reminderNumber > 1440 || !Number.isInteger(reminderNumber)) {
+      throw new Error('Reminder is invalid');
+    }
+
+    return reminder;
   }
 
   // day methods

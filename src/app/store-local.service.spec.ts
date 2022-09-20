@@ -574,4 +574,48 @@ describe('StoreLocalService', () => {
         expect(Number(window.localStorage.getItem('reminder')!)).toBeLessThanOrEqual(1440);
         expect(window.localStorage.getItem('reminder')).toBeTruthy();
     })
+
+    // getReminder tests
+    it('#getReminder should return reminder from localStorage', () => {
+        window.localStorage.setItem('reminder', '60');
+
+        expect(service.getReminder()).toBe('60');
+        expect(Number(service.getReminder()!)).toBeGreaterThanOrEqual(0);
+        expect(Number(service.getReminder()!)).toBeLessThanOrEqual(1440);
+        expect(service.getReminder()).toBeTruthy();
+    })
+
+    it('#getReminder should throw error if reminder is negative', () => {
+        window.localStorage.setItem('reminder', '-10');
+
+        expect(() => service.getReminder()).toThrow(new Error('Reminder is invalid'));
+    })
+
+    it('#getReminder should throw error if reminder is greater than 1440', () => {
+        window.localStorage.setItem('reminder', '1441');
+
+        expect(() => service.getReminder()).toThrow(new Error('Reminder is invalid'));
+    })
+
+    it('#getReminder should throw error if reminder is decimal', () => {
+        window.localStorage.setItem('reminder', '25.50');
+
+        expect(() => service.getReminder()).toThrow(new Error('Reminder is invalid'));
+    })
+
+    it('#getReminder should throw error if reminder is not compatible with a number', () => {
+        window.localStorage.setItem('reminder', 'abc-123');
+
+        expect(() => service.getReminder()).toThrow(new Error('Reminder is invalid'));
+    })
+
+    it('#getReminder should throw error if reminder in localStorage is empty', () => {
+        window.localStorage.setItem('reminder', '');
+
+        expect(() => service.getReminder()).toThrow(new Error('Reminder is invalid'));
+    })
+
+    it('#getReminder should throw error if there is no reminder key in localStorage', () => {
+        expect(() => service.getReminder()).toThrow(new Error('Reminder is invalid'));
+    })
 })
