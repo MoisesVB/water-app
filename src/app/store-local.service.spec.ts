@@ -1,5 +1,6 @@
 import { Activity } from "./activity";
 import { Constants } from "./constants";
+import { Cup } from "./cup";
 import { StoreLocalService } from "./store-local.service"
 
 describe('StoreLocalService', () => {
@@ -751,5 +752,113 @@ describe('StoreLocalService', () => {
 
         expect(cups).toBeTruthy();
         expect(cups.length).toBe(2);
+    })
+
+    // getAllCups tests
+    it('#getAllCups should return cups from localStorage', () => {
+        const cups: Cup[] = [{ id: 'abcde', capacity: 550, isCustom: true }];
+
+        window.localStorage.setItem('cups', JSON.stringify(cups));
+
+        expect(JSON.parse(service.getAllCups()!)).toBeTruthy();
+        expect(JSON.parse(service.getAllCups()!).length).toBe(1);
+    })
+
+    it('#getAllCups should throw error if capacity is 0', () => {
+        const cups: Cup[] = [{ id: 'abcde', capacity: 0, isCustom: false }];
+
+        window.localStorage.setItem('cups', JSON.stringify(cups));
+
+        expect(() => service.getAllCups()).toThrow(new Error('Invalid cup found'));
+    })
+
+    it('#getAllCups should throw error if capacity is negative', () => {
+        const cups: Cup[] = [{ id: 'abcde', capacity: -200, isCustom: false }];
+
+        window.localStorage.setItem('cups', JSON.stringify(cups));
+
+        expect(() => service.getAllCups()).toThrow(new Error('Invalid cup found'));
+    })
+
+    it('#getAllCups should throw error if capacity is greater than MAX_WATER_TARGET', () => {
+        const cups: Cup[] = [{ id: 'abcde', capacity: Constants.MAX_WATER_TARGET + 1, isCustom: true }];
+
+        window.localStorage.setItem('cups', JSON.stringify(cups));
+
+        expect(() => service.getAllCups()).toThrow(new Error('Invalid cup found'));
+    })
+
+    it('#getAllCups should throw error if capacity is decimal', () => {
+        const cups: Cup[] = [{ id: 'abcde', capacity: 100.50, isCustom: true }];
+
+        window.localStorage.setItem('cups', JSON.stringify(cups));
+
+        expect(() => service.getAllCups()).toThrow(new Error('Invalid cup found'));
+    })
+
+    it('#getAllCups should throw error if capacity is not compatible with a number', () => {
+        const cups = [{ id: 'abcde', capacity: 'abfg', isCustom: true }];
+
+        window.localStorage.setItem('cups', JSON.stringify(cups));
+
+        expect(() => service.getAllCups()).toThrow(new Error('Invalid cup found'));
+    })
+
+    it('#getAllCups should throw error if cups in localStorage is empty', () => {
+        window.localStorage.setItem('cups', '');
+
+        expect(() => service.getAllCups()).toThrow(new Error('Error parsing cups'));
+    })
+
+    it('#getAllCups should throw error if there is no cups key in localStorage', () => {
+        expect(() => service.getAllCups()).toThrow(new Error('Cups is falsy'));
+    })
+
+    it('#getAllCups should throw error if id is a number', () => {
+        const cups = [{ id: 12344, capacity: 500, isCustom: false }];
+
+        window.localStorage.setItem('cups', JSON.stringify(cups));
+
+        expect(() => service.getAllCups()).toThrow(new Error('Invalid cup found'));
+    })
+
+    it('#getAllCups should throw error if id is falsy', () => {
+        const cups = [{ id: null, capacity: 450, isCustom: true }];
+
+        window.localStorage.setItem('cups', JSON.stringify(cups));
+
+        expect(() => service.getAllCups()).toThrow(new Error('Invalid cup found'));
+    })
+
+    it('#getAllCups should throw error if id is empty', () => {
+        const cups = [{ id: '', capacity: 300, isCustom: true }];
+
+        window.localStorage.setItem('cups', JSON.stringify(cups));
+
+        expect(() => service.getAllCups()).toThrow(new Error('Invalid cup found'));
+    })
+
+    it('#getAllCups should throw error if isCustom is a number', () => {
+        const cups = [{ id: 'abcde', capacity: 650, isCustom: 12345 }];
+
+        window.localStorage.setItem('cups', JSON.stringify(cups));
+
+        expect(() => service.getAllCups()).toThrow(new Error('Invalid cup found'));
+    })
+
+    it('#getAllCups should throw error if isCustom is falsy', () => {
+        const cups = [{ id: 'rtyre', capacity: 200, isCustom: null }];
+
+        window.localStorage.setItem('cups', JSON.stringify(cups));
+
+        expect(() => service.getAllCups()).toThrow(new Error('Invalid cup found'));
+    })
+
+    it('#getAllCups should throw error if isCustom is a string', () => {
+        const cups = [{ id: 'qewrt', capacity: 900, isCustom: '' }];
+
+        window.localStorage.setItem('cups', JSON.stringify(cups));
+
+        expect(() => service.getAllCups()).toThrow(new Error('Invalid cup found'));
     })
 })
