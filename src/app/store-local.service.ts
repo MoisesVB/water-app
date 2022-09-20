@@ -259,7 +259,26 @@ export class StoreLocalService {
   }
 
   getAllCups() {
-    return localStorage.getItem('cups');
+    const cups = localStorage.getItem('cups')!;
+    let formattedCups: Cup[] = [];
+
+    try {
+      formattedCups = JSON.parse(cups);
+    } catch (err) {
+      throw new Error('Error parsing cups');
+    }
+
+    if (!formattedCups || formattedCups.length <= 0) {
+      throw new Error('Cups is falsy');
+    }
+
+    formattedCups.forEach(cup => {
+      if (!cup.id || typeof cup.id !== 'string' || !cup.capacity || cup.capacity <= 0 || cup.capacity > Constants.MAX_WATER_TARGET || !Number.isInteger(cup.capacity) || cup.isCustom === undefined || cup.isCustom === null || typeof cup.isCustom !== 'boolean') {
+        throw new Error('Invalid cup found');
+      }
+    })
+
+    return cups;
   }
 
   deleteCupById(id: string) {
