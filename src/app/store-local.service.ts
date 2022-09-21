@@ -44,7 +44,14 @@ export class StoreLocalService {
       throw new Error('To update intake is invalid');
     }
 
-    const storedIntake = Number(this.getIntake()!);
+    let storedIntake;
+
+    try {
+      storedIntake = Number(this.getIntake()!);
+    } catch (err) {
+      throw err;
+    }
+
     let toUpdateIntake;
 
     if (storedIntake) {
@@ -76,7 +83,13 @@ export class StoreLocalService {
       throw new Error('Intake to delete is invalid');
     }
 
-    const storedIntake = Number(this.getIntake()!);
+    let storedIntake;
+
+    try {
+      storedIntake = Number(this.getIntake()!);
+    } catch (err) {
+      throw err;
+    }
 
     const newIntake = storedIntake - intake;
 
@@ -93,7 +106,13 @@ export class StoreLocalService {
       throw new Error('Intake is invalid');
     }
 
-    let activity = JSON.parse(this.getAllActivity()!);
+    let activity;
+
+    try {
+      activity = JSON.parse(this.getAllActivity()!)
+    } catch (err) {
+      throw err;
+    }
 
     const id = uuidv4();
     const date = new Date().toLocaleDateString();
@@ -159,7 +178,13 @@ export class StoreLocalService {
       throw new Error('Id is invalid');
     }
 
-    let activity = JSON.parse(this.getAllActivity()!);
+    let activity;
+
+    try {
+      activity = JSON.parse(this.getAllActivity()!)
+    } catch (err) {
+      throw err;
+    }
 
     let activityToDelete: ActivityData | undefined;
 
@@ -235,7 +260,13 @@ export class StoreLocalService {
       throw new Error('Invalid cup values');
     }
 
-    let cups = JSON.parse(this.getAllCups()!);
+    let cups;
+
+    try {
+      cups = JSON.parse(this.getAllCups()!)
+    } catch (err) {
+      throw err;
+    }
 
     const newCup: Cup = {
       id: uuidv4(),
@@ -286,7 +317,13 @@ export class StoreLocalService {
       throw new Error('Id is invalid');
     }
 
-    const cups: Cup[] = JSON.parse(this.getAllCups()!);
+    let cups: Cup[] = [];
+
+    try {
+      cups = JSON.parse(this.getAllCups()!)
+    } catch (err) {
+      throw err;
+    }
 
     const cupToDelete = cups.find(cup => cup.id === id);
 
