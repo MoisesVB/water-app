@@ -66,10 +66,7 @@ describe('StoreLocalService', () => {
     it('#getGoal should return goal from localStorage', () => {
         window.localStorage.setItem('goal', '2000');
 
-        expect(service.getGoal()).toBe('2000');
-        expect(Number(service.getGoal()!)).toBeGreaterThan(0);
-        expect(Number(service.getGoal()!)).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
-        expect(service.getGoal()).toBeTruthy();
+        expect(service.getGoal()).toBe(2000);
     })
 
     it('#getGoal should throw error if goal value is 0', () => {

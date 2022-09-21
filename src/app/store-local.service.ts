@@ -30,14 +30,13 @@ export class StoreLocalService {
   }
 
   getGoal() {
-    const goal = localStorage.getItem("goal")!;
-    const goalNumber = Number(goal);
+    const goal = Number(localStorage.getItem("goal")!);
 
-    if (!goalNumber || goalNumber <= 0 || goalNumber > Constants.MAX_WATER_TARGET || !Number.isInteger(goalNumber)) {
+    if (!goal || goal <= 0 || goal > Constants.MAX_WATER_TARGET || !Number.isInteger(goal)) {
       throw new Error('Goal is invalid');
     }
 
-    return goal; // return the string
+    return goal;
   }
 
   // intake methods
