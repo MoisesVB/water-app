@@ -110,10 +110,10 @@ export class StoreLocalService {
       throw new Error('Intake is invalid');
     }
 
-    let activity;
+    let activity: Activity;
 
     try {
-      activity = JSON.parse(this.getAllActivity()!)
+      activity = this.getAllActivity();
     } catch (err) {
       throw err;
     }
@@ -122,7 +122,7 @@ export class StoreLocalService {
     const date = new Date().toLocaleDateString();
     const hour = new Date().toLocaleTimeString();
 
-    const temp = {
+    const temp: ActivityData = {
       id: id,
       hour: hour,
       intake: intake
@@ -138,35 +138,36 @@ export class StoreLocalService {
       activity[`${date}`].push(temp);
     }
 
-    const pushedActivity = activity[`${date}`].filter((act: ActivityData) => act === temp);
+    const pushedActivity = activity[`${date}`].find((act: ActivityData) => act === temp);
 
     if (!activity || !activity.hasOwnProperty(`${date}`) || activity[`${date}`].length <= 0 || !pushedActivity) {
       throw new Error('Error in adding activity');
     }
 
     localStorage.setItem("activity", JSON.stringify(activity));
+
+    return pushedActivity;
   }
 
   getAllActivity() {
-    const activity = localStorage.getItem("activity")!;
-    let formattedActivity: Activity = {};
+    let activity: Activity;
 
     try {
-      formattedActivity = JSON.parse(activity);
+      activity = JSON.parse(localStorage.getItem("activity")!);
     } catch (err) {
       throw new Error('Error parsing activities');
     }
 
-    if (!formattedActivity || Object.keys(formattedActivity).length <= 0) {
+    if (!activity || Object.keys(activity).length <= 0) {
       throw new Error('Activity is falsy');
     }
 
-    for (let dateKey in formattedActivity) {
+    for (let dateKey in activity) {
       if (!dateKey || !Date.parse(dateKey) || Number.isInteger(Number(dateKey))) {
         throw new Error('Invalid date key');
       }
 
-      formattedActivity[dateKey].forEach(obj => {
+      activity[dateKey].forEach(obj => {
         if (!obj.id || !obj.hour || !obj.intake || typeof obj.id !== 'string' || typeof obj.hour !== 'string' ||
           obj.intake <= 0 || obj.intake > Constants.MAX_WATER_TARGET || !Number.isInteger(obj.intake)) {
           throw new Error('Invalid activity found');
@@ -182,10 +183,10 @@ export class StoreLocalService {
       throw new Error('Id is invalid');
     }
 
-    let activity;
+    let activity: Activity;
 
     try {
-      activity = JSON.parse(this.getAllActivity()!)
+      activity = this.getAllActivity();
     } catch (err) {
       throw err;
     }

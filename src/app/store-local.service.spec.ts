@@ -279,7 +279,7 @@ describe('StoreLocalService', () => {
 
     // addActivity tests
     it('#addActivity should add activity to localStorage', () => {
-        spyOn(service, 'getAllActivity').and.callFake(() => window.localStorage.getItem('activity')!);
+        spyOn(service, 'getAllActivity').and.callFake(() => JSON.parse(window.localStorage.getItem('activity')!));
 
         service.addActivity(230);
 
@@ -287,15 +287,10 @@ describe('StoreLocalService', () => {
         const obj = JSON.parse(window.localStorage.getItem('activity')!);
         const todayObj = obj[`${date}`][0];
 
-        expect(obj[`${date}`]).toBeTruthy();
-
         expect(todayObj.id).toBeTruthy();
         expect(todayObj.hour).toBeTruthy();
 
         expect(todayObj.intake).toBe(230);
-        expect(todayObj.intake).toBeGreaterThan(0);
-        expect(todayObj.intake).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
-        expect(todayObj.intake).toBeTruthy();
     })
 
     it('#addActivity should throw error if number is 0', () => {
@@ -315,7 +310,7 @@ describe('StoreLocalService', () => {
     })
 
     it('#addActivity should add activity two times in localStorage', () => {
-        spyOn(service, 'getAllActivity').and.callFake(() => window.localStorage.getItem('activity')!);
+        spyOn(service, 'getAllActivity').and.callFake(() => JSON.parse(window.localStorage.getItem('activity')!));
 
         service.addActivity(230);
         service.addActivity(500);
@@ -328,6 +323,14 @@ describe('StoreLocalService', () => {
         expect(todayObj.length).toBe(2);
     })
 
+    it('#addActivity should return activity', () => {
+        spyOn(service, 'getAllActivity').and.callFake(() => JSON.parse(window.localStorage.getItem('activity')!));
+
+        expect(service.addActivity(230).id).toBeTruthy();
+        expect(service.addActivity(230).hour).toBeTruthy();
+        expect(service.addActivity(230).intake).toBe(230);
+    })
+
     // getAllActivity tests
     it('#getAllActivity should return activity from localStorage', () => {
         const activity: Activity = {
@@ -336,9 +339,9 @@ describe('StoreLocalService', () => {
 
         window.localStorage.setItem('activity', JSON.stringify(activity));
 
-        expect(JSON.parse(service.getAllActivity()!)).toBeTruthy();
-        expect(Object.keys(JSON.parse(service.getAllActivity()!)).length).toBe(1); // check length of date keys
-        expect(JSON.parse(service.getAllActivity()!)['1/14/2022'].length).toBe(1); // check length of array inside date key
+        expect(service.getAllActivity()).toBeTruthy();
+        expect(Object.keys(service.getAllActivity()).length).toBe(1); // check length of date keys
+        expect(service.getAllActivity()['1/14/2022'].length).toBe(1); // check length of array inside date key
     })
 
     it('#getAllActivity should throw error if activity intake is 0', () => {
@@ -503,7 +506,7 @@ describe('StoreLocalService', () => {
 
     // deleteActivityById tests
     it('#deleteActivityById should delete activity of localStorage', () => {
-        spyOn(service, 'getAllActivity').and.callFake(() => window.localStorage.getItem('activity')!);
+        spyOn(service, 'getAllActivity').and.callFake(() => JSON.parse(window.localStorage.getItem('activity')!));
 
         const activity: Activity = {
             '1/14/2022': [{
@@ -532,7 +535,7 @@ describe('StoreLocalService', () => {
     })
 
     it('#deleteActivityById should throw error if activity with passed id does not exist', () => {
-        spyOn(service, 'getAllActivity').and.callFake(() => window.localStorage.getItem('activity')!);
+        spyOn(service, 'getAllActivity').and.callFake(() => JSON.parse(window.localStorage.getItem('activity')!));
 
         const activity: Activity = {
             '1/14/2022': [{
