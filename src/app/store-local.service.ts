@@ -88,7 +88,7 @@ export class StoreLocalService {
     let storedIntake;
 
     try {
-      storedIntake = Number(this.getIntake()!);
+      storedIntake = this.getIntake();
     } catch (err) {
       throw err;
     }
@@ -100,6 +100,8 @@ export class StoreLocalService {
     }
 
     localStorage.setItem("intake", JSON.stringify(newIntake));
+
+    return newIntake;
   }
 
   // activity methods

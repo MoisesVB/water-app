@@ -269,6 +269,14 @@ describe('StoreLocalService', () => {
         }).toThrow(new Error('Intake to delete is invalid'));
     })
 
+    it('#deleteIntake should return the new intake', () => {
+        spyOn(service, 'getIntake').and.callFake(() => Number(window.localStorage.getItem('intake')!));
+
+        window.localStorage.setItem('intake', '800');
+
+        expect(service.deleteIntake(200)).toBe(600);
+    })
+
     // addActivity tests
     it('#addActivity should add activity to localStorage', () => {
         spyOn(service, 'getAllActivity').and.callFake(() => window.localStorage.getItem('activity')!);
