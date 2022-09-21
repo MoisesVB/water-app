@@ -111,9 +111,7 @@ describe('StoreLocalService', () => {
 
     // addIntake tests
     it('#addIntake should add intake to localStorage', () => {
-        // spy on inner function 'getIntake' of addIntake()
-        // same return (without validation)
-        spyOn(service, 'getIntake').and.callFake(() => window.localStorage.getItem('intake')!);
+        spyOn(service, 'getIntake').and.callFake(() => Number(window.localStorage.getItem('intake')!));
 
         service.addIntake(400);
 
@@ -124,20 +122,14 @@ describe('StoreLocalService', () => {
     })
 
     it('#addIntake should throw error if number is 0', () => {
-        spyOn(service, 'getIntake').and.callFake(() => window.localStorage.getItem('intake')!);
-
         expect(() => service.addIntake(0)).toThrow(new Error('To update intake is invalid'));
     })
 
     it('#addIntake should throw error if number is negative', () => {
-        spyOn(service, 'getIntake').and.callFake(() => window.localStorage.getItem('intake')!);
-
         expect(() => service.addIntake(-1)).toThrow(new Error('To update intake is invalid'));
     })
 
     it('#addIntake should throw error if number is greater than MAX_WATER_TARGET', () => {
-        spyOn(service, 'getIntake').and.callFake(() => window.localStorage.getItem('intake')!);
-
         expect(() => service.addIntake(Constants.MAX_WATER_TARGET + 1)).toThrow(new Error('To update intake is invalid'));
     })
 
@@ -146,7 +138,7 @@ describe('StoreLocalService', () => {
     })
 
     it('#addIntake should add intake two times (sum) in localStorage', () => {
-        spyOn(service, 'getIntake').and.callFake(() => window.localStorage.getItem('intake')!);
+        spyOn(service, 'getIntake').and.callFake(() => Number(window.localStorage.getItem('intake')!));
 
         service.addIntake(200);
         service.addIntake(200);
@@ -158,7 +150,7 @@ describe('StoreLocalService', () => {
     })
 
     it('#addIntake should throw error if intake is added two times and the sum is greater than MAX_WATER_TARGET', () => {
-        spyOn(service, 'getIntake').and.callFake(() => window.localStorage.getItem('intake')!);
+        spyOn(service, 'getIntake').and.callFake(() => Number(window.localStorage.getItem('intake')!));
 
         expect(() => {
             const halfMax = Math.ceil(Constants.MAX_WATER_TARGET / 2);
@@ -167,13 +159,19 @@ describe('StoreLocalService', () => {
         }).toThrow(new Error('To update intake is invalid'));
     })
 
+    it('#addIntake should return added intake', () => {
+        spyOn(service, 'getIntake').and.callFake(() => Number(window.localStorage.getItem('intake')!));
+
+        expect(service.addIntake(400)).toBe(400);
+    })
+
     // getIntake tests
     it('#getIntake should return intake from localStorage', () => {
         window.localStorage.setItem('intake', '400');
 
-        expect(service.getIntake()).toBe('400');
-        expect(Number(service.getIntake()!)).toBeGreaterThan(0);
-        expect(Number(service.getIntake()!)).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
+        expect(service.getIntake()).toBe(400);
+        expect(service.getIntake()).toBeGreaterThan(0);
+        expect(service.getIntake()).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
         expect(service.getIntake()).toBeTruthy();
     })
 
@@ -219,7 +217,7 @@ describe('StoreLocalService', () => {
 
     // deleteIntake tests
     it('#deleteIntake should delete intake of localStorage', () => {
-        spyOn(service, 'getIntake').and.callFake(() => window.localStorage.getItem('intake')!);
+        spyOn(service, 'getIntake').and.callFake(() => Number(window.localStorage.getItem('intake')!));
 
         window.localStorage.setItem('intake', '500');
         service.deleteIntake(250);
@@ -247,7 +245,7 @@ describe('StoreLocalService', () => {
     })
 
     it('#deleteIntake should delete intake two times (subtraction) in localStorage', () => {
-        spyOn(service, 'getIntake').and.callFake(() => window.localStorage.getItem('intake')!);
+        spyOn(service, 'getIntake').and.callFake(() => Number(window.localStorage.getItem('intake')!));
 
         window.localStorage.setItem('intake', '1500');
         service.deleteIntake(250);
@@ -260,7 +258,7 @@ describe('StoreLocalService', () => {
     })
 
     it('#deleteIntake should throw error if intake is deleted two times and the subtraction is less than 0', () => {
-        spyOn(service, 'getIntake').and.callFake(() => window.localStorage.getItem('intake')!);
+        spyOn(service, 'getIntake').and.callFake(() => Number(window.localStorage.getItem('intake')!));
         window.localStorage.setItem('intake', '1000');
 
         expect(() => {

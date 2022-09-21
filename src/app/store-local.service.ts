@@ -48,7 +48,7 @@ export class StoreLocalService {
     let storedIntake;
 
     try {
-      storedIntake = Number(this.getIntake()!);
+      storedIntake = this.getIntake();
     } catch (err) {
       throw err;
     }
@@ -66,13 +66,14 @@ export class StoreLocalService {
     }
 
     localStorage.setItem("intake", JSON.stringify(toUpdateIntake));
+
+    return toUpdateIntake;
   }
 
   getIntake() {
-    const intake = localStorage.getItem("intake")!;
-    const intakeNumber = Number(intake);
+    const intake = Number(localStorage.getItem("intake")!);
 
-    if (!intakeNumber || intakeNumber <= 0 || intakeNumber > Constants.MAX_WATER_TARGET || !Number.isInteger(intakeNumber)) {
+    if (!intake || intake <= 0 || intake > Constants.MAX_WATER_TARGET || !Number.isInteger(intake)) {
       throw new Error('Intake is invalid');
     }
 
