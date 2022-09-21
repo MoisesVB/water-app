@@ -58,6 +58,10 @@ describe('StoreLocalService', () => {
         expect(window.localStorage.getItem('goal')).toBeTruthy();
     })
 
+    it('#addGoal should return the added goal', () => {
+        expect(service.addGoal(2000)).toBe(2000);
+    })
+
     // getGoal tests
     it('#getGoal should return goal from localStorage', () => {
         window.localStorage.setItem('goal', '2000');

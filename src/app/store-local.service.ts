@@ -25,6 +25,8 @@ export class StoreLocalService {
     }
 
     localStorage.setItem("goal", JSON.stringify(goal));
+
+    return goal;
   }
 
   getGoal() {
