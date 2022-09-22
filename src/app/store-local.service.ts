@@ -46,16 +46,16 @@ export class StoreLocalService {
 
   // intake methods
   addIntake(intake: number) {
-    if (!intake || intake <= 0 || intake > Constants.MAX_WATER_TARGET || !Number.isInteger(intake)) {
+    if (intake < 0 || intake > Constants.MAX_WATER_TARGET || !Number.isInteger(intake)) {
       throw new Error('To update intake is invalid');
     }
 
-    let storedIntake;
+    let storedIntake: number | undefined;
 
     try {
       storedIntake = this.getIntake();
     } catch (err) {
-      throw err;
+      storedIntake = undefined;
     }
 
     let toUpdateIntake;
@@ -66,7 +66,7 @@ export class StoreLocalService {
       toUpdateIntake = intake;
     }
 
-    if (!toUpdateIntake || toUpdateIntake <= 0 || toUpdateIntake > Constants.MAX_WATER_TARGET || !Number.isInteger(toUpdateIntake)) {
+    if (toUpdateIntake < 0 || toUpdateIntake > Constants.MAX_WATER_TARGET || !Number.isInteger(toUpdateIntake)) {
       throw new Error('To update intake is invalid');
     }
 
@@ -76,9 +76,15 @@ export class StoreLocalService {
   }
 
   getIntake() {
-    const intake = Number(localStorage.getItem("intake")!);
+    let intake: number;
 
-    if (!intake || intake <= 0 || intake > Constants.MAX_WATER_TARGET || !Number.isInteger(intake)) {
+    try {
+      intake = JSON.parse(localStorage.getItem("intake")!);
+    } catch (err) {
+      throw new Error('Intake is invalid');
+    }
+
+    if (intake < 0 || intake > Constants.MAX_WATER_TARGET || !Number.isInteger(intake)) {
       throw new Error('Intake is invalid');
     }
 

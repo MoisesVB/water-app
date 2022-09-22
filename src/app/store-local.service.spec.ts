@@ -110,13 +110,6 @@ describe('StoreLocalService', () => {
         service.addIntake(400);
 
         expect(window.localStorage.getItem('intake')).toBe('400');
-        expect(Number(window.localStorage.getItem('intake')!)).toBeGreaterThan(0);
-        expect(Number(window.localStorage.getItem('intake')!)).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
-        expect(window.localStorage.getItem('intake')).toBeTruthy();
-    })
-
-    it('#addIntake should throw error if number is 0', () => {
-        expect(() => service.addIntake(0)).toThrow(new Error('To update intake is invalid'));
     })
 
     it('#addIntake should throw error if number is negative', () => {
@@ -138,9 +131,6 @@ describe('StoreLocalService', () => {
         service.addIntake(200);
 
         expect(window.localStorage.getItem('intake')).toBe('400');
-        expect(Number(window.localStorage.getItem('intake')!)).toBeGreaterThan(0);
-        expect(Number(window.localStorage.getItem('intake')!)).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
-        expect(window.localStorage.getItem('intake')).toBeTruthy();
     })
 
     it('#addIntake should throw error if intake is added two times and the sum is greater than MAX_WATER_TARGET', () => {
@@ -164,15 +154,6 @@ describe('StoreLocalService', () => {
         window.localStorage.setItem('intake', '400');
 
         expect(service.getIntake()).toBe(400);
-        expect(service.getIntake()).toBeGreaterThan(0);
-        expect(service.getIntake()).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
-        expect(service.getIntake()).toBeTruthy();
-    })
-
-    it('#getIntake should throw error if intake value is 0', () => {
-        window.localStorage.setItem('intake', '0');
-
-        expect(() => service.getIntake()).toThrow(new Error('Intake is invalid'));
     })
 
     it('#getIntake should throw error if intake value is negative', () => {
