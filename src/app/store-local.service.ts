@@ -29,9 +29,15 @@ export class StoreLocalService {
   }
 
   getGoal() {
-    const goal = Number(localStorage.getItem("goal")!);
+    let goal: number;
 
-    if (!goal || goal <= 0 || goal > Constants.MAX_WATER_TARGET || !Number.isInteger(goal)) {
+    try {
+      goal = JSON.parse(localStorage.getItem("goal")!);
+    } catch (err) {
+      throw new Error('Goal is invalid');
+    }
+
+    if (goal <= 0 || goal > Constants.MAX_WATER_TARGET || !Number.isInteger(goal)) {
       throw new Error('Goal is invalid');
     }
 
