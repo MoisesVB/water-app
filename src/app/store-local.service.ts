@@ -19,7 +19,7 @@ export class StoreLocalService {
 
   // goal methods
   addGoal(goal: number) {
-    if (!goal || goal <= 0 || goal > Constants.MAX_WATER_TARGET || !Number.isInteger(goal)) {
+    if (goal <= 0 || goal > Constants.MAX_WATER_TARGET || !Number.isInteger(goal)) {
       throw new Error('Received goal is invalid');
     }
 

@@ -27,9 +27,6 @@ describe('StoreLocalService', () => {
         service.addGoal(2000);
 
         expect(window.localStorage.getItem('goal')).toBe('2000');
-        expect(Number(window.localStorage.getItem('goal')!)).toBeGreaterThan(0);
-        expect(Number(window.localStorage.getItem('goal')!)).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
-        expect(window.localStorage.getItem('goal')).toBeTruthy();
     })
 
     it('#addGoal should throw error if number is 0', () => {
@@ -53,9 +50,6 @@ describe('StoreLocalService', () => {
         service.addGoal(2400);
 
         expect(window.localStorage.getItem('goal')).toBe('2400');
-        expect(Number(window.localStorage.getItem('goal')!)).toBeGreaterThan(0);
-        expect(Number(window.localStorage.getItem('goal')!)).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
-        expect(window.localStorage.getItem('goal')).toBeTruthy();
     })
 
     it('#addGoal should return the added goal', () => {
