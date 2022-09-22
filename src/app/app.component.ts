@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
     this.handleGoal();
     this.handleCups();
     this.handleIntake();
-    this.loadReminder();
+    this.handleReminder();
     this.requestNotificationPermission();
 
     this.userData.activity = this.service.getAllActivity();
@@ -217,15 +217,33 @@ export class AppComponent implements OnInit {
     this.userData.intake = intake;
   }
 
-  loadReminder() {
-    const reminder = this.service.getReminder();
+  handleReminder() {
+    let reminder: number | undefined;
+
+    try {
+      reminder = this.getReminder();
+    } catch (err) {
+      if (err instanceof Error) {
+        const addedReminder = this.service.addReminder(60);
+        this.addReminderLocal(addedReminder);
+      }
+    }
 
     if (reminder) {
-      this.userData.selectedReminder = reminder;
-    } else {
-      this.service.addReminder(60);
-      this.userData.selectedReminder = 60;
+      this.addReminderLocal(reminder);
     }
+  }
+
+  getReminder() {
+    try {
+      return this.service.getReminder();
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  addReminderLocal(reminder: number) {
+    this.userData.selectedReminder = reminder;
   }
 
   requestNotificationPermission() {
@@ -422,7 +440,7 @@ export class AppComponent implements OnInit {
     this.handleGoal();
     this.handleCups();
     this.handleIntake();
-    this.loadReminder();
+    this.handleReminder();
     this.requestNotificationPermission();
   }
 }
