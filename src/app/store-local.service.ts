@@ -214,6 +214,8 @@ export class StoreLocalService {
     }
 
     localStorage.setItem("activity", JSON.stringify(activity));
+
+    return activityToDelete;
   }
 
   // reminder methods

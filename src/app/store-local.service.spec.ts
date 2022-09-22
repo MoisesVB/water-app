@@ -556,6 +556,28 @@ describe('StoreLocalService', () => {
         expect(() => service.deleteActivityById('efgh')).toThrow(new Error('Activity to delete not found'));
     })
 
+    it('#deleteActivityById should return deleted activity', () => {
+        spyOn(service, 'getAllActivity').and.callFake(() => JSON.parse(window.localStorage.getItem('activity')!));
+
+        const activity: Activity = {
+            '1/14/2022': [{
+                id: 'abcde',
+                hour: '11:00:00 AM',
+                intake: 400
+            },
+            {
+                id: '900ff',
+                hour: '4:23:30 PM',
+                intake: 550
+            }],
+            '4/30/2022': [{ id: '5tytt', hour: '9:43:42 AM', intake: 100 }]
+        }
+
+        window.localStorage.setItem('activity', JSON.stringify(activity));
+
+        expect(service.deleteActivityById('900ff')).toEqual({ id: '900ff', hour: '4:23:30 PM', intake: 550 })
+    })
+
     // addReminder tests
     it('#addReminder should add reminder to localStorage', () => {
         service.addReminder(30);
