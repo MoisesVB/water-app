@@ -612,10 +612,7 @@ describe('StoreLocalService', () => {
     it('#getReminder should return reminder from localStorage', () => {
         window.localStorage.setItem('reminder', '60');
 
-        expect(service.getReminder()).toBe('60');
-        expect(Number(service.getReminder()!)).toBeGreaterThanOrEqual(0);
-        expect(Number(service.getReminder()!)).toBeLessThanOrEqual(1440);
-        expect(service.getReminder()).toBeTruthy();
+        expect(service.getReminder()).toBe(60);
     })
 
     it('#getReminder should throw error if reminder is negative', () => {

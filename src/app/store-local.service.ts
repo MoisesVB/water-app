@@ -230,10 +230,9 @@ export class StoreLocalService {
   }
 
   getReminder() {
-    const reminder = localStorage.getItem("reminder");
-    const reminderNumber = Number(reminder);
+    const reminder = Number(localStorage.getItem("reminder"));
 
-    if (!reminderNumber || reminderNumber < 0 || reminderNumber > 1440 || !Number.isInteger(reminderNumber)) {
+    if (!reminder || reminder < 0 || reminder > 1440 || !Number.isInteger(reminder)) {
       throw new Error('Reminder is invalid');
     }
 
