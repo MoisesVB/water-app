@@ -2,7 +2,7 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
 import { Component, OnInit } from '@angular/core';
 import { ConfigData } from './config-data';
 import { Cup } from './cup';
-import { ActivityData } from './activity';
+import { Activity, ActivityData } from './activity';
 import { ProcessData } from './process-data';
 import { StoreLocalService } from './store-local.service';
 import { UserData } from './user-data';
@@ -49,9 +49,8 @@ export class AppComponent implements OnInit {
     this.handleCups();
     this.handleIntake();
     this.handleReminder();
+    this.handleActivity();
     this.requestNotificationPermission();
-
-    this.userData.activity = this.service.getAllActivity();
   }
 
   handleDate() {
@@ -244,6 +243,34 @@ export class AppComponent implements OnInit {
 
   addReminderLocal(reminder: number) {
     this.userData.selectedReminder = reminder;
+  }
+
+  handleActivity() {
+    let activity: Activity | undefined;
+
+    try {
+      activity = this.getAllActivity();
+    } catch (err) {
+      if (err instanceof Error) {
+        return;
+      }
+    }
+
+    if (activity) {
+      this.addActivityLocal(activity);
+    }
+  }
+
+  getAllActivity() {
+    try {
+      return this.service.getAllActivity();
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  addActivityLocal(activity: Activity) {
+    this.userData.activity = activity;
   }
 
   requestNotificationPermission() {
