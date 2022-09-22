@@ -198,9 +198,6 @@ describe('StoreLocalService', () => {
         service.deleteIntake(250);
 
         expect(window.localStorage.getItem('intake')).toBe('250');
-        expect(Number(window.localStorage.getItem('intake')!)).toBeGreaterThan(0);
-        expect(Number(window.localStorage.getItem('intake')!)).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
-        expect(window.localStorage.getItem('intake')).toBeTruthy();
     })
 
     it('#deleteIntake should throw error if number is 0', () => {
@@ -227,9 +224,6 @@ describe('StoreLocalService', () => {
         service.deleteIntake(100);
 
         expect(window.localStorage.getItem('intake')).toBe('1150');
-        expect(Number(window.localStorage.getItem('intake')!)).toBeGreaterThan(0);
-        expect(Number(window.localStorage.getItem('intake')!)).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
-        expect(window.localStorage.getItem('intake')).toBeTruthy();
     })
 
     it('#deleteIntake should throw error if intake is deleted two times and the subtraction is less than 0', () => {
