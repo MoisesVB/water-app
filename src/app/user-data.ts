@@ -6,4 +6,5 @@ export interface UserData {
     selectedCup?: string;
     selectedReminder: number;
     activity: Activity;
+    currentDay?: number;
 }

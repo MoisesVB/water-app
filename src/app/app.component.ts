@@ -55,21 +55,43 @@ export class AppComponent implements OnInit {
   }
 
   handleDate() {
-    const storedDay = this.service.getCurrentDay();
+    let storedDay;
+
+    try {
+      storedDay = this.getCurrentDay();
+    } catch (err) {
+      if (err instanceof Error && err.message === 'Date is invalid') {
+        const day = this.service.addCurrentDay();
+        this.addCurrentDayLocal(day);
+      }
+    }
+
     const today = new Date().getDate();
 
-    // if there's a day stored and this day is outdated
-    if (storedDay && storedDay !== today) {
-      // clear intake because it's another day
+    if (storedDay) {
+      if (storedDay !== today) {
+        // clear intake because it's another day
+        this.service.deleteIntake(this.service.getIntake());
 
-      // restoring intake to 0
-      this.service.deleteIntake(this.service.getIntake());
+        // update day to today
+        const day = this.service.addCurrentDay();
+        this.addCurrentDayLocal(day);
+      }
 
-      // update day to today
-      this.service.addCurrentDay();
-    } else { // if there's no day stored
-      this.service.addCurrentDay();
+      this.addCurrentDayLocal(storedDay);
     }
+  }
+
+  getCurrentDay() {
+    try {
+      return this.service.getCurrentDay();
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  addCurrentDayLocal(day: number) {
+    this.userData.currentDay = day;
   }
 
   loadGoal() {
@@ -169,7 +191,8 @@ export class AppComponent implements OnInit {
     intake: 0,
     selectedCup: undefined,
     selectedReminder: 0,
-    activity: {}
+    activity: {},
+    currentDay: undefined
   }
 
   processData: ProcessData = {
@@ -317,6 +340,7 @@ export class AppComponent implements OnInit {
     this.userData.intake = 0;
     this.userData.selectedCup = undefined;
     this.userData.activity = {};
+    this.userData.currentDay = undefined;
 
     this.processData.reminderIntervals = [];
     this.processData.progressBarPercentage = 0;
