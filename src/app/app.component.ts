@@ -137,6 +137,56 @@ export class AppComponent implements OnInit {
     this.setGoalView(false);
   }
 
+  handleCups() {
+    let cups: Cup[] = [];
+
+    try {
+      cups = this.getAllCups();
+    } catch (err) {
+      if (err instanceof Error) {
+        const addedCups = [100, 200, 250, 500].map(capacity => this.service.addCup(capacity, false));
+        addedCups.forEach(cup => this.addCupLocal(cup));
+
+        return;
+      }
+    }
+
+    if (cups.length > 0) {
+      cups.forEach(cup => this.addCupLocal(cup));
+    }
+  }
+
+  getAllCups() {
+    try {
+      return this.service.getAllCups();
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  addCupLocal(cup: Cup) {
+    this.cupsInfo.push(cup);
+  }
+
+  setCupView(status: boolean) {
+    this.configData.isCupModalOpen = status;
+  }
+
+  addCupFromView(capacity: string) {
+    const capacityNumber = Number(capacity);
+
+    const addedCup = this.service.addCup(capacityNumber, true);
+    this.addCupLocal(addedCup);
+    this.setCupView(false);
+
+    this.userData.selectedCup = undefined;
+  }
+
+  deleteCupByIdFromView(id: string) {
+    const deletedCup = this.service.deleteCupById(id);
+    this.cupsInfo.filter(cup => cup !== deletedCup);
+  }
+
   loadIntake() {
     const intake = this.service.getIntake();
 
@@ -155,34 +205,6 @@ export class AppComponent implements OnInit {
       this.service.addReminder(60);
       this.userData.selectedReminder = 60;
     }
-  }
-
-  handleCups() {
-    if (this.service.getAllCups()) {
-      this.loadCups();
-    } else {
-      this.service.addCup(100, false);
-      this.service.addCup(200, false);
-      this.service.addCup(250, false);
-      this.service.addCup(500, false);
-
-      this.loadCups();
-    }
-  }
-
-  loadCups() {
-    this.cupsInfo = this.service.getAllCups();
-  }
-
-  addCup(capacity: string) {
-    this.service.addCup(parseInt(capacity), true);
-    this.loadCups();
-    this.userData.selectedCup = undefined;
-  }
-
-  deleteCup(id: string) {
-    this.service.deleteCupById(id);
-    this.loadCups();
   }
 
   requestNotificationPermission() {

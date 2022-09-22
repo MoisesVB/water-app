@@ -53,7 +53,7 @@
   <app-settings-modal [isSettingsOpen]="configData.isSettingsOpen" (closeSettingsNotifier)="toggleSettings()"
     (changeGoalNotifier)="changeGoals()" (changeReminderNotifier)="changeReminder($event)"
     [selectedReminder]="userData.selectedReminder" (deleteDataNotifier)="deleteData()" [cups]="cupsInfo"
-    (deleteCustomCupNotifier)="deleteCup($event)">
+    (deleteCustomCupNotifier)="deleteCupByIdFromView($event)">
   </app-settings-modal>
 
   <app-log-modal [activity]="this.userData.activity" [isLogOpen]="configData.isLogOpen" (closeLogNotifier)="toggleLog()"
@@ -61,6 +61,6 @@
   </app-log-modal>
 
   <app-cup-modal [isCupModalOpen]="configData.isCupModalOpen" (closeCupModalNotifier)="toggleCupModal()"
-    (createCupNotifier)="addCup($event)">
+    (createCupNotifier)="addCupFromView($event)">
   </app-cup-modal>
 </div>

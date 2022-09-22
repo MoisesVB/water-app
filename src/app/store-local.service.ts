@@ -268,12 +268,14 @@ export class StoreLocalService {
       throw new Error('Invalid cup values');
     }
 
-    let cups: Cup[];
+    let cups: Cup[] = [];
 
     try {
       cups = this.getAllCups();
     } catch (err) {
-      throw err;
+      if (err instanceof Error) {
+        cups = [];
+      }
     }
 
     const newCup: Cup = {
