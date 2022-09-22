@@ -658,9 +658,6 @@ describe('StoreLocalService', () => {
         service.addCurrentDay();
 
         expect(window.localStorage.getItem('currentDay')).toBe('15');
-        expect(Number(window.localStorage.getItem('currentDay')!)).toBeGreaterThan(0);
-        expect(Number(window.localStorage.getItem('currentDay')!)).toBeLessThanOrEqual(31);
-        expect(window.localStorage.getItem('currentDay')).toBeTruthy();
 
         jasmine.clock().uninstall();
     })
@@ -676,9 +673,16 @@ describe('StoreLocalService', () => {
         service.addCurrentDay();
 
         expect(window.localStorage.getItem('currentDay')).toBe('4');
-        expect(Number(window.localStorage.getItem('currentDay')!)).toBeGreaterThan(0);
-        expect(Number(window.localStorage.getItem('currentDay')!)).toBeLessThanOrEqual(31);
-        expect(window.localStorage.getItem('currentDay')).toBeTruthy();
+
+        jasmine.clock().uninstall();
+    })
+
+    it('#addCurrentDay should return current day', () => {
+        const fixedDate = new Date(2022, 1, 2); // year, month, day
+        jasmine.clock().install();
+        jasmine.clock().mockDate(fixedDate);
+
+        expect(service.addCurrentDay()).toBe(2);
 
         jasmine.clock().uninstall();
     })

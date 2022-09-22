@@ -248,6 +248,8 @@ export class StoreLocalService {
     }
 
     localStorage.setItem("currentDay", JSON.stringify(date));
+
+    return date;
   }
 
   getCurrentDay() {
