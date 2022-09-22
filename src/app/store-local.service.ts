@@ -254,7 +254,7 @@ export class StoreLocalService {
   addCurrentDay() {
     const date = new Date().getDate();
 
-    if (!date || date <= 0 || date > 31 || !Number.isInteger(date)) {
+    if (date <= 0 || date > 31 || !Number.isInteger(date)) {
       throw new Error('Date is invalid');
     }
 
@@ -264,9 +264,15 @@ export class StoreLocalService {
   }
 
   getCurrentDay() {
-    const currentDay = Number(localStorage.getItem("currentDay"));
+    let currentDay: number;
 
-    if (!currentDay || currentDay <= 0 || currentDay > 31 || !Number.isInteger(currentDay)) {
+    try {
+      currentDay = JSON.parse(localStorage.getItem("currentDay")!);
+    } catch (err) {
+      throw new Error('Date is invalid');
+    }
+
+    if (currentDay <= 0 || currentDay > 31 || !Number.isInteger(currentDay)) {
       throw new Error('Date is invalid');
     }
 
