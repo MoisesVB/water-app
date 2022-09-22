@@ -287,19 +287,16 @@ export class StoreLocalService {
 
   // cup methods
   addCup(capacity: number, isCustom: boolean) {
-    if (!capacity || capacity <= 0 || capacity > Constants.MAX_WATER_TARGET || !Number.isInteger(capacity) ||
-      isCustom === undefined || isCustom === null || typeof isCustom !== 'boolean') {
+    if (capacity <= 0 || capacity > Constants.MAX_WATER_TARGET || !Number.isInteger(capacity)) {
       throw new Error('Invalid cup values');
     }
 
-    let cups: Cup[] = [];
+    let cups: Cup[] | undefined;
 
     try {
       cups = this.getAllCups();
     } catch (err) {
-      if (err instanceof Error) {
-        cups = [];
-      }
+      cups = undefined;
     }
 
     const newCup: Cup = {
