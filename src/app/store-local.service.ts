@@ -358,5 +358,7 @@ export class StoreLocalService {
     if (localStorage.getItem('goal') || localStorage.getItem('intake') || localStorage.getItem('cups') || localStorage.getItem('reminder') || localStorage.getItem('activity') || localStorage.getItem('currentDay')) {
       throw new Error('LocalStorage is not empty');
     }
+
+    return true;
   }
 }

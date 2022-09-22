@@ -955,4 +955,11 @@ describe('StoreLocalService', () => {
 
         expect(Object.keys(localStore).length).toBe(1);
     })
+
+    it('#deleteAllData should return true after deletion', () => {
+        window.localStorage.setItem('goal', '2000');
+        window.localStorage.setItem('intake', '1800');
+
+        expect(service.deleteAllData()).toBeTrue();
+    })
 })
