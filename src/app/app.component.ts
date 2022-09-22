@@ -47,7 +47,7 @@ export class AppComponent implements OnInit {
     this.handleDate();
     this.handleGoal();
     this.handleCups();
-    this.loadIntake();
+    this.handleIntake();
     this.loadReminder();
     this.requestNotificationPermission();
 
@@ -187,13 +187,34 @@ export class AppComponent implements OnInit {
     this.cupsInfo.filter(cup => cup !== deletedCup);
   }
 
-  loadIntake() {
-    const intake = this.service.getIntake();
+  handleIntake() {
+    let intake: number | undefined;
+
+    try {
+      intake = this.getIntake();
+    } catch (err) {
+      if (err instanceof Error) {
+        const addedIntake = this.service.addIntake(0);
+        this.addIntakeLocal(addedIntake);
+      }
+    }
 
     if (intake) {
-      this.userData.intake = intake;
+      this.addIntakeLocal(intake);
       this.setProgressBarPercentage();
     }
+  }
+
+  getIntake() {
+    try {
+      return this.service.getIntake();
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  addIntakeLocal(intake: number) {
+    this.userData.intake = intake;
   }
 
   loadReminder() {
@@ -400,7 +421,7 @@ export class AppComponent implements OnInit {
     this.handleDate();
     this.handleGoal();
     this.handleCups();
-    this.loadIntake();
+    this.handleIntake();
     this.loadReminder();
     this.requestNotificationPermission();
   }
