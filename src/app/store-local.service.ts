@@ -225,6 +225,8 @@ export class StoreLocalService {
     }
 
     localStorage.setItem("reminder", JSON.stringify(reminder));
+
+    return reminder;
   }
 
   getReminder() {

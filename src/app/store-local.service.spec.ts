@@ -583,9 +583,6 @@ describe('StoreLocalService', () => {
         service.addReminder(30);
 
         expect(window.localStorage.getItem('reminder')).toBe('30');
-        expect(Number(window.localStorage.getItem('reminder')!)).toBeGreaterThanOrEqual(0);
-        expect(Number(window.localStorage.getItem('reminder')!)).toBeLessThanOrEqual(1440);
-        expect(window.localStorage.getItem('reminder')).toBeTruthy();
     })
 
     it('#addReminder should throw error if reminder is negative', () => {
@@ -605,9 +602,10 @@ describe('StoreLocalService', () => {
         service.addReminder(60);
 
         expect(window.localStorage.getItem('reminder')).toBe('60');
-        expect(Number(window.localStorage.getItem('reminder')!)).toBeGreaterThanOrEqual(0);
-        expect(Number(window.localStorage.getItem('reminder')!)).toBeLessThanOrEqual(1440);
-        expect(window.localStorage.getItem('reminder')).toBeTruthy();
+    })
+
+    it('#addReminder should return reminder', () => {
+        expect(service.addReminder(40)).toBe(40);
     })
 
     // getReminder tests
