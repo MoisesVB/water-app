@@ -736,7 +736,7 @@ describe('StoreLocalService', () => {
 
     // addCup tests
     it('#addCup should add cup to localStorage', () => {
-        spyOn(service, 'getAllCups').and.callFake(() => window.localStorage.getItem('cups')!);
+        spyOn(service, 'getAllCups').and.callFake(() => JSON.parse(window.localStorage.getItem('cups')!));
 
         service.addCup(350, true);
 
@@ -746,14 +746,8 @@ describe('StoreLocalService', () => {
         expect(cups.length).toBe(1);
 
         expect(cups[0].id).toBeTruthy();
-
         expect(cups[0].capacity).toBe(350);
-        expect(cups[0].capacity).toBeGreaterThan(0);
-        expect(cups[0].capacity).toBeLessThanOrEqual(Constants.MAX_WATER_TARGET);
-        expect(cups[0].capacity).toBeTruthy();
-
         expect(cups[0].isCustom).toBeTrue();
-        expect(cups[0].isCustom).toBeTruthy();
     })
 
     it('#addCup should throw error if capacity is 0', () => {
@@ -773,7 +767,7 @@ describe('StoreLocalService', () => {
     })
 
     it('#addCup should add cup two times in localStorage', () => {
-        spyOn(service, 'getAllCups').and.callFake(() => window.localStorage.getItem('cups')!);
+        spyOn(service, 'getAllCups').and.callFake(() => JSON.parse(window.localStorage.getItem('cups')!));
 
         service.addCup(200, false);
         service.addCup(350, true);
@@ -784,14 +778,22 @@ describe('StoreLocalService', () => {
         expect(cups.length).toBe(2);
     })
 
+    it('#addCup should return added cup', () => {
+        spyOn(service, 'getAllCups').and.callFake(() => JSON.parse(window.localStorage.getItem('cups')!));
+
+        expect(service.addCup(350, true).id).toBeTruthy();
+        expect(service.addCup(350, true).capacity).toBe(350);
+        expect(service.addCup(350, true).isCustom).toBeTrue();
+    })
+
     // getAllCups tests
     it('#getAllCups should return cups from localStorage', () => {
         const cups: Cup[] = [{ id: 'abcde', capacity: 550, isCustom: true }];
 
         window.localStorage.setItem('cups', JSON.stringify(cups));
 
-        expect(JSON.parse(service.getAllCups()!)).toBeTruthy();
-        expect(JSON.parse(service.getAllCups()!).length).toBe(1);
+        expect(service.getAllCups()).toBeTruthy();
+        expect(service.getAllCups().length).toBe(1);
     })
 
     it('#getAllCups should throw error if capacity is 0', () => {
@@ -894,7 +896,7 @@ describe('StoreLocalService', () => {
 
     // deleteCupById tests
     it('#deleteCupById should delete cup of localStorage', () => {
-        spyOn(service, 'getAllCups').and.callFake(() => window.localStorage.getItem('cups')!);
+        spyOn(service, 'getAllCups').and.callFake(() => JSON.parse(window.localStorage.getItem('cups')!));
 
         const cups: Cup[] = [{ id: 'qwert', capacity: 200, isCustom: false }, { id: 'abcde', capacity: 350, isCustom: true }];
 
@@ -910,13 +912,23 @@ describe('StoreLocalService', () => {
     })
 
     it('#deleteCupById should throw error if activity with passed id does not exist', () => {
-        spyOn(service, 'getAllCups').and.callFake(() => window.localStorage.getItem('cups')!);
+        spyOn(service, 'getAllCups').and.callFake(() => JSON.parse(window.localStorage.getItem('cups')!));
 
         const cups: Cup[] = [{ id: 'qwert', capacity: 200, isCustom: false }, { id: 'abcde', capacity: 350, isCustom: true }];
 
         window.localStorage.setItem('cups', JSON.stringify(cups));
 
         expect(() => service.deleteCupById('efgh')).toThrow(new Error('Cup to delete not found'));
+    })
+
+    it('#deleteCupById should return delete cup', () => {
+        spyOn(service, 'getAllCups').and.callFake(() => JSON.parse(window.localStorage.getItem('cups')!));
+
+        const cups: Cup[] = [{ id: 'qwert', capacity: 200, isCustom: false }, { id: 'abcde', capacity: 350, isCustom: true }];
+
+        window.localStorage.setItem('cups', JSON.stringify(cups));
+
+        expect(service.deleteCupById('abcde')).toEqual({ id: 'abcde', capacity: 350, isCustom: true });
     })
 
     // deleteAllData tests

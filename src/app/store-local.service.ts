@@ -269,10 +269,10 @@ export class StoreLocalService {
       throw new Error('Invalid cup values');
     }
 
-    let cups;
+    let cups: Cup[];
 
     try {
-      cups = JSON.parse(this.getAllCups()!)
+      cups = this.getAllCups();
     } catch (err) {
       throw err;
     }
@@ -296,23 +296,24 @@ export class StoreLocalService {
     }
 
     localStorage.setItem('cups', JSON.stringify(cups));
+
+    return pushedCup;
   }
 
   getAllCups() {
-    const cups = localStorage.getItem('cups')!;
-    let formattedCups: Cup[] = [];
+    let cups: Cup[];
 
     try {
-      formattedCups = JSON.parse(cups);
+      cups = JSON.parse(localStorage.getItem('cups')!);
     } catch (err) {
       throw new Error('Error parsing cups');
     }
 
-    if (!formattedCups || formattedCups.length <= 0) {
+    if (!cups || cups.length <= 0) {
       throw new Error('Cups is falsy');
     }
 
-    formattedCups.forEach(cup => {
+    cups.forEach(cup => {
       if (!cup.id || typeof cup.id !== 'string' || !cup.capacity || cup.capacity <= 0 || cup.capacity > Constants.MAX_WATER_TARGET || !Number.isInteger(cup.capacity) || cup.isCustom === undefined || cup.isCustom === null || typeof cup.isCustom !== 'boolean') {
         throw new Error('Invalid cup found');
       }
@@ -326,10 +327,10 @@ export class StoreLocalService {
       throw new Error('Id is invalid');
     }
 
-    let cups: Cup[] = [];
+    let cups: Cup[];
 
     try {
-      cups = JSON.parse(this.getAllCups()!)
+      cups = this.getAllCups();
     } catch (err) {
       throw err;
     }
@@ -343,6 +344,8 @@ export class StoreLocalService {
     const newCups = cups.filter(cup => cup.id !== id);
 
     localStorage.setItem('cups', JSON.stringify(newCups));
+
+    return cupToDelete;
   }
 
   deleteAllData() {
