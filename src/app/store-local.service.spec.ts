@@ -691,10 +691,7 @@ describe('StoreLocalService', () => {
     it('#getCurrentDay should return current day from localStorage', () => {
         window.localStorage.setItem('currentDay', '23');
 
-        expect(service.getCurrentDay()).toBe('23');
-        expect(Number(service.getCurrentDay()!)).toBeGreaterThan(0);
-        expect(Number(service.getCurrentDay()!)).toBeLessThanOrEqual(31);
-        expect(service.getCurrentDay()).toBeTruthy();
+        expect(service.getCurrentDay()).toBe(23);
     })
 
     it('#getCurrentDay should throw error if current day is 0', () => {
