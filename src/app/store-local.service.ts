@@ -11,7 +11,6 @@ export class StoreLocalService {
 
   constructor() { }
 
-  // services should return strings only
   // services will receive formatted params (number, string, obj)
   // components will convert data from one type to another to services and to display into screen
   // components will validate UI logic and services will validate business logic

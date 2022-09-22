@@ -51,11 +51,11 @@ export class AppComponent implements OnInit {
     this.loadReminder();
     this.requestNotificationPermission();
 
-    this.userData.activity = JSON.parse(this.service.getAllActivity());
+    this.userData.activity = this.service.getAllActivity();
   }
 
   handleDate() {
-    const storedDay = parseInt(this.service.getCurrentDay()!);
+    const storedDay = this.service.getCurrentDay();
     const today = new Date().getDate();
 
     // if there's a day stored and this day is outdated
@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
       // clear intake because it's another day
 
       // restoring intake to 0
-      this.service.deleteIntake(parseInt(this.service.getIntake()!));
+      this.service.deleteIntake(this.service.getIntake());
 
       // update day to today
       this.service.addCurrentDay();
@@ -76,7 +76,7 @@ export class AppComponent implements OnInit {
     const goal = this.service.getGoal();
 
     if (goal) {
-      this.defineGoal(goal);
+      this.defineGoal(goal.toString());
     }
   }
 
@@ -84,7 +84,7 @@ export class AppComponent implements OnInit {
     const intake = this.service.getIntake();
 
     if (intake) {
-      this.userData.intake = parseInt(intake);
+      this.userData.intake = intake;
       this.setProgressBarPercentage();
     }
   }
@@ -93,7 +93,7 @@ export class AppComponent implements OnInit {
     const reminder = this.service.getReminder();
 
     if (reminder) {
-      this.userData.selectedReminder = parseInt(reminder);
+      this.userData.selectedReminder = reminder;
     } else {
       this.service.addReminder(60);
       this.userData.selectedReminder = 60;
@@ -114,7 +114,7 @@ export class AppComponent implements OnInit {
   }
 
   loadCups() {
-    this.cupsInfo = JSON.parse(this.service.getAllCups());
+    this.cupsInfo = this.service.getAllCups();
   }
 
   addCup(capacity: string) {
@@ -262,7 +262,7 @@ export class AppComponent implements OnInit {
       }
 
       // push local intake to be the same as stored
-      const desiredIntake = parseInt(this.service.getIntake()!);
+      const desiredIntake = this.service.getIntake();
 
       this.countUp(desiredIntake);
     }
@@ -305,7 +305,7 @@ export class AppComponent implements OnInit {
     this.service.deleteIntake(intake);
 
     // push local intake to be the same as stored
-    this.userData.intake = parseInt(this.service.getIntake()!);
+    this.userData.intake = this.service.getIntake();
     this.setProgressBarPercentage();
   }
 
