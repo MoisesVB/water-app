@@ -1,5 +1,5 @@
 export interface ConfigData {
-    isGoalDefined: boolean;
+    isGoalModalOpen: boolean;
     isSettingsOpen: boolean;
     isLogOpen: boolean;
     isCupModalOpen: boolean;

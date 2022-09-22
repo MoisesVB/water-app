@@ -1,8 +1,8 @@
 <div class="bg-black min-h-screen w-screen">
-  <app-goal-modal [isGoalDefined]="configData.isGoalDefined" (defineGoalNotifier)="defineGoal($event)">
+  <app-goal-modal [isGoalModalOpen]="configData.isGoalModalOpen" (defineGoalNotifier)="addGoalFromView($event)">
   </app-goal-modal>
 
-  <div *ngIf="configData.isGoalDefined" [@leaveEnter]
+  <div *ngIf="!configData.isGoalModalOpen" [@leaveEnter]
     [@focusBlur]="!configData.isSettingsOpen && !configData.isLogOpen && !configData.isCupModalOpen ? 'focus' : 'blur'"
     class="max-w-xl w-4/6 mx-auto">
     <div class="absolute right-0 p-4">

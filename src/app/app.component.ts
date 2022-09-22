@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.handleDate();
-    this.loadGoal();
+    this.handleGoal();
     this.handleCups();
     this.loadIntake();
     this.loadReminder();
@@ -94,12 +94,47 @@ export class AppComponent implements OnInit {
     this.userData.currentDay = day;
   }
 
-  loadGoal() {
-    const goal = this.service.getGoal();
+  handleGoal() {
+    let goal;
+
+    try {
+      goal = this.getGoal();
+    } catch (err) {
+      if (err instanceof Error && err.message === 'Goal is invalid') {
+        this.setGoalView(true);
+      }
+    }
 
     if (goal) {
-      this.defineGoal(goal.toString());
+      this.addGoalLocal(goal);
+      this.setGoalView(false);
     }
+  }
+
+  getGoal() {
+    try {
+      return this.service.getGoal();
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  addGoalLocal(goal: number) {
+    this.userData.goal = goal;
+
+    this.setProgressBarPercentage();
+  }
+
+  setGoalView(status: boolean) {
+    this.configData.isGoalModalOpen = status;
+  }
+
+  addGoalFromView(goal: string) {
+    const goalNumber = Number(goal);
+
+    const addedGoal = this.service.addGoal(goalNumber);
+    this.addGoalLocal(addedGoal);
+    this.setGoalView(false);
   }
 
   loadIntake() {
@@ -202,7 +237,7 @@ export class AppComponent implements OnInit {
   }
 
   configData: ConfigData = {
-    isGoalDefined: false,
+    isGoalModalOpen: false,
     isSettingsOpen: false,
     isLogOpen: false,
     isCupModalOpen: false
@@ -222,7 +257,7 @@ export class AppComponent implements OnInit {
 
   changeGoals() {
     this.toggleSettings();
-    this.configData.isGoalDefined = false;
+    this.configData.isGoalModalOpen = true;
   }
 
   changeReminder(event: Event) {
@@ -240,17 +275,6 @@ export class AppComponent implements OnInit {
   }
 
   cupsInfo: Cup[] = [];
-
-  defineGoal(goal: string) {
-    const goalNumber = parseInt(goal);
-
-    this.service.addGoal(goalNumber);
-
-    this.userData.goal = goalNumber;
-    this.configData.isGoalDefined = true;
-
-    this.setProgressBarPercentage();
-  }
 
   handleClick(cupId: string) {
     // toggle selected status of clicked cup
@@ -345,14 +369,14 @@ export class AppComponent implements OnInit {
     this.processData.reminderIntervals = [];
     this.processData.progressBarPercentage = 0;
 
-    this.configData.isGoalDefined = false;
+    this.configData.isGoalModalOpen = false;
     this.configData.isSettingsOpen = false;
     this.configData.isLogOpen = false;
     this.configData.isCupModalOpen = false;
     this.cupsInfo = [];
 
     this.handleDate();
-    this.loadGoal();
+    this.handleGoal();
     this.handleCups();
     this.loadIntake();
     this.loadReminder();
