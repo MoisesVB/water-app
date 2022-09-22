@@ -117,16 +117,16 @@ export class StoreLocalService {
 
   // activity methods
   addActivity(intake: number) {
-    if (!intake || intake <= 0 || intake > Constants.MAX_WATER_TARGET || !Number.isInteger(intake)) {
+    if (intake <= 0 || intake > Constants.MAX_WATER_TARGET || !Number.isInteger(intake)) {
       throw new Error('Intake is invalid');
     }
 
-    let activity: Activity;
+    let activity: Activity | undefined;
 
     try {
       activity = this.getAllActivity();
     } catch (err) {
-      throw err;
+      activity = undefined;
     }
 
     const id = uuidv4();
@@ -231,7 +231,7 @@ export class StoreLocalService {
 
   // reminder methods
   addReminder(reminder: number) {
-    if (!reminder || reminder < 0 || reminder > 1440 || !Number.isInteger(reminder)) {
+    if (reminder < 0 || reminder > 1440 || !Number.isInteger(reminder)) {
       throw new Error('Received reminder is invalid');
     }
 
@@ -241,9 +241,15 @@ export class StoreLocalService {
   }
 
   getReminder() {
-    const reminder = Number(localStorage.getItem("reminder"));
+    let reminder: number;
 
-    if (!reminder || reminder < 0 || reminder > 1440 || !Number.isInteger(reminder)) {
+    try {
+      reminder = JSON.parse(localStorage.getItem("reminder")!);
+    } catch (err) {
+      throw new Error('Reminder is invalid');
+    }
+
+    if (reminder < 0 || reminder > 1440 || !Number.isInteger(reminder)) {
       throw new Error('Reminder is invalid');
     }
 
