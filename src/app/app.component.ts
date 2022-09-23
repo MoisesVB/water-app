@@ -383,6 +383,20 @@ export class AppComponent implements OnInit {
     })
   }
 
+  updateActivityLocal(activity: ActivityData) {
+    const date = new Date().toLocaleDateString();
+
+    if (!this.userData.activity) {
+      this.userData.activity = {};
+    }
+
+    if (!this.userData.activity.hasOwnProperty(`${date}`)) {
+      this.userData.activity[`${date}`] = [activity]
+    } else if (this.userData.activity.hasOwnProperty(`${date}`)) {
+      this.userData.activity[`${date}`].push(activity);
+    }
+  }
+
   addIntake() {
     // if a cup is selected and there's not a count up occurring
     if (this.userData.selectedCup && !this.processData.countUpInterval) {
@@ -394,13 +408,15 @@ export class AppComponent implements OnInit {
         if (leftIntake > 0) {
           // store to localstorage
           this.service.addIntake(leftIntake);
-          this.service.addActivity(leftIntake);
+          const addedActivity = this.service.addActivity(leftIntake);
+          this.updateActivityLocal(addedActivity);
         } else {
           return;
         }
       } else {
         this.service.addIntake(tempCup?.capacity!);
-        this.service.addActivity(tempCup?.capacity!);
+        const addedActivity = this.service.addActivity(tempCup?.capacity!);
+        this.updateActivityLocal(addedActivity);
       }
 
       // push local intake to be the same as stored
@@ -438,9 +454,17 @@ export class AppComponent implements OnInit {
     this.processData.progressBarPercentage = formula >= 100 ? 100 : formula;
   }
 
-  deleteActivity(activity: ActivityData) {
+  deleteActivityFromView(activity: ActivityData) {
     this.service.deleteActivityById(activity.id);
     this.deleteIntake(activity.intake);
+
+    for (let key in this.userData.activity) {
+      this.userData.activity[key] = this.userData.activity[key].filter(obj => obj.id !== activity.id);
+
+      if (this.userData.activity[key].length <= 0) {
+        delete this.userData.activity[key];
+      }
+    }
   }
 
   deleteIntake(intake: number) {

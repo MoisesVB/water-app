@@ -58,7 +58,7 @@
   </app-settings-modal>
 
   <app-log-modal [activity]="this.userData.activity" [isLogOpen]="configData.isLogOpen"
-    (closeLogNotifier)="setActivityView(false)" (deleteActivityNotifier)="deleteActivity($event)">
+    (closeLogNotifier)="setActivityView(false)" (deleteActivityNotifier)="deleteActivityFromView($event)">
   </app-log-modal>
 
   <app-cup-modal [isCupModalOpen]="configData.isCupModalOpen" (closeCupModalNotifier)="setCupView(false)"
