@@ -38,6 +38,28 @@ import { Constants } from './constants';
   ]
 })
 export class AppComponent implements OnInit {
+  userData: UserData = {
+    goal: 0,
+    intake: 0,
+    selectedCup: undefined,
+    selectedReminder: 0,
+    activity: {},
+    currentDay: undefined,
+    cups: undefined
+  }
+
+  processData: ProcessData = {
+    progressBarPercentage: 0,
+    reminderIntervals: [],
+    countUpInterval: undefined
+  }
+
+  configData: ConfigData = {
+    isGoalModalOpen: false,
+    isSettingsOpen: false,
+    isLogOpen: false,
+    isCupModalOpen: false
+  }
 
   constructor(
     public service: StoreLocalService
@@ -322,39 +344,16 @@ export class AppComponent implements OnInit {
     // 1000 * 60 * ${desired minutes}
   }
 
-  userData: UserData = {
-    goal: 0,
-    intake: 0,
-    selectedCup: undefined,
-    selectedReminder: 0,
-    activity: {},
-    currentDay: undefined,
-    cups: undefined
+  setSettingsView(status: boolean) {
+    this.configData.isSettingsOpen = status;
   }
 
-  processData: ProcessData = {
-    progressBarPercentage: 0,
-    reminderIntervals: [],
-    countUpInterval: undefined
-  }
-
-  configData: ConfigData = {
-    isGoalModalOpen: false,
-    isSettingsOpen: false,
-    isLogOpen: false,
-    isCupModalOpen: false
-  }
-
-  toggleSettings() {
-    this.configData.isSettingsOpen = !this.configData.isSettingsOpen;
-  }
-
-  toggleLog() {
-    this.configData.isLogOpen = !this.configData.isLogOpen;
+  setActivityView(status: boolean) {
+    this.configData.isLogOpen = status;
   }
 
   changeGoals() {
-    this.toggleSettings();
+    this.setSettingsView(false);
     this.configData.isGoalModalOpen = true;
   }
 
