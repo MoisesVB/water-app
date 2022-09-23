@@ -70,7 +70,16 @@ export class AppComponent implements OnInit {
     if (storedDay) {
       if (storedDay !== today) {
         // clear intake because it's another day
-        this.service.deleteIntake(this.service.getIntake());
+
+        let storedIntake: number | undefined;
+
+        try {
+          storedIntake = this.service.getIntake();
+        } catch (err) { }
+
+        if (storedIntake) {
+          this.service.deleteIntake(storedIntake);
+        }
 
         // update day to today
         const day = this.service.addCurrentDay();

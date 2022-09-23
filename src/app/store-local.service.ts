@@ -106,7 +106,7 @@ export class StoreLocalService {
 
     const newIntake = storedIntake - intake;
 
-    if (newIntake <= 0 || newIntake > Constants.MAX_WATER_TARGET || !Number.isInteger(newIntake)) {
+    if (newIntake < 0 || newIntake > Constants.MAX_WATER_TARGET || !Number.isInteger(newIntake)) {
       throw new Error('Intake to delete is invalid');
     }
 
