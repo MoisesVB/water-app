@@ -218,7 +218,7 @@ export class AppComponent implements OnInit {
 
   deleteCupByIdFromView(id: string) {
     const deletedCup = this.service.deleteCupById(id);
-    this.userData.cups?.filter(cup => cup !== deletedCup);
+    this.userData.cups = this.userData.cups?.filter(cup => cup.id !== deletedCup.id);
   }
 
   handleIntake() {
