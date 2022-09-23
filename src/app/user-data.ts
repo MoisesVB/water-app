@@ -1,4 +1,5 @@
 import { Activity } from "./activity";
+import { Cup } from "./cup";
 
 export interface UserData {
     goal: number;
@@ -7,4 +8,5 @@ export interface UserData {
     selectedReminder: number;
     activity: Activity;
     currentDay?: number;
+    cups?: Cup[];
 }

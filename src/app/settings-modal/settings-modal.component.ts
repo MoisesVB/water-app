@@ -38,13 +38,13 @@ export class SettingsModalComponent implements OnInit {
   @Output() deleteCustomCupNotifier = new EventEmitter<string>();
 
   @Input() selectedReminder!: number;
-  @Input() cups!: Cup[];
+  @Input() cups?: Cup[];
   @Input() isSettingsOpen!: boolean;
 
   customCupsIsPresent() {
-    const customCups = this.cups.filter(cup => cup.isCustom);
+    const customCups = this.cups?.filter(cup => cup.isCustom);
 
-    if (customCups.length > 0) {
+    if (customCups && customCups.length > 0) {
       return true;
     }
 

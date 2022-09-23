@@ -173,7 +173,11 @@ export class AppComponent implements OnInit {
   }
 
   addCupLocal(cup: Cup) {
-    this.cupsInfo.push(cup);
+    if (!this.userData.cups) {
+      this.userData.cups = [];
+    }
+
+    this.userData.cups?.push(cup);
   }
 
   setCupView(status: boolean) {
@@ -192,7 +196,7 @@ export class AppComponent implements OnInit {
 
   deleteCupByIdFromView(id: string) {
     const deletedCup = this.service.deleteCupById(id);
-    this.cupsInfo.filter(cup => cup !== deletedCup);
+    this.userData.cups?.filter(cup => cup !== deletedCup);
   }
 
   handleIntake() {
@@ -324,7 +328,8 @@ export class AppComponent implements OnInit {
     selectedCup: undefined,
     selectedReminder: 0,
     activity: {},
-    currentDay: undefined
+    currentDay: undefined,
+    cups: undefined
   }
 
   processData: ProcessData = {
@@ -338,10 +343,6 @@ export class AppComponent implements OnInit {
     isSettingsOpen: false,
     isLogOpen: false,
     isCupModalOpen: false
-  }
-
-  toggleCupModal() {
-    this.configData.isCupModalOpen = !this.configData.isCupModalOpen;
   }
 
   toggleSettings() {
@@ -371,11 +372,9 @@ export class AppComponent implements OnInit {
     this.intervalNotify(); // set interval again for the new updated value
   }
 
-  cupsInfo: Cup[] = [];
-
   handleClick(cupId: string) {
     // toggle selected status of clicked cup
-    this.cupsInfo = this.cupsInfo.map((cup: Cup) => {
+    this.userData.cups = this.userData.cups?.map((cup: Cup) => {
       // if the clicked cup is not already selected then assign it as selected
       if (cup.id === cupId) {
         this.userData.selectedCup = cupId;
@@ -388,7 +387,7 @@ export class AppComponent implements OnInit {
   addIntake() {
     // if a cup is selected and there's not a count up occurring
     if (this.userData.selectedCup && !this.processData.countUpInterval) {
-      const tempCup = this.cupsInfo.find((cup: Cup) => cup.id === this.userData.selectedCup);
+      const tempCup = this.userData.cups?.find((cup: Cup) => cup.id === this.userData.selectedCup);
 
       if (tempCup?.capacity! + this.userData.intake > Constants.MAX_WATER_TARGET) {
         const leftIntake = Constants.MAX_WATER_TARGET - this.userData.intake;
@@ -462,6 +461,7 @@ export class AppComponent implements OnInit {
     this.userData.selectedCup = undefined;
     this.userData.activity = {};
     this.userData.currentDay = undefined;
+    this.userData.cups = undefined;
 
     this.processData.reminderIntervals = [];
     this.processData.progressBarPercentage = 0;
@@ -470,7 +470,6 @@ export class AppComponent implements OnInit {
     this.configData.isSettingsOpen = false;
     this.configData.isLogOpen = false;
     this.configData.isCupModalOpen = false;
-    this.cupsInfo = [];
 
     this.handleDate();
     this.handleGoal();
