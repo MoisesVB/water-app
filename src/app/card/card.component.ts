@@ -9,11 +9,13 @@ export class CardComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   @Input() cup!: Cup;
   @Input() selectedCup?: string;
+  @Output() selected = new EventEmitter<string>();
 
-  @Output() handleClickNotifier = new EventEmitter<string>();
+  click() {
+    this.selected.emit(this.cup.id);
+  }
 }
