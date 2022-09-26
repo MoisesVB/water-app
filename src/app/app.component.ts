@@ -370,7 +370,7 @@ export class AppComponent implements OnInit {
     this.intervalNotify(); // set interval again for the new updated value
   }
 
-  handleClick(cupId: string) {
+  handleCupClick(cupId: string) {
     // toggle selected status of clicked cup
     this.userData.cups = this.userData.cups?.map((cup: Cup) => {
       // if the clicked cup is not already selected then assign it as selected
@@ -396,7 +396,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  addIntake() {
+  addIntakeFromView() {
     // if a cup is selected and there's not a count up occurring
     if (this.userData.selectedCup && !this.processData.countUpInterval) {
       const tempCup = this.userData.cups?.find((cup: Cup) => cup.id === this.userData.selectedCup);

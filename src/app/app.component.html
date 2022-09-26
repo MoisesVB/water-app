@@ -30,7 +30,7 @@
 
     <div class="flex mt-28 pb-4 gap-5 overflow-x-auto scroll justify-start">
       <app-card *ngFor="let cup of this.userData.cups" [cup]="cup" [selectedCup]="userData.selectedCup"
-        (handleClickNotifier)="handleClick($event)">
+        (handleClickNotifier)="handleCupClick($event)">
       </app-card>
 
       <div (click)="setCupView(true)"
@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <app-submit-intake (addIntakeNotifier)="addIntake()">
+    <app-submit-intake (addIntakeNotifier)="addIntakeFromView()">
     </app-submit-intake>
   </div>
 
