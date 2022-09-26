@@ -475,7 +475,13 @@ export class AppComponent implements OnInit {
   }
 
   deleteData() {
-    this.service.deleteAllData();
+    try {
+      this.service.deleteAllData();
+    } catch (err) {
+      if (err instanceof Error) {
+        return;
+      }
+    }
 
     // reset all variables here
     this.userData.goal = 0;
@@ -498,6 +504,7 @@ export class AppComponent implements OnInit {
     this.handleCups();
     this.handleIntake();
     this.handleReminder();
+    this.handleActivity();
     this.requestNotificationPermission();
   }
 }
