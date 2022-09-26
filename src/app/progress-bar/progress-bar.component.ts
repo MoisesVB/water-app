@@ -8,10 +8,13 @@ export class ProgressBarComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   @Input() goal!: number;
   @Input() intake!: number;
   @Input() progressBarPercentage!: number;
+
+  isGoalAchieved() {
+    return this.intake >= this.goal;
+  }
 }

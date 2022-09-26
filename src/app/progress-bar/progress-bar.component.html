@@ -1,18 +1,15 @@
 <div class="pt-14 text-white w-full">
     <div class="flex flex-wrap justify-between gap-x-6">
         <h3 class="font-bold select-none">{{ intake }}ml/{{ goal }}ml</h3>
-        <h3 *ngIf="intake >= goal" class="font-bold select-none text-blue-200 transition-all duration-1000">Goal
+        <h3 *ngIf="isGoalAchieved()" class="font-bold select-none text-blue-200 transition-all duration-1000">Goal
             Achieved</h3>
     </div>
     <div class="border h-8 rounded transition-all duration-1000"
-        [ngClass]="intake >= goal ? 'border-blue-300 shadow-xl shadow-blue-500/50' : 'border-white'">
+        [ngClass]="isGoalAchieved() ? 'border-blue-300 shadow-xl shadow-blue-500/50' : 'border-white'">
         <div class="h-full rounded-sm transition-all duration-1000" [ngStyle]="{ width : progressBarPercentage + '%'}"
-            [ngClass]="intake >= goal ? 'bg-blue-600' : 'bg-blue-500'">
+            [ngClass]="isGoalAchieved() ? 'bg-blue-600' : 'bg-blue-500'">
             <p class="font-bold select-none h-full flex justify-end items-center transition-all duration-1000 min-w-min mx-2"
-                [ngClass]="intake >= goal ? 'text-blue-400' : 'text-blue-300'">
-                {{
-                progressBarPercentage
-                }}%</p>
+                [ngClass]="isGoalAchieved() ? 'text-blue-400' : 'text-blue-300'">{{ progressBarPercentage }}%</p>
         </div>
     </div>
 </div>
