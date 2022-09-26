@@ -22,13 +22,12 @@ export class GoalModalComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   @HostListener('document:keydown.enter', ['$event'])
-  defineGoalOnEnter() {
+  emitAddGoalOnEnter() {
     if (this.isGoalModalOpen && this.goal.valid) {
-      this.handleSetGoal();
+      this.emitAddGoal();
     }
   }
 
@@ -40,10 +39,10 @@ export class GoalModalComponent implements OnInit {
   ]);
 
   @Input() isGoalModalOpen!: boolean;
-  @Output() defineGoalNotifier = new EventEmitter();
+  @Output() add = new EventEmitter();
 
-  handleSetGoal() {
-    this.defineGoalNotifier.emit(this.goal.value);
+  emitAddGoal() {
+    this.add.emit(this.goal.value);
     this.goal.reset();
   }
 }

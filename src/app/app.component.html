@@ -1,5 +1,5 @@
 <div class="bg-black min-h-screen w-screen">
-  <app-goal-modal [isGoalModalOpen]="configData.isGoalModalOpen" (defineGoalNotifier)="addGoalFromView($event)">
+  <app-goal-modal [isGoalModalOpen]="configData.isGoalModalOpen" (add)="addGoalFromView($event)">
   </app-goal-modal>
 
   <div *ngIf="!configData.isGoalModalOpen" [@leaveEnter]

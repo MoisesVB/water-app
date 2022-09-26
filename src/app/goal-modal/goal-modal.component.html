@@ -8,7 +8,7 @@
                 placeholder="Type your goal..." [formControl]="goal" required>
             <button
                 class="font-bold border border-white p-1 min-w-max w-2/6 rounded hover:text-black hover:bg-white transition-all duration-300 disabled:cursor-not-allowed disabled:hover:bg-black disabled:hover:text-white disabled:opacity-60"
-                type="button" (click)="handleSetGoal()" [disabled]="!goal.valid">SAVE</button>
+                type="button" (click)="emitAddGoal()" [disabled]="!goal.valid">SAVE</button>
         </div>
     </div>
 </div>
