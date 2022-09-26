@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
     goal: 0,
     intake: 0,
     selectedCup: undefined,
-    selectedReminder: 0,
+    reminder: undefined,
     activity: {},
     currentDay: undefined,
     cups: undefined
@@ -277,7 +277,7 @@ export class AppComponent implements OnInit {
   }
 
   addReminderLocal(reminder: number) {
-    this.userData.selectedReminder = reminder;
+    this.userData.reminder = reminder;
   }
 
   handleActivity() {
@@ -338,7 +338,7 @@ export class AppComponent implements OnInit {
       notification.onclick = () => {
         window.focus();
       }
-    }, 1000 * 60 * this.userData.selectedReminder)
+    }, 1000 * 60 * this.userData.reminder!)
 
     this.processData.reminderIntervals?.push(interval);
     // 1000 * 60 * ${desired minutes}
@@ -362,7 +362,7 @@ export class AppComponent implements OnInit {
     const valueNumber = Number(value);
 
     const addedReminder = this.service.addReminder(valueNumber);
-    this.userData.selectedReminder = addedReminder;
+    this.userData.reminder = addedReminder;
 
     this.processData.reminderIntervals?.map(item => clearInterval(item)); // remove intervals in array
     this.processData.reminderIntervals = []; // empty array after

@@ -21,9 +21,9 @@
                 <label class="text-lg" for="reminder">Remind me every:</label>
                 <select name="reminder" id="reminder" class="bg-black border border-white rounded p-1 w-32"
                     (change)="changeReminderNotifier.emit($event)">
-                    <option value="15" [defaultSelected]="selectedReminder === 15">15 minutes</option>
-                    <option value="30" [defaultSelected]="selectedReminder === 30">30 minutes</option>
-                    <option value="60" [defaultSelected]="selectedReminder === 60">1 hour
+                    <option value="15" [defaultSelected]="reminder === 15">15 minutes</option>
+                    <option value="30" [defaultSelected]="reminder === 30">30 minutes</option>
+                    <option value="60" [defaultSelected]="reminder === 60">1 hour
                     </option>
                 </select>
             </div>

@@ -53,7 +53,7 @@
 
   <app-settings-modal [isSettingsOpen]="configData.isSettingsOpen" (closeSettingsNotifier)="setSettingsView(false)"
     (changeGoalNotifier)="setSettingsAndGoalView()" (changeReminderNotifier)="addReminderFromView($event)"
-    [selectedReminder]="userData.selectedReminder" (deleteDataNotifier)="deleteData()" [cups]="this.userData.cups"
+    [reminder]="userData.reminder" (deleteDataNotifier)="deleteData()" [cups]="this.userData.cups"
     (deleteCustomCupNotifier)="deleteCupByIdFromView($event)">
   </app-settings-modal>
 

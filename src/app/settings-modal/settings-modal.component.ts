@@ -37,7 +37,7 @@ export class SettingsModalComponent implements OnInit {
   @Output() deleteDataNotifier = new EventEmitter();
   @Output() deleteCustomCupNotifier = new EventEmitter<string>();
 
-  @Input() selectedReminder!: number;
+  @Input() reminder?: number;
   @Input() cups?: Cup[];
   @Input() isSettingsOpen!: boolean;
 
