@@ -50,4 +50,14 @@ describe('CardComponent', () => {
         expect(div.classList.contains('bg-black')).toBeTrue();
         expect(div.classList.contains('text-white')).toBeTrue();
     });
+
+    it('should have <h3> with "500ml"', () => {
+        component.cup = { id: 'qwert', capacity: 500, isCustom: false };
+
+        fixture.detectChanges();
+
+        const cardElement: HTMLElement = fixture.nativeElement;
+        const h3 = cardElement.querySelector('h3')!;
+        expect(h3.textContent).toEqual('500ml');
+    })
 });
