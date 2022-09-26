@@ -357,13 +357,12 @@ export class AppComponent implements OnInit {
     this.configData.isGoalModalOpen = true;
   }
 
-  changeReminder(event: Event) {
+  addReminderFromView(event: Event) {
     const value = (event.target as HTMLSelectElement).value;
+    const valueNumber = Number(value);
 
-    this.userData.selectedReminder = parseInt(value);
-
-    // store reminder value in localstorage
-    this.service.addReminder(this.userData.selectedReminder);
+    const addedReminder = this.service.addReminder(valueNumber);
+    this.userData.selectedReminder = addedReminder;
 
     this.processData.reminderIntervals?.map(item => clearInterval(item)); // remove intervals in array
     this.processData.reminderIntervals = []; // empty array after
