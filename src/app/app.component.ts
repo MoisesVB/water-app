@@ -352,9 +352,9 @@ export class AppComponent implements OnInit {
     this.configData.isLogOpen = status;
   }
 
-  changeGoals() {
+  setSettingsAndGoalView() {
     this.setSettingsView(false);
-    this.configData.isGoalModalOpen = true;
+    this.setGoalView(true);
   }
 
   addReminderFromView(event: Event) {
