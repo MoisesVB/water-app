@@ -1,21 +1,42 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { Activity, ActivityData } from '../activity';
-import { ModalService } from '../services/modal.service';
 
 @Component({
   selector: 'app-log-modal',
   templateUrl: './log-modal.component.html',
+  animations: [
+    trigger('leaveEnter', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate(300, style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate(300, style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class LogModalComponent implements OnInit {
 
-  constructor(private modalService: ModalService) { }
+  constructor() { }
 
-  ngOnInit(): void {
-    this.modalService.register('activity');
-  }
+  ngOnInit(): void { }
+
+  @Input() isLogOpen!: boolean;
 
   @Input() activity!: Activity;
+
+  @Output() closeLogNotifier = new EventEmitter();
+
   @Output() deleteActivityNotifier = new EventEmitter<ActivityData>();
+
+  @HostListener('document:keydown.escape', ['$event'])
+  closeLogOnEsc() {
+    if (this.isLogOpen) {
+      this.closeLogNotifier.emit();
+    }
+  }
 
   sortByDate(activity: Activity) {
     if (activity) {
@@ -44,9 +65,5 @@ export class LogModalComponent implements OnInit {
     }
 
     return 0;
-  }
-
-  closeModal() {
-    this.modalService.setIsVisible('activity', false);
   }
 }

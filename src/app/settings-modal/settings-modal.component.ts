@@ -1,19 +1,37 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { trigger, transition, style, animate } from '@angular/animations';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { Cup } from '../cup';
-import { ModalService } from '../services/modal.service';
 
 @Component({
   selector: 'app-settings-modal',
   templateUrl: './settings-modal.component.html',
+  animations: [
+    trigger('leaveEnter', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate(300, style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate(300, style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class SettingsModalComponent implements OnInit {
 
-  constructor(private modalService: ModalService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.modalService.register('settings');
   }
 
+  @HostListener('document:keydown.escape', ['$event'])
+  closeSettingsOnEsc() {
+    if (this.isSettingsOpen) {
+      this.closeSettingsNotifier.emit();
+    }
+  }
+
+  @Output() closeSettingsNotifier = new EventEmitter();
   @Output() changeGoalNotifier = new EventEmitter();
   @Output() changeReminderNotifier = new EventEmitter();
   @Output() deleteDataNotifier = new EventEmitter();
@@ -21,6 +39,7 @@ export class SettingsModalComponent implements OnInit {
 
   @Input() reminder?: number;
   @Input() cups?: Cup[];
+  @Input() isSettingsOpen!: boolean;
 
   customCupsIsPresent() {
     const customCups = this.cups?.filter(cup => cup.isCustom);
@@ -30,9 +49,5 @@ export class SettingsModalComponent implements OnInit {
     }
 
     return false;
-  }
-
-  closeModal() {
-    this.modalService.setIsVisible('settings', false);
   }
 }

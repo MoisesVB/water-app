@@ -11,8 +11,6 @@ import { LogModalComponent } from './log-modal/log-modal.component';
 import { CupModalComponent } from './cup-modal/cup-modal.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ModalComponent } from './modal/modal.component';
-import { OverlayComponent } from './overlay/overlay.component';
 
 @NgModule({
   declarations: [
@@ -23,9 +21,7 @@ import { OverlayComponent } from './overlay/overlay.component';
     SubmitIntakeComponent,
     SettingsModalComponent,
     LogModalComponent,
-    CupModalComponent,
-    ModalComponent,
-    OverlayComponent
+    CupModalComponent
   ],
   imports: [
     BrowserModule,

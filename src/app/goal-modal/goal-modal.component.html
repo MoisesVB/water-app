@@ -1,19 +1,14 @@
-<app-modal [modalId]="'goal'">
-    <div class="flex items-center">
-        <h3 class="text-base font-bold ml-2 sm:text-2xl">Welcome!</h3>
-    </div>
-
-    <hr class="border border-blue-300 rounded mt-2 opacity-20">
-
-    <div class="p-4 max-h-80 h-full flex flex-col justify-between">
-        <div class="flex flex-col gap-y-4">
-            <h3 class="font-semibold text-lg">Please tell us your goal:</h3>
+<div *ngIf="isGoalModalOpen" [@leaveEnter]
+    class="fixed border border-white bg-black rounded text-white max-h-44 h-full overflow-y-auto left-1/2 top-1/2 w-full max-w-sm mx-auto -translate-x-1/2 -translate-y-1/2">
+    <div class="py-10 px-4">
+        <h1 class="font-bold mb-8 text-xl">Please tell us your intake goal:</h1>
+        <div class="flex flex-nowrap gap-4">
             <input type="text"
-                class="border border-white rounded bg-black p-1 w-full placeholder:font-bold placeholder:opacity-70"
-                placeholder="Goal in ml..." [formControl]="goal" required>
+                class="border border-white rounded bg-black p-1 w-4/6 placeholder:font-bold placeholder:opacity-70"
+                placeholder="Type your goal..." [formControl]="goal" required>
+            <button
+                class="font-bold border border-white p-1 min-w-max w-2/6 rounded hover:text-black hover:bg-white transition-all duration-300 disabled:cursor-not-allowed disabled:hover:bg-black disabled:hover:text-white disabled:opacity-60"
+                type="button" (click)="emitAddGoal()" [disabled]="!goal.valid">SAVE</button>
         </div>
-        <button
-            class="font-bold border border-white p-1 py-2 min-w-max w-full rounded hover:text-black hover:bg-white transition-all duration-300 disabled:cursor-not-allowed disabled:hover:bg-black disabled:hover:text-white disabled:opacity-60"
-            type="button" (click)="emitAddGoal()" [disabled]="!goal.valid">SAVE</button>
     </div>
-</app-modal>
+</div>

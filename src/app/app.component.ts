@@ -1,17 +1,31 @@
-import { trigger, transition, style, animate } from '@angular/animations';
+import { trigger, transition, style, animate, state } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
+import { ConfigData } from './config-data';
 import { Cup } from './cup';
 import { Activity, ActivityData } from './activity';
 import { ProcessData } from './process-data';
 import { StoreLocalService } from './store-local.service';
 import { UserData } from './user-data';
 import { Constants } from './constants';
-import { ModalService } from './services/modal.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   animations: [
+    trigger('focusBlur', [
+      state('focus', style({
+        opacity: 1,
+      })),
+      state('blur', style({
+        opacity: 0.1,
+      })),
+      transition('focus => blur', [
+        animate(300)
+      ]),
+      transition('blur => focus', [
+        animate(300)
+      ])
+    ]),
     trigger('leaveEnter', [
       transition(':enter', [
         style({ opacity: 0 }),
@@ -40,9 +54,15 @@ export class AppComponent implements OnInit {
     countUpInterval: undefined
   }
 
+  configData: ConfigData = {
+    isGoalModalOpen: false,
+    isSettingsOpen: false,
+    isLogOpen: false,
+    isCupModalOpen: false
+  }
+
   constructor(
-    public service: StoreLocalService,
-    public modalService: ModalService
+    public service: StoreLocalService
   ) { }
 
   ngOnInit() {
@@ -136,7 +156,7 @@ export class AppComponent implements OnInit {
   }
 
   setGoalView(status: boolean) {
-    this.modalService.setIsVisible('goal', status);
+    this.configData.isGoalModalOpen = status;
   }
 
   addGoalFromView(goal: string) {
@@ -183,7 +203,7 @@ export class AppComponent implements OnInit {
   }
 
   setCupView(status: boolean) {
-    this.modalService.setIsVisible('cup', status);
+    this.configData.isCupModalOpen = status;
   }
 
   addCupFromView(capacity: string) {
@@ -326,11 +346,11 @@ export class AppComponent implements OnInit {
   }
 
   setSettingsView(status: boolean) {
-    this.modalService.setIsVisible('settings', status);
+    this.configData.isSettingsOpen = status;
   }
 
   setActivityView(status: boolean) {
-    this.modalService.setIsVisible('activity', status);
+    this.configData.isLogOpen = status;
   }
 
   setSettingsAndGoalView() {
@@ -475,7 +495,10 @@ export class AppComponent implements OnInit {
     this.processData.reminderIntervals = [];
     this.processData.progressBarPercentage = 0;
 
-    this.modalService.unregisterAll();
+    this.configData.isGoalModalOpen = false;
+    this.configData.isSettingsOpen = false;
+    this.configData.isLogOpen = false;
+    this.configData.isCupModalOpen = false;
 
     this.handleDate();
     this.handleGoal();
