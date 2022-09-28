@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class ModalService {
   modals: { id: string, visible: boolean }[] = [];
+  queue: { id: string, visible: boolean }[] = [];
 
   constructor() { }
 
@@ -26,6 +27,23 @@ export class ModalService {
     if (!this.isRegistered(id)) {
       this.register(id);
     }
+
+    const visibleModalExists = this.modals.find(modal => modal.visible && modal.id !== id);
+
+    if (visibleModalExists && status) {
+      this.queue.push({ id, visible: status });
+      return;
+    }
+
+    const toUpdate = this.queue.find(q => q.visible);
+
+    this.modals = this.modals.map(modal => {
+      if (modal.id === toUpdate?.id) {
+        modal.visible = toUpdate?.visible;
+      }
+
+      return modal;
+    })
 
     this.modals = this.modals.map(modal => {
       if (modal.id === id) {

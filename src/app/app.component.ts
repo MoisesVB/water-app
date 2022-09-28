@@ -46,11 +46,11 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.handleDate();
     this.handleGoal();
+    this.handleReminder();
+    this.handleDate();
     this.handleCups();
     this.handleIntake();
-    this.handleReminder();
     this.handleActivity();
     this.requestNotificationPermission();
   }
@@ -239,13 +239,13 @@ export class AppComponent implements OnInit {
       reminder = this.getReminder();
     } catch (err) {
       if (err instanceof Error) {
-        const addedReminder = this.service.addReminder(60);
-        this.addReminderLocal(addedReminder);
+        this.setReminderView(true);
       }
     }
 
     if (reminder) {
       this.addReminderLocal(reminder);
+      this.setReminderView(false);
     }
   }
 
@@ -259,6 +259,10 @@ export class AppComponent implements OnInit {
 
   addReminderLocal(reminder: number) {
     this.userData.reminder = reminder;
+  }
+
+  setReminderView(status: boolean) {
+    this.modalService.setIsVisible('reminder', status);
   }
 
   handleActivity() {
@@ -299,12 +303,12 @@ export class AppComponent implements OnInit {
     if (!("Notification" in window)) {
       // Check if the browser supports notifications
       alert("This browser does not support desktop notification");
-    } else if (Notification.permission === "granted") {
+    } else if (Notification.permission === "granted" && this.userData.reminder! > 0) {
       this.intervalNotify();
 
     } else if (Notification.permission !== "denied") {
       Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
+        if (permission === "granted" && this.userData.reminder! > 0) {
           this.intervalNotify();
         }
       });
@@ -349,6 +353,15 @@ export class AppComponent implements OnInit {
     this.processData.reminderIntervals = []; // empty array after
 
     this.intervalNotify(); // set interval again for the new updated value
+  }
+
+  addInitialReminderFromView(reminder: string) {
+    const reminderNumber = Number(reminder);
+
+    const addedReminder = this.service.addReminder(reminderNumber);
+    this.userData.reminder = addedReminder;
+
+    this.setReminderView(false);
   }
 
   handleCupClick(cupId: string) {
