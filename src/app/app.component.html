@@ -2,11 +2,7 @@
   <app-goal-modal (add)="addGoalFromView($event)">
   </app-goal-modal>
 
-  <app-reminder-modal (add)="addInitialReminderFromView($event)">
-  </app-reminder-modal>
-
-  <div *ngIf="!this.modalService.isVisible('goal') && !this.modalService.isVisible('reminder')" [@leaveEnter]
-    class="max-w-xl w-4/6 mx-auto">
+  <div *ngIf="!this.modalService.isVisible('goal')" [@leaveEnter] class="max-w-xl w-4/6 mx-auto">
     <div class="absolute right-0 p-4">
       <div class="flex gap-4">
         <svg (click)="setActivityView(true)" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
