@@ -15,13 +15,12 @@ export class CupModalComponent implements OnInit {
   }
 
   @Input() isVisible!: boolean;
-  @Output() closeCupModalNotifier = new EventEmitter<MouseEvent>();
   @Output() createCupNotifier = new EventEmitter();
 
   @HostListener('document:keydown.escape', ['$event'])
   closeCupModalOnEsc() {
     if (this.isVisible) {
-      this.closeCupModalNotifier.emit();
+      this.closeModal();
     }
   }
 
@@ -41,7 +40,7 @@ export class CupModalComponent implements OnInit {
 
   createCup() {
     this.createCupNotifier.emit(this.cup.value);
-    this.closeCupModalNotifier.emit();
+    this.closeModal();
     this.cup.reset();
   }
 
