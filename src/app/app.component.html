@@ -47,17 +47,17 @@
     <app-submit-intake (add)="addIntakeFromView()">
     </app-submit-intake>
   </div>
-
-  <app-settings-modal [isSettingsOpen]="configData.isSettingsOpen" (closeSettingsNotifier)="setSettingsView(false)"
-    (changeGoalNotifier)="setSettingsAndGoalView()" (changeReminderNotifier)="addReminderFromView($event)"
-    [reminder]="userData.reminder" (deleteDataNotifier)="deleteData()" [cups]="this.userData.cups"
-    (deleteCustomCupNotifier)="deleteCupByIdFromView($event)">
-  </app-settings-modal>
 </div>
 
 <app-goal-modal *ngIf="isGoalModalVisible()" [@leaveEnter] [isVisible]="isGoalModalVisible()"
   (add)="addGoalFromView($event)">
 </app-goal-modal>
+
+<app-settings-modal *ngIf="isSettingsModalVisible()" [@leaveEnter] [isVisible]="isSettingsModalVisible()"
+  (changeGoalNotifier)="setSettingsAndGoalView()" (changeReminderNotifier)="addReminderFromView($event)"
+  [reminder]="userData.reminder" (deleteDataNotifier)="deleteData()" [cups]="this.userData.cups"
+  (deleteCustomCupNotifier)="deleteCupByIdFromView($event)">
+</app-settings-modal>
 
 <app-log-modal *ngIf="isActivityModalVisible()" [@leaveEnter] [activity]="this.userData.activity"
   [isVisible]="isActivityModalVisible()" (deleteActivityNotifier)="deleteActivityFromView($event)">

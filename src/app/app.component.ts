@@ -89,6 +89,10 @@ export class AppComponent implements OnInit {
     return this.modalService.isVisible('activity');
   }
 
+  isSettingsModalVisible() {
+    return this.modalService.isVisible('settings');
+  }
+
   handleDate() {
     let storedDay;
 
@@ -360,7 +364,7 @@ export class AppComponent implements OnInit {
   }
 
   setSettingsView(status: boolean) {
-    this.configData.isSettingsOpen = status;
+    this.modalService.setVisibility('settings', status);
   }
 
   setActivityView(status: boolean) {
