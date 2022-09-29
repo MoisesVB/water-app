@@ -45,5 +45,8 @@ export class ModalService {
   }
 
   unregister() { }
-  unregisterAll() { }
+
+  unregisterAll() {
+    this.modals = [];
+  }
 }

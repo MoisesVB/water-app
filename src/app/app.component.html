@@ -1,7 +1,5 @@
 <div class="bg-black min-h-screen w-screen">
-  <div *ngIf="!isGoalModalVisible()" [@leaveEnter]
-    [@focusBlur]="!configData.isSettingsOpen && !configData.isLogOpen && !configData.isCupModalOpen ? 'focus' : 'blur'"
-    class="max-w-xl w-4/6 mx-auto">
+  <div *ngIf="!isGoalModalVisible()" [@leaveEnter] class="max-w-xl w-4/6 mx-auto">
     <div class="absolute right-0 p-4">
       <div class="flex gap-4">
         <svg (click)="setActivityView(true)" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
