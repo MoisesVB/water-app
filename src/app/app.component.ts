@@ -499,7 +499,11 @@ export class AppComponent implements OnInit {
   setProgressBarPercentage() {
     const formula = (this.userData.intake * 100) / this.userData.goal;
 
-    this.processData.progressBarPercentage = formula >= 100 ? 100 : formula;
+    const result = formula >= 100 ? 100 : formula;
+
+    const formattedResult = result.toFixed(0); // no decimals
+
+    this.processData.progressBarPercentage = Number(formattedResult);
   }
 
   deleteActivityFromView(activity: ActivityData) {
