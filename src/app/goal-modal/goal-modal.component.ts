@@ -14,7 +14,7 @@ export class GoalModalComponent implements OnInit {
 
   @HostListener('document:keydown.enter', ['$event'])
   emitAddGoalOnEnter() {
-    if (this.isGoalModalOpen && this.goal.valid) {
+    if (this.isVisible && this.goal.valid) {
       this.emitAddGoal();
     }
   }
@@ -26,7 +26,7 @@ export class GoalModalComponent implements OnInit {
     validateGoal
   ]);
 
-  @Input() isGoalModalOpen!: boolean;
+  @Input() isVisible!: boolean;
   @Output() add = new EventEmitter();
 
   emitAddGoal() {

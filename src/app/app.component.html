@@ -1,5 +1,5 @@
 <div class="bg-black min-h-screen w-screen">
-  <div *ngIf="!configData.isGoalModalOpen" [@leaveEnter]
+  <div *ngIf="!isGoalModalVisible()" [@leaveEnter]
     [@focusBlur]="!configData.isSettingsOpen && !configData.isLogOpen && !configData.isCupModalOpen ? 'focus' : 'blur'"
     class="max-w-xl w-4/6 mx-auto">
     <div class="absolute right-0 p-4">
@@ -63,6 +63,6 @@
   </app-cup-modal>
 </div>
 
-<app-goal-modal *ngIf="this.configData.isGoalModalOpen" [@leaveEnter] [isGoalModalOpen]="configData.isGoalModalOpen"
+<app-goal-modal *ngIf="isGoalModalVisible()" [@leaveEnter] [isVisible]="isGoalModalVisible()"
   (add)="addGoalFromView($event)">
 </app-goal-modal>

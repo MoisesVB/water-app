@@ -7,6 +7,7 @@ import { ProcessData } from './process-data';
 import { StoreLocalService } from './store-local.service';
 import { UserData } from './user-data';
 import { Constants } from './constants';
+import { ModalService } from './services/modal.service';
 
 @Component({
   selector: 'app-root',
@@ -62,7 +63,8 @@ export class AppComponent implements OnInit {
   }
 
   constructor(
-    public service: StoreLocalService
+    public service: StoreLocalService,
+    private modalService: ModalService
   ) { }
 
   ngOnInit() {
@@ -73,6 +75,10 @@ export class AppComponent implements OnInit {
     this.handleReminder();
     this.handleActivity();
     this.requestNotificationPermission();
+  }
+
+  isGoalModalVisible() {
+    return this.modalService.isVisible('goal');
   }
 
   handleDate() {
@@ -156,7 +162,7 @@ export class AppComponent implements OnInit {
   }
 
   setGoalView(status: boolean) {
-    this.configData.isGoalModalOpen = status;
+    this.modalService.setVisibility('goal', status);
   }
 
   addGoalFromView(goal: string) {

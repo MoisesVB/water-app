@@ -28,7 +28,7 @@ export class ModalService {
     return modal.visible;
   }
 
-  toggleVisibility(id: string) {
+  setVisibility(id: string, visible: boolean) {
     const modal = this.modals.find(modal => modal.id === id);
 
     if (!modal) {
@@ -37,7 +37,7 @@ export class ModalService {
 
     this.modals = this.modals.map(modal => {
       if (modal.id === id) {
-        modal.visible = !modal.visible;
+        modal.visible = visible;
       }
 
       return modal;
