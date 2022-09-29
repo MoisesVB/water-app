@@ -1,49 +1,45 @@
-<div *ngIf="isLogOpen" [@leaveEnter] class="absolute left-0 right-0 bottom-0 top-0 w-full h-full"
-  (click)="closeLogNotifier.emit()">
-</div>
+<app-overlay (click)="closeModal()">
+</app-overlay>
 
-<div *ngIf="isLogOpen" [@leaveEnter]
-  class="text-white border border-white rounded fixed left-1/2 top-1/2 w-full max-w-xl mx-auto max-h-96 h-full -translate-x-1/2 -translate-y-1/2 bg-black">
-  <div class="p-2">
-    <div class="flex items-center select-none">
-      <h3 class="text-2xl font-bold ml-2">Activity Menu</h3>
-      <svg (click)="closeLogNotifier.emit()" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-        fill="currentColor" class="h-10 w-10 fill-blue-300 cursor-pointer ml-auto" viewBox="0 0 16 16">
-        <path
-          d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-      </svg>
-    </div>
+<app-modal>
+  <div class="flex items-center select-none">
+    <h3 class="text-2xl font-bold ml-2">Activity Menu</h3>
+    <svg (click)="closeModal()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+      class="h-10 w-10 fill-blue-300 cursor-pointer ml-auto" viewBox="0 0 16 16">
+      <path
+        d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+    </svg>
+  </div>
 
-    <hr class="border border-blue-300 rounded mt-2 opacity-20">
+  <hr class="border border-blue-300 rounded mt-2 opacity-20">
 
-    <div class="p-4 overflow-y-auto h-80 scroll">
-      <div *ngFor="let prop of sortByDate(activity)" class="select-none">
-        <h3 class="font-semibold text-lg">{{ prop | date:'mediumDate' }} - {{ countIntake(activity[prop])
-          }}ml</h3>
-        <div class="flex items-center py-2" *ngFor="let obj of activity[prop]">
-          <p class="mr-2">{{ obj.hour }}</p>
-          <p>-</p>
-          <p class="ml-2">{{ obj.intake }}ml</p>
-          <svg *ngIf="prop === getTodayDate()" (click)="deleteActivityNotifier.emit(obj)"
-            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-            class="h-5 w-5 fill-red-500 cursor-pointer ml-auto" viewBox="0 0 16 16">
-            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-            <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z" />
-          </svg>
-        </div>
-        <hr class="border border-blue-300 my-4 opacity-10">
-      </div>
-      <div *ngIf="getActivityLength(activity) <= 0"
-        class="flex flex-col justify-center items-center w-full h-full select-none">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-          class="h-12 w-12 fill-blue-300" viewBox="0 0 16 16">
-          <path fill-rule="evenodd"
-            d="M7.21.8C7.69.295 8 0 8 0c.109.363.234.708.371 1.038.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21.8zm.413 1.021A31.25 31.25 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z" />
-          <path fill-rule="evenodd"
-            d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87l-.894-.448z" />
+  <div class="p-4 overflow-y-auto h-80 scroll">
+    <div *ngFor="let prop of sortByDate(activity)" class="select-none">
+      <h3 class="font-semibold text-lg">{{ prop | date:'mediumDate' }} - {{ countIntake(activity[prop])
+        }}ml</h3>
+      <div class="flex items-center py-2" *ngFor="let obj of activity[prop]">
+        <p class="mr-2">{{ obj.hour }}</p>
+        <p>-</p>
+        <p class="ml-2">{{ obj.intake }}ml</p>
+        <svg *ngIf="prop === getTodayDate()" (click)="deleteActivityNotifier.emit(obj)"
+          xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+          class="h-5 w-5 fill-red-500 cursor-pointer ml-auto" viewBox="0 0 16 16">
+          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+          <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z" />
         </svg>
-        <h3 class="font-semibold mt-4 text-lg">Nothing here yet!</h3>
       </div>
+      <hr class="border border-blue-300 my-4 opacity-10">
+    </div>
+    <div *ngIf="getActivityLength(activity) <= 0"
+      class="flex flex-col justify-center items-center w-full h-full select-none">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="h-12 w-12 fill-blue-300"
+        viewBox="0 0 16 16">
+        <path fill-rule="evenodd"
+          d="M7.21.8C7.69.295 8 0 8 0c.109.363.234.708.371 1.038.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21.8zm.413 1.021A31.25 31.25 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z" />
+        <path fill-rule="evenodd"
+          d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87l-.894-.448z" />
+      </svg>
+      <h3 class="font-semibold mt-4 text-lg">Nothing here yet!</h3>
     </div>
   </div>
-</div>
+</app-modal>
