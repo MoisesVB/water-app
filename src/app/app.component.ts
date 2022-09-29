@@ -46,13 +46,24 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.handleGoal();
-    this.handleReminder();
+    this.handleInitialModals();
+
+    if (this.userData.goal > 0 && this.userData.reminder! > 0) {
+      this.handleData();
+    }
+  }
+
+  handleData() {
     this.handleDate();
     this.handleCups();
     this.handleIntake();
     this.handleActivity();
     this.requestNotificationPermission();
+  }
+
+  handleInitialModals() {
+    this.handleGoal();
+    this.handleReminder();
   }
 
   isGoalModalVisible() {
@@ -382,6 +393,8 @@ export class AppComponent implements OnInit {
     this.userData.reminder = addedReminder;
 
     this.setReminderView(false);
+
+    this.handleData();
   }
 
   handleCupClick(cupId: string) {
@@ -510,12 +523,6 @@ export class AppComponent implements OnInit {
     this.processData.reminderIntervals = [];
     this.processData.progressBarPercentage = 0;
 
-    this.handleGoal();
-    this.handleReminder();
-    this.handleDate();
-    this.handleCups();
-    this.handleIntake();
-    this.handleActivity();
-    this.requestNotificationPermission();
+    this.handleInitialModals();
   }
 }
