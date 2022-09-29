@@ -7,6 +7,7 @@ import { StoreLocalService } from './store-local.service';
 import { UserData } from './user-data';
 import { Constants } from './constants';
 import { ModalService } from './services/modal.service';
+import { MessageService } from './services/message.service';
 
 @Component({
   selector: 'app-root',
@@ -42,7 +43,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     public service: StoreLocalService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit() {
@@ -84,6 +86,14 @@ export class AppComponent implements OnInit {
 
   isReminderModalVisible() {
     return this.modalService.isVisible('reminder');
+  }
+
+  isErrorMessageVisible() {
+    return this.messageService.isVisible('error');
+  }
+
+  setErrorView(status: boolean, message?: string) {
+    this.messageService.setVisibility('error', status, message);
   }
 
   handleDate() {
@@ -219,6 +229,18 @@ export class AppComponent implements OnInit {
 
   addCupFromView(capacity: string) {
     const capacityNumber = Number(capacity);
+
+    const cups = this.service.getAllCups();
+    const foundDuplicate = cups.find(cup => cup.capacity === capacityNumber);
+
+    try {
+      if (foundDuplicate) {
+        throw new Error('Failed to add cup, cup is duplicated');
+      }
+    } catch (err) {
+      this.setErrorView(true, 'Failed to add cup, cup is duplicated');
+      return;
+    }
 
     const addedCup = this.service.addCup(capacityNumber, true);
     this.addCupLocal(addedCup);

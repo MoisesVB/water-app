@@ -68,3 +68,6 @@
 <app-cup-modal *ngIf="isCupModalVisible()" [@leaveEnter] [isVisible]="isCupModalVisible()"
   (createCupNotifier)="addCupFromView($event)">
 </app-cup-modal>
+
+<app-error-message *ngIf="isErrorMessageVisible()" [@leaveEnter]>
+</app-error-message>

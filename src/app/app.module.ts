@@ -14,6 +14,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent } from './modal/modal.component';
 import { OverlayComponent } from './overlay/overlay.component';
 import { ReminderModalComponent } from './reminder-modal/reminder-modal.component';
+import { MessageComponent } from './message/message.component';
+import { ErrorMessageComponent } from './error-message/error-message.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { ReminderModalComponent } from './reminder-modal/reminder-modal.componen
     CupModalComponent,
     ModalComponent,
     OverlayComponent,
-    ReminderModalComponent
+    ReminderModalComponent,
+    MessageComponent,
+    ErrorMessageComponent
   ],
   imports: [
     BrowserModule,

@@ -40,7 +40,6 @@ export class CupModalComponent implements OnInit {
 
   createCup() {
     this.createCupNotifier.emit(this.cup.value);
-    this.closeModal();
     this.cup.reset();
   }
 
