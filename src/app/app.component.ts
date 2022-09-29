@@ -81,6 +81,10 @@ export class AppComponent implements OnInit {
     return this.modalService.isVisible('goal');
   }
 
+  isCupModalVisible() {
+    return this.modalService.isVisible('cup');
+  }
+
   handleDate() {
     let storedDay;
 
@@ -209,7 +213,7 @@ export class AppComponent implements OnInit {
   }
 
   setCupView(status: boolean) {
-    this.configData.isCupModalOpen = status;
+    this.modalService.setVisibility('cup', status);
   }
 
   addCupFromView(capacity: string) {

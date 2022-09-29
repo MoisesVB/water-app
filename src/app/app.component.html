@@ -57,12 +57,12 @@
   <app-log-modal [activity]="this.userData.activity" [isLogOpen]="configData.isLogOpen"
     (closeLogNotifier)="setActivityView(false)" (deleteActivityNotifier)="deleteActivityFromView($event)">
   </app-log-modal>
-
-  <app-cup-modal [isCupModalOpen]="configData.isCupModalOpen" (closeCupModalNotifier)="setCupView(false)"
-    (createCupNotifier)="addCupFromView($event)">
-  </app-cup-modal>
 </div>
 
 <app-goal-modal *ngIf="isGoalModalVisible()" [@leaveEnter] [isVisible]="isGoalModalVisible()"
   (add)="addGoalFromView($event)">
 </app-goal-modal>
+
+<app-cup-modal *ngIf="isCupModalVisible()" [@leaveEnter] [isVisible]="isCupModalVisible()"
+  (createCupNotifier)="addCupFromView($event)">
+</app-cup-modal>

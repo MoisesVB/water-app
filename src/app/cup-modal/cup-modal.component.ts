@@ -1,46 +1,33 @@
-import { trigger, transition, style, animate } from '@angular/animations';
 import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { validateCup } from 'src/shared/cup.validator';
+import { ModalService } from '../services/modal.service';
 
 @Component({
   selector: 'app-cup-modal',
   templateUrl: './cup-modal.component.html',
-  animations: [
-    trigger('leaveEnter', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate(300, style({ opacity: 1 }))
-      ]),
-      transition(':leave', [
-        animate(300, style({ opacity: 0 }))
-      ])
-    ])
-  ]
 })
 export class CupModalComponent implements OnInit {
 
-  constructor() { }
+  constructor(private modalService: ModalService) { }
 
   ngOnInit(): void {
   }
 
-  @Input() isCupModalOpen!: boolean;
-
+  @Input() isVisible!: boolean;
   @Output() closeCupModalNotifier = new EventEmitter<MouseEvent>();
-
   @Output() createCupNotifier = new EventEmitter();
 
   @HostListener('document:keydown.escape', ['$event'])
   closeCupModalOnEsc() {
-    if (this.isCupModalOpen) {
+    if (this.isVisible) {
       this.closeCupModalNotifier.emit();
     }
   }
 
   @HostListener('document:keydown.enter', ['$event'])
   createCupOnEnter() {
-    if (this.isCupModalOpen && this.cup.valid) {
+    if (this.isVisible && this.cup.valid) {
       this.createCup();
     }
   }
@@ -56,5 +43,9 @@ export class CupModalComponent implements OnInit {
     this.createCupNotifier.emit(this.cup.value);
     this.closeCupModalNotifier.emit();
     this.cup.reset();
+  }
+
+  closeModal() {
+    this.modalService.setVisibility('cup', false);
   }
 }
