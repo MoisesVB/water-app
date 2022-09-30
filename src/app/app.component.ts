@@ -249,6 +249,18 @@ export class AppComponent implements OnInit {
     this.userData.selectedCup = undefined;
   }
 
+  sortCupsByCapacity(cups: Cup[]) {
+    if (cups && cups.length > 0) {
+      const arr = cups.sort((a, b) => {
+        return a.capacity - b.capacity;
+      });
+
+      return arr;
+    }
+
+    return;
+  }
+
   deleteCupByIdFromView(id: string) {
     const deletedCup = this.service.deleteCupById(id);
     this.userData.cups = this.userData.cups?.filter(cup => cup.id !== deletedCup.id);

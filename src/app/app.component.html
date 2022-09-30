@@ -24,8 +24,8 @@
     </app-progress-bar>
 
     <div class="flex mt-28 pb-4 gap-5 overflow-x-auto scroll justify-start">
-      <app-card *ngFor="let cup of this.userData.cups" [cup]="cup" [selectedCup]="userData.selectedCup"
-        (selected)="handleCupClick($event)">
+      <app-card *ngFor="let cup of sortCupsByCapacity(this.userData.cups!)" [cup]="cup"
+        [selectedCup]="userData.selectedCup" (selected)="handleCupClick($event)">
       </app-card>
 
       <div (click)="setCupView(true)"
