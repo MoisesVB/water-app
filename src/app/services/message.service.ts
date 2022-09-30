@@ -8,11 +8,26 @@ export class MessageService {
   messages: Message[] = [];
   queue: Message[] = [];
 
+  // there's only one type of message for each category
+  // new categories with same id cannot be added
+  // example: [{ id: 'error' }, { id: 'warning' }]
+  // not: [{ id: 'error' }, { id: 'error' }]
+
   constructor() {
     this.register('error');
   }
 
   register(id: string) {
+    if (Number(id) || !id) {
+      throw new Error('Invalid id');
+    }
+
+    const idAlreadyExists = this.messages.find(msg => msg.id === id);
+
+    if (idAlreadyExists) {
+      throw new Error('Id already exists');
+    }
+
     this.messages.push({ id, visible: false });
   }
 
