@@ -55,21 +55,56 @@ export class MessageService {
     return message.message;
   }
 
-  syncQueue() {
+  updateMessage(id: string, visible: boolean, message?: string) {
+    if (visible && !message) {
+      throw new Error('Message description not set');
+    }
+
+    const toUpdate = this.messages.find(msg => msg.id === id);
+
+    if (!toUpdate) {
+      throw new Error('Message not found');
+    }
+
+    this.messages = this.messages.map(msg => {
+      if (msg.id === id) {
+        msg.visible = visible;
+        msg.message = message;
+      }
+
+      return msg;
+    });
+
+    const updatedMessage = this.messages.find(msg => msg.id === id);
+
+    return updatedMessage;
+  }
+
+  removeFromQueue(id: string) {
+    const toRemove = this.queue.find(msg => msg.id === id);
+
+    if (!toRemove) {
+      throw new Error('Message not found');
+    }
+
+    this.queue = this.queue.filter(q => q.id !== toRemove.id);
+
+    return toRemove;
+  }
+
+  syncQueueAndMessage() {
     if (this.queue.length > 0) {
       const toUpdate = this.queue[0];
+      const { id, visible, message } = toUpdate;
 
-      this.messages = this.messages.map(msg => {
-        if (msg.id === toUpdate.id) {
-          msg.visible = toUpdate.visible;
-          msg.message = toUpdate.message;
-        }
+      const updatedMessage = this.updateMessage(id, visible, message!);
 
-        return msg;
-      });
+      const deletedMessage = this.removeFromQueue(id);
 
-      this.queue = this.queue.filter(q => q.id !== toUpdate.id);
+      return { updated: updatedMessage, deleted: deletedMessage };
     }
+
+    return;
   }
 
   addToQueue(id: string, visible: boolean, message: string) {
@@ -97,7 +132,7 @@ export class MessageService {
       throw new Error('Message not found');
     }
 
-    this.syncQueue();
+    this.syncQueueAndMessage();
 
     const activeModal = this.messages.find(msg => msg.visible && msg.id !== id);
 
@@ -106,14 +141,7 @@ export class MessageService {
       return;
     }
 
-    this.messages = this.messages.map(msg => {
-      if (msg.id === id) {
-        msg.visible = visible;
-        msg.message = message;
-      }
-
-      return msg;
-    });
+    this.updateMessage(id, visible, message);
   }
 
   unregister(id: string) {

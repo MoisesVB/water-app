@@ -94,4 +94,62 @@ describe('MessageService', () => {
   it('#addToQueue should return added message', () => {
     expect(service.addToQueue('error', true, 'Duplicated cups')).toEqual({ id: 'error', visible: true, message: 'Duplicated cups' });
   });
+
+  it('#updateMessage should throw error if message with the id is not found', () => {
+    expect(() => service.updateMessage('recover', true, 'Testing')).toThrow(new Error('Message not found'));
+  });
+
+  it('#updateMessage should throw error if message is not set while visible is true', () => {
+    expect(() => service.updateMessage('recover', true, '')).toThrow(new Error('Message description not set'));
+  });
+
+  it('#updateMessage should return updated message if visible is false and message is undefined', () => {
+    expect(service.updateMessage('error', false, undefined)).toEqual({ id: 'error', visible: false, message: undefined });
+  });
+
+  it('#updateMessage should return updated message if visible is true and message is set', () => {
+    expect(service.updateMessage('error', true, 'An error occurred')).toEqual({ id: 'error', visible: true, message: 'An error occurred' });
+  });
+
+  it('#removeFromQueue should throw error if message with id is not found', () => {
+    expect(() => service.removeFromQueue('recover')).toThrow(new Error('Message not found'));
+  });
+
+  it('#removeFromQueue should return removed message', () => {
+    service.addToQueue('warning', true, 'Testing');
+
+    expect(service.removeFromQueue('warning')).toEqual({ id: 'warning', visible: true, message: 'Testing' });
+  });
+
+  it('#removeFromQueue should remove message and message should not be on queue array', () => {
+    service.addToQueue('warning', true, 'Testing');
+
+    const removedMessage = service.removeFromQueue('warning');
+
+    expect(service.queue).not.toContain(removedMessage);
+  });
+
+  it('#syncQueueAndMessage should be undefined when queue is empty', () => {
+    expect(service.syncQueueAndMessage()).toBeUndefined();
+  });
+
+  it('#syncQueueAndMessage should return updated and deleted message', () => {
+    service.register('warning');
+
+    service.addToQueue('warning', true, 'Testing');
+
+    expect(Object.keys(service.syncQueueAndMessage()!).length).toBe(2);
+  });
+
+  it('#syncQueueAndMessage should sync only one time each call', () => {
+    service.register('warning');
+    service.register('recover');
+
+    service.addToQueue('warning', true, 'Testing');
+    service.addToQueue('recover', true, 'Testing Test');
+
+    service.syncQueueAndMessage();
+
+    expect(service.queue.length).toBe(1);
+  });
 });
