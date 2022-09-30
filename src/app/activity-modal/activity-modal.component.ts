@@ -3,10 +3,10 @@ import { Activity, ActivityData } from '../../shared/models/activity';
 import { ModalService } from '../services/modal.service';
 
 @Component({
-  selector: 'app-log-modal',
-  templateUrl: './log-modal.component.html',
+  selector: 'app-activity-modal',
+  templateUrl: './activity-modal.component.html',
 })
-export class LogModalComponent implements OnInit {
+export class ActivityModalComponent implements OnInit {
 
   constructor(private modalService: ModalService) { }
 
@@ -17,7 +17,7 @@ export class LogModalComponent implements OnInit {
   @Output() deleteActivityNotifier = new EventEmitter<ActivityData>();
 
   @HostListener('document:keydown.escape', ['$event'])
-  closeLogOnEsc() {
+  closeActivityOnEsc() {
     if (this.isVisible) {
       this.closeModal();
     }

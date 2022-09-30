@@ -61,9 +61,9 @@
   (deleteCustomCupNotifier)="deleteCupByIdFromView($event)">
 </app-settings-modal>
 
-<app-log-modal *ngIf="isActivityModalVisible()" [@leaveEnter] [activity]="this.userData.activity"
+<app-activity-modal *ngIf="isActivityModalVisible()" [@leaveEnter] [activity]="this.userData.activity"
   [isVisible]="isActivityModalVisible()" (deleteActivityNotifier)="deleteActivityFromView($event)">
-</app-log-modal>
+</app-activity-modal>
 
 <app-cup-modal *ngIf="isCupModalVisible()" [@leaveEnter] [isVisible]="isCupModalVisible()"
   (createCupNotifier)="addCupFromView($event)">

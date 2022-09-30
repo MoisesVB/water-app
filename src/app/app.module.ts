@@ -7,7 +7,7 @@ import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 import { CardComponent } from './card/card.component';
 import { SubmitIntakeComponent } from './submit-intake/submit-intake.component';
 import { SettingsModalComponent } from './settings-modal/settings-modal.component';
-import { LogModalComponent } from './log-modal/log-modal.component';
+import { ActivityModalComponent } from './activity-modal/activity-modal.component';
 import { CupModalComponent } from './cup-modal/cup-modal.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -25,7 +25,7 @@ import { ErrorMessageComponent } from './error-message/error-message.component';
     CardComponent,
     SubmitIntakeComponent,
     SettingsModalComponent,
-    LogModalComponent,
+    ActivityModalComponent,
     CupModalComponent,
     ModalComponent,
     OverlayComponent,
