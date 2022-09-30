@@ -94,5 +94,13 @@ export class MessageService {
     });
   }
 
-  unregister() { }
+  unregister(id: string) {
+    const messageExists = this.messages.find(msg => msg.id === id);
+
+    if (!messageExists) {
+      throw new Error('Message not found');
+    }
+
+    this.messages = this.messages.filter(msg => msg.id !== id);
+  }
 }

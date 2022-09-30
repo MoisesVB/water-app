@@ -63,4 +63,17 @@ describe('MessageService', () => {
 
     expect(service.getMessage('error')).toBe('Duplicated cups');
   });
+
+  it('#unregister should throw error if message with the id is not found', () => {
+    expect(() => service.unregister('warning')).toThrow(new Error('Message not found'));
+  });
+
+  it('#unregister should remove message from the messages array', () => {
+    service.register('recover');
+
+    service.unregister('error');
+    service.unregister('recover');
+
+    expect(service.messages.length).toBe(0);
+  });
 });
