@@ -1,10 +1,10 @@
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { Cup } from './cup';
-import { Activity, ActivityData } from './activity';
-import { ProcessData } from './process-data';
-import { StoreLocalService } from './store-local.service';
-import { UserData } from './user-data';
+import { Cup } from '../shared/models/cup';
+import { Activity, ActivityData } from '../shared/models/activity';
+import { ProcessData } from './models/process-data';
+import { StoreLocalService } from './services/store-local.service';
+import { UserData } from './models/user-data';
 import { Constants } from './constants';
 import { ModalService } from './services/modal.service';
 import { MessageService } from './services/message.service';

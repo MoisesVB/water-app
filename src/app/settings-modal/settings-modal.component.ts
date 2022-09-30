@@ -1,5 +1,5 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
-import { Cup } from '../cup';
+import { Cup } from '../../shared/models/cup';
 import { ModalService } from '../services/modal.service';
 
 @Component({

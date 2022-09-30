@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
-import { Activity, ActivityData } from '../activity';
+import { Activity, ActivityData } from '../../shared/models/activity';
 import { ModalService } from '../services/modal.service';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Cup } from '../cup';
+import { Cup } from '../../shared/models/cup';
 
 @Component({
   selector: 'app-card',

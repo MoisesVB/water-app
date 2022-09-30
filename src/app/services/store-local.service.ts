@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
-import { Activity, ActivityData } from './activity';
-import { Constants } from './constants';
-import { Cup } from './cup';
+import { Activity, ActivityData } from '../../shared/models/activity';
+import { Constants } from '../constants';
+import { Cup } from '../../shared/models/cup';
 
 @Injectable({
   providedIn: 'root'

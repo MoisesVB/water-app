@@ -1,5 +1,5 @@
-import { Activity } from "./activity";
-import { Cup } from "./cup";
+import { Activity } from "../../shared/models/activity";
+import { Cup } from "../../shared/models/cup";
 
 export interface UserData {
     goal: number;

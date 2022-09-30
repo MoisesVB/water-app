@@ -1,6 +1,6 @@
-import { Activity } from "./activity";
-import { Constants } from "./constants";
-import { Cup } from "./cup";
+import { Activity } from "../../shared/models/activity";
+import { Constants } from "../constants";
+import { Cup } from "../../shared/models/cup";
 import { StoreLocalService } from "./store-local.service"
 
 describe('StoreLocalService', () => {

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { first } from "rxjs";
-import { Cup } from "../cup";
+import { Cup } from "../../shared/models/cup";
 import { CardComponent } from "./card.component";
 
 describe('CardComponent', () => {
