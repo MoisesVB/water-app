@@ -141,7 +141,7 @@ export class MessageService {
       return;
     }
 
-    this.updateMessage(id, visible, message);
+    return this.updateMessage(id, visible, message);
   }
 
   unregister(id: string) {

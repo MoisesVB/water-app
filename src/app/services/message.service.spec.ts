@@ -152,4 +152,40 @@ describe('MessageService', () => {
 
     expect(service.queue.length).toBe(1);
   });
+
+  it('#setVisibility should throw error if message with id is not found', () => {
+    expect(() => service.setVisibility('warning', true, 'Testing')).toThrow(new Error('Message not found'));
+  })
+
+  it('#setVisibility should return updated message', () => {
+    expect(service.setVisibility('error', true, 'Testing')).toEqual({ id: 'error', visible: true, message: 'Testing' });
+  })
+
+  it('#setVisibility should be undefined when setting visible to true when there is already a message visible', () => {
+    service.register('warning');
+    service.setVisibility('warning', true, 'Test');
+
+    expect(service.setVisibility('error', true, 'Testing')).toBeUndefined();
+  })
+
+  it('#setVisibility should return updated message when visible is false and there is already a message visible', () => {
+    service.register('warning');
+    service.setVisibility('warning', true, 'Test');
+
+    expect(service.setVisibility('error', false)).toEqual({ id: 'error', visible: false, message: undefined });
+  })
+
+  it('#setVisibility should return updated message when visible is true and there is no message visible', () => {
+    service.register('warning');
+    service.setVisibility('warning', false);
+
+    expect(service.setVisibility('error', true, 'Testing')).toEqual({ id: 'error', visible: true, message: 'Testing' });
+  })
+
+  it('#setVisibility should return updated message when visible is false and there is no message visible', () => {
+    service.register('warning');
+    service.setVisibility('warning', false);
+
+    expect(service.setVisibility('error', false)).toEqual({ id: 'error', visible: false, message: undefined });
+  })
 });
