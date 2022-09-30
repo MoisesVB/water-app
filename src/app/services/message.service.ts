@@ -117,12 +117,14 @@ export class MessageService {
   }
 
   unregister(id: string) {
-    const messageExists = this.messages.find(msg => msg.id === id);
+    const toUnregister = this.messages.find(msg => msg.id === id);
 
-    if (!messageExists) {
+    if (!toUnregister) {
       throw new Error('Message not found');
     }
 
     this.messages = this.messages.filter(msg => msg.id !== id);
+
+    return toUnregister;
   }
 }

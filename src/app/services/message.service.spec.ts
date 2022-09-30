@@ -77,6 +77,10 @@ describe('MessageService', () => {
     expect(service.messages.length).toBe(0);
   });
 
+  it('#unregister should return removed message', () => {
+    expect(service.unregister('error')).toEqual({ id: 'error', visible: false });
+  });
+
   it('#addToQueue should throw error if message already exists', () => {
     service.addToQueue('recover', true, 'Item deleted, click the button to undo changes');
 
