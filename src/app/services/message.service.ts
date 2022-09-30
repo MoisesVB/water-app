@@ -29,6 +29,10 @@ export class MessageService {
     }
 
     this.messages.push({ id, visible: false });
+
+    const addedMessage = this.messages.find(msg => msg.id === id);
+
+    return addedMessage;
   }
 
   isVisible(id: string) {

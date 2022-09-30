@@ -20,10 +20,10 @@ describe('MessageService', () => {
   });
 
   it('#register should push message to array of messages', () => {
-    service.register('recover');
+    const addedMessage = service.register('recover');
 
     expect(service.messages.length).toBe(2);
-    expect(service.messages[1].id).toBe('recover');
+    expect(addedMessage).toEqual({ id: 'recover', visible: false });
   });
 
   it('#register should throw error if id is a number', () => {
