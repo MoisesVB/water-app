@@ -76,4 +76,18 @@ describe('MessageService', () => {
 
     expect(service.messages.length).toBe(0);
   });
+
+  it('#addToQueue should throw error if message already exists', () => {
+    service.addToQueue('recover', true, 'Item deleted, click the button to undo changes');
+
+    expect(() => service.addToQueue('recover', true, 'test')).toThrow(new Error('Message already exists'));
+  });
+
+  it('#addToQueue should throw error if message description is not set', () => {
+    expect(() => service.addToQueue('recover', true, '')).toThrow(new Error('Message description is not set'));
+  });
+
+  it('#addToQueue should return added message', () => {
+    expect(service.addToQueue('error', true, 'Duplicated cups')).toEqual({ id: 'error', visible: true, message: 'Duplicated cups' });
+  });
 });

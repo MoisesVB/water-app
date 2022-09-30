@@ -68,6 +68,24 @@ export class MessageService {
     }
   }
 
+  addToQueue(id: string, visible: boolean, message: string) {
+    const messageExists = this.queue.find(msg => msg.id === id);
+
+    if (messageExists) {
+      throw new Error('Message already exists');
+    }
+
+    if (!message) {
+      throw new Error('Message description is not set');
+    }
+
+    this.queue.push({ id, visible, message });
+
+    const addedMessage = this.queue.find(q => q.id === id);
+
+    return addedMessage;
+  }
+
   setVisibility(id: string, visible: boolean, message?: string) {
     const messageExists = this.messages.find(msg => msg.id === id);
 
@@ -80,7 +98,7 @@ export class MessageService {
     const activeModal = this.messages.find(msg => msg.visible && msg.id !== id);
 
     if (activeModal && visible) {
-      this.queue.push({ id, visible, message });
+      this.addToQueue(id, visible, message!);
       return;
     }
 
