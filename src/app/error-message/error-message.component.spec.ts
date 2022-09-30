@@ -1,6 +1,9 @@
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ErrorMessageComponent } from './error-message.component';
+
+@Component({ selector: 'app-message', template: '' })
+class MessageStubComponent { }
 
 describe('ErrorMessageComponent', () => {
   let component: ErrorMessageComponent;
@@ -8,9 +11,10 @@ describe('ErrorMessageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ErrorMessageComponent ]
+      declarations: [ErrorMessageComponent, MessageStubComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(ErrorMessageComponent);
     component = fixture.componentInstance;

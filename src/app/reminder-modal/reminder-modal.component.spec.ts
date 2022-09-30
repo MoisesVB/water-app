@@ -1,6 +1,9 @@
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ReminderModalComponent } from './reminder-modal.component';
+
+@Component({ selector: 'app-modal', template: '' })
+class ModalStubComponent { }
 
 describe('ReminderModalComponent', () => {
   let component: ReminderModalComponent;
@@ -8,9 +11,9 @@ describe('ReminderModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReminderModalComponent ]
+      declarations: [ReminderModalComponent, ModalStubComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(ReminderModalComponent);
     component = fixture.componentInstance;

@@ -1,12 +1,16 @@
+import { Component } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { GoalModalComponent } from "./goal-modal.component";
+
+@Component({ selector: 'app-modal', template: '' })
+class ModalStubComponent { }
 
 describe('GoalModalComp', () => {
     let component: GoalModalComponent;
     let fixture: ComponentFixture<GoalModalComponent>;
 
     beforeEach(() => {
-        TestBed.configureTestingModule({ declarations: [GoalModalComponent] });
+        TestBed.configureTestingModule({ declarations: [GoalModalComponent, ModalStubComponent] });
         fixture = TestBed.createComponent(GoalModalComponent);
         component = fixture.componentInstance;
     });
@@ -30,7 +34,7 @@ describe('GoalModalComp', () => {
     });
 
     it('should call emitAddGoal function', () => {
-        component.isGoalModalOpen = true;
+        component.isVisible = true;
         component.goal.setValue('2000');
 
         spyOn(component, 'emitAddGoal');
@@ -40,7 +44,7 @@ describe('GoalModalComp', () => {
     });
 
     it('should not call emitAddGoal function if goal value is invalid', () => {
-        component.isGoalModalOpen = true;
+        component.isVisible = true;
         component.goal.setValue('abc');
 
         spyOn(component, 'emitAddGoal');
