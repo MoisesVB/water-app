@@ -8,6 +8,7 @@ import { UserData } from './models/user-data';
 import { Constants } from './constants';
 import { ModalService } from './services/modal.service';
 import { MessageService } from './services/message.service';
+import { CupIcon } from 'src/shared/models/cup-icon';
 
 @Component({
   selector: 'app-root',
@@ -195,7 +196,14 @@ export class AppComponent implements OnInit {
       cups = this.getAllCups();
     } catch (err) {
       if (err instanceof Error) {
-        const addedCups = [100, 200, 250, 500].map(capacity => this.service.addCup(capacity, false));
+        const model = [
+          { capacity: 100, icon: CupIcon.ExtraSmall },
+          { capacity: 200, icon: CupIcon.Small },
+          { capacity: 250, icon: CupIcon.Medium },
+          { capacity: 500, icon: CupIcon.Large }
+        ];
+
+        const addedCups = model.map(obj => this.service.addCup(obj.capacity, false, obj.icon));
         addedCups.forEach(cup => this.addCupLocal(cup));
 
         return;
@@ -227,7 +235,10 @@ export class AppComponent implements OnInit {
     this.modalService.setVisibility('cup', status);
   }
 
-  addCupFromView(capacity: string) {
+  addCupFromView(obj: any) {
+    const capacity = obj.cup;
+    const icon = obj.icon;
+
     const capacityNumber = Number(capacity);
 
     const cups = this.service.getAllCups();
@@ -242,7 +253,7 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    const addedCup = this.service.addCup(capacityNumber, true);
+    const addedCup = this.service.addCup(capacityNumber, true, icon);
     this.addCupLocal(addedCup);
     this.setCupView(false);
 

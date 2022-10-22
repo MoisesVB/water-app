@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { first } from "rxjs";
+import { CupIcon } from "src/shared/models/cup-icon";
 import { Cup } from "../../shared/models/cup";
 import { CardComponent } from "./card.component";
 
@@ -18,7 +19,7 @@ describe('CardComponent', () => {
     });
 
     it('raises the click event when clicked', () => {
-        const cup: Cup = { id: 'abcde', capacity: 200, isCustom: false };
+        const cup: Cup = { id: 'abcde', capacity: 200, isCustom: false, icon: CupIcon.Medium };
         component.cup = cup;
 
         fixture.detectChanges();
@@ -28,7 +29,7 @@ describe('CardComponent', () => {
     });
 
     it('<div> should have white background and black text when cup id is the same as the selected cup', () => {
-        component.cup = { id: 'abcde', capacity: 200, isCustom: false };
+        component.cup = { id: 'abcde', capacity: 200, isCustom: false, icon: CupIcon.Medium };
         component.selectedCup = 'abcde';
 
         fixture.detectChanges();
@@ -40,7 +41,7 @@ describe('CardComponent', () => {
     });
 
     it('<div> should have black background and white text when cup id is not the same as the selected cup', () => {
-        component.cup = { id: 'abcde', capacity: 200, isCustom: false };
+        component.cup = { id: 'abcde', capacity: 200, isCustom: false, icon: CupIcon.Small };
         component.selectedCup = 'qwert';
 
         fixture.detectChanges();
@@ -52,7 +53,7 @@ describe('CardComponent', () => {
     });
 
     it('should have <h3> with "500ml"', () => {
-        component.cup = { id: 'qwert', capacity: 500, isCustom: false };
+        component.cup = { id: 'qwert', capacity: 500, isCustom: false, icon: CupIcon.ExtraLarge };
 
         fixture.detectChanges();
 

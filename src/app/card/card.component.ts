@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CupIcon } from 'src/shared/models/cup-icon';
 import { Cup } from '../../shared/models/cup';
 
 @Component({
@@ -8,6 +9,8 @@ import { Cup } from '../../shared/models/cup';
 export class CardComponent implements OnInit {
 
   constructor() { }
+
+  readonly cupIcon = CupIcon;
 
   ngOnInit(): void { }
 

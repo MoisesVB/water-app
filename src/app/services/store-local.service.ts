@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Activity, ActivityData } from '../../shared/models/activity';
 import { Constants } from '../constants';
 import { Cup } from '../../shared/models/cup';
+import { CupIcon } from 'src/shared/models/cup-icon';
 
 @Injectable({
   providedIn: 'root'
@@ -281,12 +282,11 @@ export class StoreLocalService {
     if (currentDay <= 0 || currentDay > 31 || !Number.isInteger(currentDay)) {
       throw new Error('Date is invalid');
     }
-
     return currentDay;
   }
 
   // cup methods
-  addCup(capacity: number, isCustom: boolean) {
+  addCup(capacity: number, isCustom: boolean, icon: CupIcon) {
     if (capacity <= 0 || capacity > Constants.MAX_WATER_TARGET || !Number.isInteger(capacity)) {
       throw new Error('Invalid cup values');
     }
@@ -302,7 +302,8 @@ export class StoreLocalService {
     const newCup: Cup = {
       id: uuidv4(),
       capacity: capacity,
-      isCustom: isCustom
+      isCustom: isCustom,
+      icon: icon
     }
 
     if (!cups) {
@@ -336,12 +337,24 @@ export class StoreLocalService {
     }
 
     cups.forEach(cup => {
-      if (!cup.id || typeof cup.id !== 'string' || !cup.capacity || cup.capacity <= 0 || cup.capacity > Constants.MAX_WATER_TARGET || !Number.isInteger(cup.capacity) || cup.isCustom === undefined || cup.isCustom === null || typeof cup.isCustom !== 'boolean') {
+      if (this.cupIsInvalid(cup)) {
         throw new Error('Invalid cup found');
       }
     })
 
     return cups;
+  }
+
+  // TODO: create tests
+  cupIsInvalid(cup: Cup) {
+    const idIsInvalid = !cup.id || typeof cup.id !== 'string';
+    const isCapacityInvalid = !cup.capacity || cup.capacity <= 0 || cup.capacity > Constants.MAX_WATER_TARGET || !Number.isInteger(cup.capacity);
+    const isCustomInvalid = cup.isCustom === undefined || cup.isCustom === null || typeof cup.isCustom !== 'boolean';
+
+    const iconIsEnum = Object.values(CupIcon).includes(cup.icon as CupIcon);
+    const isIconInvalid = !cup.icon || !iconIsEnum;
+
+    return idIsInvalid || isCapacityInvalid || isCustomInvalid || isIconInvalid;
   }
 
   deleteCupById(id: string) {

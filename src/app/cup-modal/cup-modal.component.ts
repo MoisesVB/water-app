@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { validateCup } from 'src/shared/cup.validator';
+import { CupIcon } from 'src/shared/models/cup-icon';
 import { ModalService } from '../services/modal.service';
 
 @Component({
@@ -13,6 +14,8 @@ export class CupModalComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  readonly cupIcon = CupIcon;
 
   @Input() isVisible!: boolean;
   @Output() createCupNotifier = new EventEmitter();
@@ -38,9 +41,19 @@ export class CupModalComponent implements OnInit {
     validateCup
   ]);
 
+  icon = new FormControl('', [
+    Validators.required,
+    validateCup
+  ]);
+
+  setCupIcon(icon: CupIcon) {
+    this.icon.setValue(icon);
+  }
+
   createCup() {
-    this.createCupNotifier.emit(this.cup.value);
+    this.createCupNotifier.emit({ cup: this.cup.value, icon: this.icon.value });
     this.cup.reset();
+    this.icon.reset();
   }
 
   closeModal() {
