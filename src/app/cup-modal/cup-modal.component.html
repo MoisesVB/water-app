@@ -24,7 +24,7 @@
         <div class="">
             <h3 class="font-semibold text-lg mb-2">Icon</h3>
 
-            <div class="flex justify-between">
+            <div class="flex pb-4 gap-5 overflow-x-auto scroll justify-start">
                 <div class="border border-white rounded p-4 cursor-pointer hover:animate-pulse"
                     (click)="setCupIcon(cupIcon.ExtraSmall)"
                     [ngClass]="icon.value === cupIcon.ExtraSmall ? 'bg-white' : ''">
