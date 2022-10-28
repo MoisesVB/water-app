@@ -16,6 +16,7 @@ import { OverlayComponent } from './overlay/overlay.component';
 import { ReminderModalComponent } from './reminder-modal/reminder-modal.component';
 import { MessageComponent } from './message/message.component';
 import { ErrorMessageComponent } from './error-message/error-message.component';
+import { CupIconComponent } from './cup-icon/cup-icon.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ErrorMessageComponent } from './error-message/error-message.component';
     OverlayComponent,
     ReminderModalComponent,
     MessageComponent,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    CupIconComponent
   ],
   imports: [
     BrowserModule,

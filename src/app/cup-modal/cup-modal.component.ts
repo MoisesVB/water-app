@@ -16,6 +16,7 @@ export class CupModalComponent implements OnInit {
   }
 
   readonly cupIcon = CupIcon;
+  readonly arrCupIcon = Object.values(CupIcon);
 
   @Input() isVisible!: boolean;
   @Output() createCupNotifier = new EventEmitter();

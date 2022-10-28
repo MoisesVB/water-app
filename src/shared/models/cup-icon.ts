@@ -3,5 +3,5 @@ export enum CupIcon {
     Small = 'Small',
     Medium = 'Medium',
     Large = 'Large',
-    ExtraLarge = 'ExtraLarge'
+    // ExtraLarge = 'ExtraLarge'
 }

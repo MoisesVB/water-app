@@ -726,15 +726,15 @@ describe('StoreLocalService', () => {
     })
 
     it('#addCup should throw error if capacity is negative', () => {
-        expect(() => service.addCup(-1, true, CupIcon.ExtraLarge)).toThrow(new Error('Invalid cup values'));
+        expect(() => service.addCup(-1, true, CupIcon.Large)).toThrow(new Error('Invalid cup values'));
     })
 
     it('#addCup should throw error if capacity is greater than MAX_WATER_TARGET', () => {
-        expect(() => service.addCup(Constants.MAX_WATER_TARGET + 1, false, CupIcon.ExtraLarge)).toThrow(new Error('Invalid cup values'));
+        expect(() => service.addCup(Constants.MAX_WATER_TARGET + 1, false, CupIcon.Large)).toThrow(new Error('Invalid cup values'));
     })
 
     it('#addCup should throw error if capacity is decimal', () => {
-        expect(() => service.addCup(324.44, true, CupIcon.ExtraLarge)).toThrow(new Error('Invalid cup values'));
+        expect(() => service.addCup(324.44, true, CupIcon.Large)).toThrow(new Error('Invalid cup values'));
     })
 
     it('#addCup should add cup two times in localStorage', () => {
@@ -757,7 +757,7 @@ describe('StoreLocalService', () => {
 
     // getAllCups tests
     it('#getAllCups should return cups from localStorage', () => {
-        const cups: Cup[] = [{ id: 'abcde', capacity: 550, isCustom: true, icon: CupIcon.ExtraLarge }];
+        const cups: Cup[] = [{ id: 'abcde', capacity: 550, isCustom: true, icon: CupIcon.Large }];
 
         window.localStorage.setItem('cups', JSON.stringify(cups));
 
@@ -782,7 +782,7 @@ describe('StoreLocalService', () => {
     })
 
     it('#getAllCups should throw error if capacity is greater than MAX_WATER_TARGET', () => {
-        const cups: Cup[] = [{ id: 'abcde', capacity: Constants.MAX_WATER_TARGET + 1, isCustom: true, icon: CupIcon.ExtraLarge }];
+        const cups: Cup[] = [{ id: 'abcde', capacity: Constants.MAX_WATER_TARGET + 1, isCustom: true, icon: CupIcon.Large }];
 
         window.localStorage.setItem('cups', JSON.stringify(cups));
 
@@ -798,7 +798,7 @@ describe('StoreLocalService', () => {
     })
 
     it('#getAllCups should throw error if capacity is not compatible with a number', () => {
-        const cups = [{ id: 'abcde', capacity: 'abfg', isCustom: true, icon: CupIcon.ExtraLarge }];
+        const cups = [{ id: 'abcde', capacity: 'abfg', isCustom: true, icon: CupIcon.Large }];
 
         window.localStorage.setItem('cups', JSON.stringify(cups));
 
@@ -869,7 +869,7 @@ describe('StoreLocalService', () => {
 
         const cups: Cup[] = [
             { id: 'qwert', capacity: 200, isCustom: false, icon: CupIcon.Medium },
-            { id: 'abcde', capacity: 350, isCustom: true, icon: CupIcon.ExtraLarge }
+            { id: 'abcde', capacity: 350, isCustom: true, icon: CupIcon.Large }
         ];
 
         window.localStorage.setItem('cups', JSON.stringify(cups));
@@ -887,8 +887,8 @@ describe('StoreLocalService', () => {
         spyOn(service, 'getAllCups').and.callFake(() => JSON.parse(window.localStorage.getItem('cups')!));
 
         const cups: Cup[] = [
-            { id: 'qwert', capacity: 200, isCustom: false, icon: CupIcon.ExtraLarge },
-            { id: 'abcde', capacity: 350, isCustom: true, icon: CupIcon.ExtraLarge }
+            { id: 'qwert', capacity: 200, isCustom: false, icon: CupIcon.Large },
+            { id: 'abcde', capacity: 350, isCustom: true, icon: CupIcon.Large }
         ];
 
         window.localStorage.setItem('cups', JSON.stringify(cups));
@@ -900,13 +900,13 @@ describe('StoreLocalService', () => {
         spyOn(service, 'getAllCups').and.callFake(() => JSON.parse(window.localStorage.getItem('cups')!));
 
         const cups: Cup[] = [
-            { id: 'qwert', capacity: 200, isCustom: false, icon: CupIcon.ExtraLarge },
-            { id: 'abcde', capacity: 350, isCustom: true, icon: CupIcon.ExtraLarge }
+            { id: 'qwert', capacity: 200, isCustom: false, icon: CupIcon.Large },
+            { id: 'abcde', capacity: 350, isCustom: true, icon: CupIcon.Large }
         ];
 
         window.localStorage.setItem('cups', JSON.stringify(cups));
 
-        expect(service.deleteCupById('abcde')).toEqual({ id: 'abcde', capacity: 350, isCustom: true, icon: CupIcon.ExtraLarge });
+        expect(service.deleteCupById('abcde')).toEqual({ id: 'abcde', capacity: 350, isCustom: true, icon: CupIcon.Large });
     })
 
     // deleteAllData tests
