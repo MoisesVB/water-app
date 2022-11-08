@@ -30,7 +30,7 @@ export class CupModalComponent implements OnInit {
 
   @HostListener('document:keydown.enter', ['$event'])
   createCupOnEnter() {
-    if (this.isVisible && this.cup.valid) {
+    if (this.isVisible && this.cup.valid && this.icon.valid) {
       this.createCup();
     }
   }
