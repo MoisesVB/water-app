@@ -19,7 +19,7 @@
 ### Requirements
 
 - [Node.js and NPM](https://nodejs.org/en/download/)
-- Angular CLI
+- [Angular CLI](https://angular.io/cli)
 
 ```console
 # install dependencies
