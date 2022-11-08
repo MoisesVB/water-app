@@ -16,6 +16,11 @@
 
 ## Set up development environment
 
+### Requirements
+
+- [Node.js and NPM](https://nodejs.org/en/download/)
+- Angular CLI
+
 ```console
 # install dependencies
 npm install
@@ -37,8 +42,3 @@ npm test
 # to build the app
 npm build
 ```
-
-### Requirements
-
-- [Node.js and NPM](https://nodejs.org/en/download/)
-- Angular CLI
