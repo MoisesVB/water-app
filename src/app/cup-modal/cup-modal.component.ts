@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { validateCup } from 'src/shared/cup.validator';
+import { validateIcon } from 'src/shared/icon.validator';
 import { CupIcon } from 'src/shared/models/cup-icon';
 import { ModalService } from '../services/modal.service';
 
@@ -44,7 +45,7 @@ export class CupModalComponent implements OnInit {
 
   icon = new FormControl('', [
     Validators.required,
-    validateCup
+    validateIcon
   ]);
 
   setCupIcon(icon: CupIcon) {
