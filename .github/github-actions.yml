@@ -43,12 +43,12 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        role-to-assume: arn:aws:iam::111111111111:role/my-github-actions-role-test
+        role-to-assume: ${{ secrets.AWS_ROLE }}
         aws-region: us-east-1
 
     - name: Push new changes to s3 and invalidate Cloud Front cache
       run: |
-        aws s3 sync . s3://my-s3-test-website-bucket
+        aws s3 sync . ${{ secrets.AWS_S3_BUCKET }}
         aws cloudfront create-invalidation \
-          --distribution-id balbablalba \
+          --distribution-id ${{ secrets.DISTRIBUTION_ID }} \
           --paths "/docs/*"
