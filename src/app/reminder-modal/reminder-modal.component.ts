@@ -40,4 +40,10 @@ export class ReminderModalComponent implements OnInit {
     this.add.emit(this.reminder.value!);
     this.reminder.reset();
   }
+
+  preventSelectTag(e: KeyboardEvent) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  }
 }
