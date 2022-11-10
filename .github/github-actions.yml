@@ -1,0 +1,54 @@
+name: Water App - CI/CD
+on: [push,pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      # required for accessing files in repository.
+
+      - name: Use Node.js 
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14.x'
+      - run: npm install
+      - run: npm run build
+      - run: echo "Test running .. ok"
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: package
+          path: "{{ github.workspace }}/docs"
+
+  deploy:
+    runs-on: ubuntu-20.04
+
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    permissions:
+      id-token: write
+      contents: read
+    if: github.ref == 'refs/heads/main' 
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/download-artifact@v3
+      with:
+        name: package
+        path: "{{ github.workspace }}/docs"
+    - name: Display structure of downloaded files
+      run: ls -R
+      working-directory: "{{ github.workspace }}/docs"
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{ secrets.AWS_ROLE }}
+        aws-region: us-east-1
+
+    - name: Push new changes to s3 and invalidate Cloud Front cache
+      run: |
+        aws s3 sync . ${{ secrets.AWS_S3_BUCKET }}
+        aws cloudfront create-invalidation \
+          --distribution-id ${{ secrets.DISTRIBUTION_ID }} \
+          --paths "/docs/*"
