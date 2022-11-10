@@ -52,4 +52,3 @@ jobs:
         aws cloudfront create-invalidation \
           --distribution-id balbablalba \
           --paths "/docs/*"
- 
