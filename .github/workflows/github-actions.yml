@@ -19,7 +19,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: package
-          path: "{{ github.workspace }}/docs"
+          path: "${{ github.workspace }}/docs"
 
   deploy:
     runs-on: ubuntu-20.04
@@ -35,10 +35,10 @@ jobs:
     - uses: actions/download-artifact@v3
       with:
         name: package
-        path: "{{ github.workspace }}/docs"
+        path: "${{ github.workspace }}/docs"
     - name: Display structure of downloaded files
       run: ls -R
-      working-directory: "{{ github.workspace }}/docs"
+      working-directory: "${{ github.workspace }}/docs"
       
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
