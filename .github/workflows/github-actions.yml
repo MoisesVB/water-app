@@ -35,7 +35,8 @@ jobs:
     - uses: actions/download-artifact@v3
       with:
         name: package
-        path: "${{ github.workspace }}/docs"
+        # path: "${{ github.workspace }}/docs"
+        path: "docs/"
     - name: Display structure of downloaded files
       run: ls -R
       working-directory: "${{ github.workspace }}/docs"
