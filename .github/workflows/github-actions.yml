@@ -22,6 +22,7 @@ jobs:
           path: "${{ github.workspace }}/docs"
 
   deploy:
+    needs: build
     runs-on: ubuntu-20.04
 
     # These permissions are needed to interact with GitHub's OIDC Token endpoint.
@@ -35,8 +36,7 @@ jobs:
     - uses: actions/download-artifact@v3
       with:
         name: package
-        # path: "${{ github.workspace }}/docs"
-        path: "docs/"
+        path: "${{ github.workspace }}/docs"
     - name: Display structure of downloaded files
       run: ls -R
       working-directory: "${{ github.workspace }}/docs"
