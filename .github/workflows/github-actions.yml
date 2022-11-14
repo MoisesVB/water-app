@@ -49,7 +49,7 @@ jobs:
 
     - name: Push new changes to s3 and invalidate Cloud Front cache
       run: |
-        aws s3 sync /docs/ ${{ secrets.AWS_S3_BUCKET }}
+        aws s3 sync ./docs/ ${{ secrets.AWS_S3_BUCKET }}
         aws cloudfront create-invalidation \
           --distribution-id ${{ secrets.DISTRIBUTION_ID }} \
           --paths "/*"
