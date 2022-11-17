@@ -97,6 +97,14 @@ export class AppComponent implements OnInit {
     this.messageService.setVisibility('error', status, message);
   }
 
+  setSuccessView(status: boolean, message?: string) {
+    this.messageService.setVisibility('success', status, message);
+  }
+
+  isSuccessMessageVisible() {
+    return this.messageService.isVisible('success');
+  }
+
   handleDate() {
     let storedDay;
 
@@ -258,6 +266,8 @@ export class AppComponent implements OnInit {
     this.setCupView(false);
 
     this.userData.selectedCup = undefined;
+
+    this.setSuccessView(true, 'Added cup successfully');
   }
 
   sortCupsByCapacity(cups: Cup[]) {
@@ -440,6 +450,8 @@ export class AppComponent implements OnInit {
     this.setReminderView(false);
 
     this.handleData();
+
+    this.setSuccessView(true, 'Setup complete, enjoy the app!');
   }
 
   handleCupClick(cupId: string) {
