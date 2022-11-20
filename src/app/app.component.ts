@@ -195,6 +195,10 @@ export class AppComponent implements OnInit {
     const addedGoal = this.service.addGoal(goalNumber);
     this.addGoalLocal(addedGoal);
     this.setGoalView(false);
+
+    if (this.userData.reminder != undefined) {
+      this.setSuccessView(true, 'Goal changed successfully');
+    }
   }
 
   handleCups() {
@@ -580,6 +584,7 @@ export class AppComponent implements OnInit {
     this.userData.activity = {};
     this.userData.currentDay = undefined;
     this.userData.cups = undefined;
+    this.userData.reminder = undefined;
 
     this.processData.reminderIntervals = [];
     this.processData.progressBarPercentage = 0;
