@@ -97,6 +97,14 @@ export class AppComponent implements OnInit {
     this.messageService.setVisibility('error', status, message);
   }
 
+  setSuccessView(status: boolean, message?: string) {
+    this.messageService.setVisibility('success', status, message);
+  }
+
+  isSuccessMessageVisible() {
+    return this.messageService.isVisible('success');
+  }
+
   handleDate() {
     let storedDay;
 
@@ -187,6 +195,10 @@ export class AppComponent implements OnInit {
     const addedGoal = this.service.addGoal(goalNumber);
     this.addGoalLocal(addedGoal);
     this.setGoalView(false);
+
+    if (this.userData.reminder != undefined) {
+      this.setSuccessView(true, 'Goal changed successfully');
+    }
   }
 
   handleCups() {
@@ -258,6 +270,8 @@ export class AppComponent implements OnInit {
     this.setCupView(false);
 
     this.userData.selectedCup = undefined;
+
+    this.setSuccessView(true, 'Added cup successfully');
   }
 
   sortCupsByCapacity(cups: Cup[]) {
@@ -440,6 +454,8 @@ export class AppComponent implements OnInit {
     this.setReminderView(false);
 
     this.handleData();
+
+    this.setSuccessView(true, 'Setup complete, enjoy the app!');
   }
 
   handleCupClick(cupId: string) {
@@ -568,6 +584,7 @@ export class AppComponent implements OnInit {
     this.userData.activity = {};
     this.userData.currentDay = undefined;
     this.userData.cups = undefined;
+    this.userData.reminder = undefined;
 
     this.processData.reminderIntervals = [];
     this.processData.progressBarPercentage = 0;
