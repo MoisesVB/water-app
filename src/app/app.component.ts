@@ -39,7 +39,8 @@ export class AppComponent implements OnInit {
   processData: ProcessData = {
     progressBarPercentage: 0,
     reminderIntervals: [],
-    countUpInterval: undefined
+    countUpInterval: undefined,
+    isDeletingIntake: false
   }
 
   constructor(
@@ -535,6 +536,26 @@ export class AppComponent implements OnInit {
     }, 10)
   }
 
+  countDown(desiredIntake: number) {
+    const cupSize = this.userData.intake - desiredIntake;
+    let multiplier = Math.ceil((cupSize * 0.02)); // get 2 percent and round up number
+
+    const interval = window.setInterval(() => {
+      this.userData.intake -= multiplier;
+
+      if (this.userData.intake === desiredIntake) {
+        clearInterval(interval);
+
+        this.setProgressBarPercentage();
+      } else if (this.userData.intake < desiredIntake) {
+        clearInterval(interval);
+
+        this.userData.intake = desiredIntake;
+        this.setProgressBarPercentage();
+      }
+    }, 10)
+  }
+
   setProgressBarPercentage() {
     const formula = (this.userData.intake * 100) / this.userData.goal;
 
@@ -542,10 +563,64 @@ export class AppComponent implements OnInit {
 
     const formattedResult = result.toFixed(0); // no decimals
 
-    this.processData.progressBarPercentage = Number(formattedResult);
+    let difference = -(this.processData.progressBarPercentage - Number(formattedResult)); // inverts the result
+    /* 
+    difference -> if the number is positive then the progress bar needs to increase 
+    difference -> if the number is negative then the progress bar needs to decrease 
+
+    Example:
+
+    current    ->  60%
+    target     ->  40%
+    difference ->  20% -> -20%
+
+    current    ->  40%
+    target     ->  60%
+    difference -> -20% ->  20%
+    */
+
+    let speed = 30;
+
+    // the amount of change needed to progress bar (always a positive value)
+    const positiveValue = Math.abs(difference);
+
+    // speed is set only once
+    if (positiveValue >= 80) {
+      speed = 5;
+    } else if (positiveValue >= 60) {
+      speed = 10;
+    } else if (positiveValue >= 40) {
+      speed = 15;
+    } else if (positiveValue >= 20) {
+      speed = 20;
+    }
+
+    const interval = setInterval(() => {
+      if (difference > 0) {
+        this.processData.progressBarPercentage++;
+        difference--;
+      } else if (difference < 0) {
+        this.processData.progressBarPercentage--;
+        difference++;
+      } else {
+        clearInterval(interval);
+      }
+    }, speed)
+
+    // this.processData.progressBarPercentage = Number(formattedResult);
+  }
+
+  toggleDeletingProcess() {
+    this.processData.isDeletingIntake = !this.processData.isDeletingIntake;
   }
 
   deleteActivityFromView(activity: ActivityData) {
+    if (this.processData.isDeletingIntake) {
+      return;
+    }
+
+    this.toggleDeletingProcess();
+
     this.service.deleteActivityById(activity.id);
     this.deleteIntake(activity.intake);
 
@@ -556,14 +631,23 @@ export class AppComponent implements OnInit {
         delete this.userData.activity[key];
       }
     }
+
+    // to delay toggle, to not affect progress bar
+    const interval = setInterval(() => {
+      this.toggleDeletingProcess();
+
+      clearInterval(interval);
+    }, 450)
   }
 
   deleteIntake(intake: number) {
     this.service.deleteIntake(intake);
 
     // push local intake to be the same as stored
-    this.userData.intake = this.service.getIntake();
-    this.setProgressBarPercentage();
+    // this.userData.intake = this.service.getIntake();
+    // this.setProgressBarPercentage();
+
+    this.countDown(this.service.getIntake());
   }
 
   deleteData() {
