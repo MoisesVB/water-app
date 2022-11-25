@@ -4,11 +4,12 @@
         <h3 *ngIf="isGoalAchieved()" class="font-bold select-none text-blue-200 transition-all duration-1000">Goal
             Achieved</h3>
     </div>
-    <div class="border h-8 rounded transition-all duration-1000"
+    <div class="border h-8 rounded transition-all duration-1000 flex"
         [ngClass]="isGoalAchieved() ? 'border-blue-300 shadow-xl shadow-blue-500/50' : 'border-white'">
-        <div class="h-full rounded-sm transition-all duration-1000" [ngStyle]="{ width : progressBarPercentage + '%'}"
+        <div class="rounded-sm transition-all duration-1000 flex items-stretch m-[2px]"
+            [ngStyle]="{ width : progressBarPercentage + '%'}"
             [ngClass]="isGoalAchieved() ? 'bg-blue-600' : 'bg-blue-500'">
-            <p class="font-bold select-none h-full flex justify-end items-center transition-all duration-1000 min-w-min mx-2"
+            <p class="font-bold select-none h-full flex flex-1 justify-end items-center transition-all duration-1000 min-w-min mx-2"
                 [ngClass]="isGoalAchieved() ? 'text-blue-400' : 'text-blue-300'">{{ progressBarPercentage }}%</p>
         </div>
     </div>
