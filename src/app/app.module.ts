@@ -18,6 +18,7 @@ import { MessageComponent } from './message/message.component';
 import { ErrorMessageComponent } from './error-message/error-message.component';
 import { CupIconComponent } from './cup-icon/cup-icon.component';
 import { SuccessMessageComponent } from './success-message/success-message.component';
+import { AlertMessageComponent } from './alert-message/alert-message.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { SuccessMessageComponent } from './success-message/success-message.compo
     MessageComponent,
     ErrorMessageComponent,
     CupIconComponent,
-    SuccessMessageComponent
+    SuccessMessageComponent,
+    AlertMessageComponent
   ],
   imports: [
     BrowserModule,

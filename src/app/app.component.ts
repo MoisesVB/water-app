@@ -106,6 +106,14 @@ export class AppComponent implements OnInit {
     return this.messageService.isVisible('success');
   }
 
+  setAlertView(status: boolean, message?: string) {
+    this.messageService.setVisibility('alert', status, message);
+  }
+
+  isAlertMessageVisible() {
+    return this.messageService.isVisible('alert');
+  }
+
   handleDate() {
     let storedDay;
 
@@ -291,6 +299,8 @@ export class AppComponent implements OnInit {
     const deletedCup = this.service.deleteCupById(id);
     this.userData.cups = this.userData.cups?.filter(cup => cup.id !== deletedCup.id);
     this.userData.selectedCup = undefined;
+
+    this.setAlertView(true, 'Custom cup deleted!');
   }
 
   handleIntake() {
@@ -638,6 +648,8 @@ export class AppComponent implements OnInit {
 
       clearInterval(interval);
     }, 450)
+
+    this.setAlertView(true, 'Activity deleted!');
   }
 
   deleteIntake(intake: number) {

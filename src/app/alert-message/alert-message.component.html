@@ -1,0 +1,22 @@
+<app-message [color]="'bg-gray-800 border-gray-800'">
+    <div class="flex justify-between w-full h-full items-center">
+        <div class="bg-gray-800 h-full flex items-center absolute left-0 px-2 z-10">
+            <svg width="16" height="16" fill="currentColor" class="w-6 h-6 fill-gray-400" viewBox="0 0 16 16">
+                <path
+                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+            </svg>
+        </div>
+        <p class="font-bold text-gray-100 text-ellipsis overflow-hidden whitespace-nowrap mx-10">{{ getMessage() }}</p>
+        <div class="flex flex-1 justify-end mr-4">
+            <button (click)="undo()"
+                class="text-gray-300 font-semibold duration-300 hover:bg-gray-700 p-2 rounded">Undo</button>
+        </div>
+        <div (click)="closeMessage()" class="bg-gray-800 h-full flex items-center z-10">
+            <svg width="16" height="16" fill="currentColor" class="w-7 h-7 cursor-pointer fill-white"
+                viewBox="0 0 16 16">
+                <path
+                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+            </svg>
+        </div>
+    </div>
+</app-message>

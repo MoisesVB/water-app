@@ -16,6 +16,7 @@ export class MessageService {
   constructor() {
     this.register('error');
     this.register('success');
+    this.register('alert');
   }
 
   register(id: string) {
