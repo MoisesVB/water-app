@@ -71,4 +71,4 @@
 
 <app-error-message *ngIf="isErrorMessageVisible()" [@leaveEnter]></app-error-message>
 <app-success-message *ngIf="isSuccessMessageVisible()" [@leaveEnter]></app-success-message>
-<app-alert-message *ngIf="isAlertMessageVisible()" [@leaveEnter]></app-alert-message>
+<app-alert-message *ngIf="isAlertMessageVisible()" (undo)="recover()" [@leaveEnter]></app-alert-message>

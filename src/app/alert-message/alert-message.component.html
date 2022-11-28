@@ -8,7 +8,7 @@
         </div>
         <p class="font-bold text-gray-100 text-ellipsis overflow-hidden whitespace-nowrap mx-10">{{ getMessage() }}</p>
         <div class="flex flex-1 justify-end mr-4">
-            <button (click)="undo()"
+            <button (click)="undoAction()"
                 class="text-gray-300 font-semibold duration-300 hover:bg-gray-700 p-2 rounded">Undo</button>
         </div>
         <div (click)="closeMessage()" class="bg-gray-800 h-full flex items-center z-10">
