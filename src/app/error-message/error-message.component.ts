@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageService } from '../services/message.service';
 
 @Component({
   selector: 'app-error-message',
   templateUrl: './error-message.component.html',
 })
-export class ErrorMessageComponent implements OnInit {
+export class ErrorMessageComponent implements OnInit, OnDestroy {
+
+  interval?: number;
 
   constructor(private messageService: MessageService) { }
 
@@ -13,8 +15,12 @@ export class ErrorMessageComponent implements OnInit {
     this.destroyCounter();
   }
 
+  ngOnDestroy(): void {
+    clearInterval(this.interval);
+  }
+
   destroyCounter() {
-    setTimeout(() => {
+    this.interval = window.setTimeout(() => {
       this.closeMessage();
     }, 5000);
   }

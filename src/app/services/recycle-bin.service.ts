@@ -7,17 +7,20 @@ import { Cup } from 'src/shared/models/cup';
 })
 export class RecycleBinService {
 
+  interval?: number;
+
   lastDeletedItem?: Cup | ActivityData;
 
   constructor() { }
 
   setDeletedItem(item: Cup | ActivityData) {
+    clearInterval(this.interval);
     this.lastDeletedItem = item
     this.resetDeletedItem();
   }
 
   resetDeletedItem() {
-    setTimeout(() => {
+    this.interval = window.setTimeout(() => {
       this.lastDeletedItem = undefined;
     }, 10000);
   }

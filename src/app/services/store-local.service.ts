@@ -180,6 +180,10 @@ export class StoreLocalService {
       activity[`${date}`] = [activityData]
     } else if (activity.hasOwnProperty(`${date}`)) {
       activity[`${date}`].push(activityData);
+
+      activity[`${date}`] = activity[`${date}`].sort((a, b) => {
+        return a.hour.slice(0, -2).trim().localeCompare(b.hour.slice(0, -2).trim());
+      });
     }
 
     const pushedActivity = activity[`${date}`].find((act: ActivityData) => act === activityData);

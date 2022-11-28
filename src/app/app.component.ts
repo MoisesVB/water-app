@@ -536,6 +536,10 @@ export class AppComponent implements OnInit {
       this.userData.activity[`${date}`] = [activity]
     } else if (this.userData.activity.hasOwnProperty(`${date}`)) {
       this.userData.activity[`${date}`].push(activity);
+
+      this.userData.activity[`${date}`] = this.userData.activity[`${date}`].sort((a, b) => {
+        return a.hour.slice(0, -2).trim().localeCompare(b.hour.slice(0, -2).trim());
+      });
     }
   }
 

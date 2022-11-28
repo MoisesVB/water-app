@@ -68,16 +68,21 @@ export class MessageService {
       throw new Error('Message not found');
     }
 
-    this.messages = this.messages.map(msg => {
-      if (msg.id === id) {
-        msg.visible = visible;
-        msg.message = message;
-      }
+    let updatedMessage;
 
-      return msg;
-    });
+    // prevents *ngIf not detecting really fast variable changes and not destroying component
+    setTimeout(() => {
+      this.messages = this.messages.map(msg => {
+        if (msg.id === id) {
+          msg.visible = visible;
+          msg.message = message;
+        }
 
-    const updatedMessage = this.messages.find(msg => msg.id === id);
+        return msg;
+      });
+
+      updatedMessage = this.messages.find(msg => msg.id === id);
+    }, 10)
 
     return updatedMessage;
   }
@@ -134,14 +139,23 @@ export class MessageService {
       throw new Error('Message not found');
     }
 
-    this.syncQueueAndMessage();
+    // this.syncQueueAndMessage();
 
-    const activeModal = this.messages.find(msg => msg.visible && msg.id !== id);
+    // const activeModal = this.messages.find(msg => msg.visible && msg.id !== id);
 
-    if (activeModal && visible) {
-      this.addToQueue(id, visible, message!);
-      return;
-    }
+    // if (activeModal && visible) {
+    //   this.addToQueue(id, visible, message!);
+    //   return;
+    // }
+
+    this.messages.map(m => {
+      if (m.visible) {
+        m.visible = false;
+        return m;
+      }
+
+      return m;
+    });
 
     return this.updateMessage(id, visible, message);
   }
