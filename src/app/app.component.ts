@@ -725,6 +725,8 @@ export class AppComponent implements OnInit {
     const desiredIntake = this.service.getIntake();
 
     this.countUp(desiredIntake);
+
+    this.setSuccessView(true, 'Recovered activity successfully');
   }
 
   deleteIntake(intake: number) {
