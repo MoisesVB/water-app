@@ -9,6 +9,7 @@ import { Constants } from './constants';
 import { ModalService } from './services/modal.service';
 import { MessageService } from './services/message.service';
 import { CupIcon } from 'src/shared/models/cup-icon';
+import { RecycleBinService } from './services/recycle-bin.service';
 
 @Component({
   selector: 'app-root',
@@ -46,7 +47,8 @@ export class AppComponent implements OnInit {
   constructor(
     public service: StoreLocalService,
     private modalService: ModalService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private recycleBinService: RecycleBinService
   ) { }
 
   ngOnInit() {
@@ -104,6 +106,14 @@ export class AppComponent implements OnInit {
 
   isSuccessMessageVisible() {
     return this.messageService.isVisible('success');
+  }
+
+  setAlertView(status: boolean, message?: string) {
+    this.messageService.setVisibility('alert', status, message);
+  }
+
+  isAlertMessageVisible() {
+    return this.messageService.isVisible('alert');
   }
 
   handleDate() {
@@ -198,7 +208,7 @@ export class AppComponent implements OnInit {
     this.setGoalView(false);
 
     if (this.userData.reminder != undefined) {
-      this.setSuccessView(true, 'Goal changed successfully');
+      this.setSuccessView(true, 'Goal changed successfully!');
     }
   }
 
@@ -272,7 +282,7 @@ export class AppComponent implements OnInit {
 
     this.userData.selectedCup = undefined;
 
-    this.setSuccessView(true, 'Added cup successfully');
+    this.setSuccessView(true, 'Added cup successfully!');
   }
 
   sortCupsByCapacity(cups: Cup[]) {
@@ -291,6 +301,50 @@ export class AppComponent implements OnInit {
     const deletedCup = this.service.deleteCupById(id);
     this.userData.cups = this.userData.cups?.filter(cup => cup.id !== deletedCup.id);
     this.userData.selectedCup = undefined;
+
+    this.recycleBinService.setDeletedItem(deletedCup);
+    this.setAlertView(true, 'Custom cup deleted!');
+  }
+
+  recoverCup() {
+    const { capacity, isCustom, icon, id } = this.recycleBinService.lastDeletedItem as Cup;
+
+    const cups = this.service.getAllCups();
+    const foundDuplicate = cups.find(cup => cup.capacity === capacity);
+
+    try {
+      if (foundDuplicate) {
+        throw new Error('Failed to recover cup, cup is duplicated');
+      }
+    } catch (err) {
+      this.setErrorView(true, 'Failed to recover cup, cup is duplicated');
+      return;
+    }
+
+    const addedCup = this.service.recoverCup(id, capacity, isCustom, icon as CupIcon);
+    this.addCupLocal(addedCup);
+
+    this.userData.selectedCup = undefined;
+
+    this.setSuccessView(true, 'Recovered cup successfully!');
+  }
+
+  isCup(item: any): item is Cup {
+    return (<Cup>item).capacity !== undefined;
+  }
+
+  isActivity(item: any): item is ActivityData {
+    return (<ActivityData>item).intake !== undefined;
+  }
+
+  recover() {
+    const item = this.recycleBinService.lastDeletedItem;
+
+    if (this.isCup(item)) {
+      this.recoverCup();
+    } else {
+      this.recoverActivity();
+    }
   }
 
   handleIntake() {
@@ -482,6 +536,10 @@ export class AppComponent implements OnInit {
       this.userData.activity[`${date}`] = [activity]
     } else if (this.userData.activity.hasOwnProperty(`${date}`)) {
       this.userData.activity[`${date}`].push(activity);
+
+      this.userData.activity[`${date}`] = this.userData.activity[`${date}`].sort((a, b) => {
+        return a.hour.slice(0, -2).trim().localeCompare(b.hour.slice(0, -2).trim());
+      });
     }
   }
 
@@ -621,7 +679,7 @@ export class AppComponent implements OnInit {
 
     this.toggleDeletingProcess();
 
-    this.service.deleteActivityById(activity.id);
+    const deletedActivity = this.service.deleteActivityById(activity.id);
     this.deleteIntake(activity.intake);
 
     for (let key in this.userData.activity) {
@@ -638,6 +696,37 @@ export class AppComponent implements OnInit {
 
       clearInterval(interval);
     }, 450)
+
+    this.recycleBinService.setDeletedItem(deletedActivity);
+    this.setAlertView(true, 'Activity deleted!');
+  }
+
+  recoverActivity() {
+    const { id, hour, intake } = this.recycleBinService.lastDeletedItem as ActivityData;
+
+    if (intake + this.userData.intake > Constants.MAX_WATER_TARGET) {
+      const leftIntake = Constants.MAX_WATER_TARGET - this.userData.intake;
+
+      if (leftIntake > 0) {
+        // store to localstorage
+        this.service.addIntake(leftIntake);
+        const addedActivity = this.service.recoverActivity(this.recycleBinService.lastDeletedItem as ActivityData);
+        this.updateActivityLocal(addedActivity);
+      } else {
+        return;
+      }
+    } else {
+      this.service.addIntake(intake);
+      const addedActivity = this.service.recoverActivity(this.recycleBinService.lastDeletedItem as ActivityData);
+      this.updateActivityLocal(addedActivity);
+    }
+
+    // push local intake to be the same as stored
+    const desiredIntake = this.service.getIntake();
+
+    this.countUp(desiredIntake);
+
+    this.setSuccessView(true, 'Recovered activity successfully!');
   }
 
   deleteIntake(intake: number) {

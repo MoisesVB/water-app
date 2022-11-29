@@ -161,6 +161,42 @@ export class StoreLocalService {
     return pushedActivity;
   }
 
+  recoverActivity(activityData: ActivityData) {
+    let activity: Activity | undefined;
+
+    try {
+      activity = this.getAllActivity();
+    } catch (err) {
+      activity = undefined;
+    }
+
+    const date = new Date().toLocaleDateString();
+
+    if (!activity) {
+      activity = {};
+    }
+
+    if (!activity.hasOwnProperty(`${date}`)) {
+      activity[`${date}`] = [activityData]
+    } else if (activity.hasOwnProperty(`${date}`)) {
+      activity[`${date}`].push(activityData);
+
+      activity[`${date}`] = activity[`${date}`].sort((a, b) => {
+        return a.hour.slice(0, -2).trim().localeCompare(b.hour.slice(0, -2).trim());
+      });
+    }
+
+    const pushedActivity = activity[`${date}`].find((act: ActivityData) => act === activityData);
+
+    if (!activity || !activity.hasOwnProperty(`${date}`) || activity[`${date}`].length <= 0 || !pushedActivity) {
+      throw new Error('Error in recovering activity');
+    }
+
+    localStorage.setItem("activity", JSON.stringify(activity));
+
+    return pushedActivity;
+  }
+
   getAllActivity() {
     let activity: Activity;
 
@@ -322,6 +358,40 @@ export class StoreLocalService {
 
     return pushedCup;
   }
+
+  recoverCup(id: string, capacity: number, isCustom: boolean, icon: CupIcon) {
+    let cups: Cup[] | undefined;
+
+    try {
+      cups = this.getAllCups();
+    } catch (err) {
+      cups = undefined;
+    }
+
+    const recoveredCup: Cup = {
+      id,
+      capacity,
+      isCustom,
+      icon
+    }
+
+    if (!cups) {
+      cups = [];
+    }
+
+    cups.push(recoveredCup);
+
+    const pushedCup = cups.find((cup: Cup) => cup === recoveredCup);
+
+    if (!cups || cups.length <= 0 || !pushedCup) {
+      throw new Error('Error in adding cup');
+    }
+
+    localStorage.setItem('cups', JSON.stringify(cups));
+
+    return pushedCup;
+  }
+
 
   getAllCups() {
     let cups: Cup[];

@@ -69,8 +69,6 @@
   (createCupNotifier)="addCupFromView($event)">
 </app-cup-modal>
 
-<app-error-message *ngIf="isErrorMessageVisible()" [@leaveEnter]>
-</app-error-message>
-
-<app-success-message *ngIf="isSuccessMessageVisible()" [@leaveEnter]>
-</app-success-message>
+<app-error-message *ngIf="isErrorMessageVisible()" [@leaveEnter]></app-error-message>
+<app-success-message *ngIf="isSuccessMessageVisible()" [@leaveEnter]></app-success-message>
+<app-alert-message *ngIf="isAlertMessageVisible()" (undo)="recover()" [@leaveEnter]></app-alert-message>
