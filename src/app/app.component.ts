@@ -208,7 +208,7 @@ export class AppComponent implements OnInit {
     this.setGoalView(false);
 
     if (this.userData.reminder != undefined) {
-      this.setSuccessView(true, 'Goal changed successfully');
+      this.setSuccessView(true, 'Goal changed successfully!');
     }
   }
 
@@ -282,7 +282,7 @@ export class AppComponent implements OnInit {
 
     this.userData.selectedCup = undefined;
 
-    this.setSuccessView(true, 'Added cup successfully');
+    this.setSuccessView(true, 'Added cup successfully!');
   }
 
   sortCupsByCapacity(cups: Cup[]) {
@@ -326,7 +326,7 @@ export class AppComponent implements OnInit {
 
     this.userData.selectedCup = undefined;
 
-    this.setSuccessView(true, 'Recovered cup successfully');
+    this.setSuccessView(true, 'Recovered cup successfully!');
   }
 
   isCup(item: any): item is Cup {
@@ -726,7 +726,7 @@ export class AppComponent implements OnInit {
 
     this.countUp(desiredIntake);
 
-    this.setSuccessView(true, 'Recovered activity successfully');
+    this.setSuccessView(true, 'Recovered activity successfully!');
   }
 
   deleteIntake(intake: number) {
