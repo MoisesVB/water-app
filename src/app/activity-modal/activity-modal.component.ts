@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import { Goal } from 'src/shared/models/goal';
 import { Activity, ActivityData } from '../../shared/models/activity';
 import { ModalService } from '../services/modal.service';
 
@@ -14,7 +15,7 @@ export class ActivityModalComponent implements OnInit {
 
   @Input() isVisible!: boolean;
   @Input() activity!: Activity;
-  @Input() goal!: number;
+  @Input() goals!: Goal;
   @Output() deleteActivityNotifier = new EventEmitter<ActivityData>();
 
   @HostListener('document:keydown.escape', ['$event'])
@@ -22,6 +23,10 @@ export class ActivityModalComponent implements OnInit {
     if (this.isVisible) {
       this.closeModal();
     }
+  }
+
+  getGoalByDate(date: string) {
+    return this.goals[date];
   }
 
   sortByDate(activity: Activity) {

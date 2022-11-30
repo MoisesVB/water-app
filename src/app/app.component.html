@@ -63,7 +63,7 @@
 
 <app-activity-modal *ngIf="isActivityModalVisible()" [@leaveEnter] [activity]="this.userData.activity"
   [isVisible]="isActivityModalVisible()" (deleteActivityNotifier)="deleteActivityFromView($event)"
-  [goal]="getMostRecentGoal()">
+  [goals]="this.userData.goal">
 </app-activity-modal>
 
 <app-cup-modal *ngIf="isCupModalVisible()" [@leaveEnter] [isVisible]="isCupModalVisible()"
