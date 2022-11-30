@@ -15,8 +15,19 @@
 
   <div class="p-4 overflow-y-auto h-80 scroll">
     <div *ngFor="let prop of sortByDate(activity)" class="select-none">
-      <h3 class="font-semibold text-lg">{{ prop | date:'mediumDate' }} - {{ countIntake(activity[prop])
-        }}ml</h3>
+      <div class="flex items-center">
+        <svg width="16" height="16" fill="currentColor" *ngIf="countIntake(activity[prop]) >= goal"
+          class="w-5 h-5 cursor-pointer fill-blue-400 mr-2" viewBox="0 0 16 16">
+          <path
+            d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z" />
+          <path
+            d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z" />
+        </svg>
+        <h3 class="font-semibold text-lg flex justify-between"
+          [ngClass]="countIntake(activity[prop]) >= goal ? 'text-blue-200' : ''">{{ prop |
+          date:'mediumDate' }} - {{ countIntake(activity[prop])
+          }}ml</h3>
+      </div>
       <div class="flex items-center py-2" *ngFor="let obj of activity[prop]">
         <p class="mr-2">{{ obj.hour }}</p>
         <p>-</p>

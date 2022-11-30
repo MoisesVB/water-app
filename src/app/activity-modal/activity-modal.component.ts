@@ -14,6 +14,7 @@ export class ActivityModalComponent implements OnInit {
 
   @Input() isVisible!: boolean;
   @Input() activity!: Activity;
+  @Input() goal!: number;
   @Output() deleteActivityNotifier = new EventEmitter<ActivityData>();
 
   @HostListener('document:keydown.escape', ['$event'])
