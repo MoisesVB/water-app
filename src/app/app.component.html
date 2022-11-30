@@ -19,7 +19,7 @@
         </svg>
       </div>
     </div>
-    <app-progress-bar [goal]="userData.goal" [intake]="userData.intake"
+    <app-progress-bar [goal]="getMostRecentGoal()" [intake]="userData.intake"
       [progressBarPercentage]="processData.progressBarPercentage">
     </app-progress-bar>
 
@@ -63,7 +63,7 @@
 
 <app-activity-modal *ngIf="isActivityModalVisible()" [@leaveEnter] [activity]="this.userData.activity"
   [isVisible]="isActivityModalVisible()" (deleteActivityNotifier)="deleteActivityFromView($event)"
-  [goal]="this.userData.goal">
+  [goal]="getMostRecentGoal()">
 </app-activity-modal>
 
 <app-cup-modal *ngIf="isCupModalVisible()" [@leaveEnter] [isVisible]="isCupModalVisible()"
