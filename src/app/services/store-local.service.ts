@@ -4,6 +4,7 @@ import { Activity, ActivityData } from '../../shared/models/activity';
 import { Constants } from '../constants';
 import { Cup } from '../../shared/models/cup';
 import { CupIcon } from 'src/shared/models/cup-icon';
+import { Goal } from 'src/shared/models/goal';
 
 @Injectable({
   providedIn: 'root'
@@ -19,18 +20,29 @@ export class StoreLocalService {
   // services should validate params and processed data to check for errors 
 
   // goal methods
-  addGoal(goal: number) {
+  addGoal(goal: number): Goal {
     if (goal <= 0 || goal > Constants.MAX_WATER_TARGET || !Number.isInteger(goal)) {
       throw new Error('Received goal is invalid');
     }
 
-    localStorage.setItem("goal", JSON.stringify(goal));
+    let goalHistory: Goal;
 
-    return goal;
+    try {
+      goalHistory = this.getGoal();
+    } catch (err) {
+      goalHistory = {};
+    }
+
+    const todaysDate = new Date().toLocaleDateString();
+    goalHistory[todaysDate] = goal;
+
+    localStorage.setItem("goal", JSON.stringify(goalHistory));
+
+    return goalHistory;
   }
 
-  getGoal() {
-    let goal: number;
+  getGoal(): Goal {
+    let goal: Goal;
 
     try {
       goal = JSON.parse(localStorage.getItem("goal")!);
@@ -38,9 +50,11 @@ export class StoreLocalService {
       throw new Error('Goal is invalid');
     }
 
-    if (goal <= 0 || goal > Constants.MAX_WATER_TARGET || !Number.isInteger(goal)) {
-      throw new Error('Goal is invalid');
-    }
+    Object.keys(goal).forEach(g => {
+      if (goal[g] <= 0 || goal[g] > Constants.MAX_WATER_TARGET || !Number.isInteger(goal[g])) {
+        throw new Error('Goal is invalid');
+      }
+    });
 
     return goal;
   }
