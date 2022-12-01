@@ -50,13 +50,21 @@ export class StoreLocalService {
       throw new Error('Goal is invalid');
     }
 
+    if (Object.keys(goal).length === 0) {
+      throw new Error('Goal is invalid');
+    }
+
     Object.keys(goal).forEach(g => {
-      if (goal[g] <= 0 || goal[g] > Constants.MAX_WATER_TARGET || !Number.isInteger(goal[g])) {
+      if (typeof (g) !== 'string' || goal[g] <= 0 || goal[g] > Constants.MAX_WATER_TARGET || !Number.isInteger(goal[g])) {
         throw new Error('Goal is invalid');
       }
     });
 
     return goal;
+  }
+
+  removeGoal() {
+    localStorage.removeItem('goal');
   }
 
   // intake methods

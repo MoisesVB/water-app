@@ -54,16 +54,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.handleInitialModals();
-
-    try {
-      Object.keys(this.userData.goal).length;
-    } catch (err) {
-      return;
-    }
-
-    if (this.getMostRecentGoal() > 0 && this.userData.reminder! > 0) {
-      this.handleData();
-    }
   }
 
   handleData() {
@@ -181,7 +171,10 @@ export class AppComponent implements OnInit {
       hasAnyGoal = Object.keys(goal!).length > 0;
     } catch (err) {
       if (err instanceof Error) {
+        this.service.removeGoal();
+        this.userData.goal = {};
         this.setGoalView(true);
+        return;
       }
     }
 
@@ -400,6 +393,9 @@ export class AppComponent implements OnInit {
     if (reminder) {
       this.addReminderLocal(reminder);
       this.setReminderView(false);
+
+      // if reminder and goal are set then continue...
+      this.handleData();
     }
   }
 
