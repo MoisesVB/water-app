@@ -62,7 +62,20 @@ export class ActivityModalComponent implements OnInit {
     }
   }
 
+  getMostRecentGoal(): number {
+    let arr = Object.keys(this.goals).sort((a, b) => +new Date(a) - +new Date(b));
+    arr = arr.reverse(); // recent to oldest
+
+    return this.goals[arr[0]];
+  }
+
   getGoalByDate(date: string) {
+    const dateFound = Object.keys(this.goals).find(d => date === d);
+
+    if (!dateFound || dateFound.length === 0) {
+      return this.getMostRecentGoal();
+    }
+
     return this.goals[date];
   }
 
