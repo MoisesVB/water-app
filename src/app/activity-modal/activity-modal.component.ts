@@ -1,3 +1,4 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { Goal } from 'src/shared/models/goal';
 import { Activity, ActivityData } from '../../shared/models/activity';
@@ -6,6 +7,31 @@ import { ModalService } from '../services/modal.service';
 @Component({
   selector: 'app-activity-modal',
   templateUrl: './activity-modal.component.html',
+  animations: [
+    trigger('leaveEnter', [
+      transition(':enter', [
+        style({ opacity: 0, width: 0, height: 0 }),
+        animate(150, style({ opacity: 1, width: 20, height: 20 }))
+      ]),
+      transition(':leave', [
+        animate(150, style({ opacity: 0, width: 0, height: 0 }))
+      ])
+    ]),
+    trigger('slideInOut', [
+      state('in', style({
+        marginLeft: 8
+      })),
+      state('out', style({
+        marginLeft: 0
+      })),
+      transition('in => out', [
+        animate('150ms')
+      ]),
+      transition('out => in', [
+        animate('150ms')
+      ]),
+    ]),
+  ]
 })
 export class ActivityModalComponent implements OnInit {
 
