@@ -10,6 +10,7 @@ import { ModalService } from './services/modal.service';
 import { MessageService } from './services/message.service';
 import { CupIcon } from 'src/shared/models/cup-icon';
 import { RecycleBinService } from './services/recycle-bin.service';
+import { Goal } from 'src/shared/models/goal';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +29,7 @@ import { RecycleBinService } from './services/recycle-bin.service';
 })
 export class AppComponent implements OnInit {
   userData: UserData = {
-    goal: 0,
+    goal: {},
     intake: 0,
     selectedCup: undefined,
     reminder: undefined,
@@ -53,10 +54,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.handleInitialModals();
-
-    if (this.userData.goal > 0 && this.userData.reminder! > 0) {
-      this.handleData();
-    }
   }
 
   handleData() {
@@ -166,18 +163,23 @@ export class AppComponent implements OnInit {
   }
 
   handleGoal() {
-    let goal;
+    let goal: Goal;
+    let hasAnyGoal: boolean;
 
     try {
       goal = this.getGoal();
+      hasAnyGoal = Object.keys(goal!).length > 0;
     } catch (err) {
-      if (err instanceof Error && err.message === 'Goal is invalid') {
+      if (err instanceof Error) {
+        this.service.removeGoal();
+        this.userData.goal = {};
         this.setGoalView(true);
+        return;
       }
     }
 
-    if (goal) {
-      this.addGoalLocal(goal);
+    if (hasAnyGoal!) {
+      this.addGoalLocal(goal!);
       this.setGoalView(false);
     }
   }
@@ -190,7 +192,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  addGoalLocal(goal: number) {
+  addGoalLocal(goal: Goal) {
     this.userData.goal = goal;
 
     this.setProgressBarPercentage();
@@ -391,6 +393,9 @@ export class AppComponent implements OnInit {
     if (reminder) {
       this.addReminderLocal(reminder);
       this.setReminderView(false);
+
+      // if reminder and goal are set then continue...
+      this.handleData();
     }
   }
 
@@ -614,8 +619,15 @@ export class AppComponent implements OnInit {
     }, 10)
   }
 
+  getMostRecentGoal(): number {
+    let arr = Object.keys(this.userData.goal).sort((a, b) => +new Date(a) - +new Date(b));
+    arr = arr.reverse(); // recent to oldest
+
+    return this.userData.goal[arr[0]];
+  }
+
   setProgressBarPercentage() {
-    const formula = (this.userData.intake * 100) / this.userData.goal;
+    const formula = (this.userData.intake * 100) / this.getMostRecentGoal();
 
     const result = formula >= 100 ? 100 : formula;
 
@@ -751,7 +763,7 @@ export class AppComponent implements OnInit {
     this.setSettingsView(false);
 
     // reset all variables here
-    this.userData.goal = 0;
+    this.userData.goal = {};
     this.userData.intake = 0;
     this.userData.selectedCup = undefined;
     this.userData.activity = {};

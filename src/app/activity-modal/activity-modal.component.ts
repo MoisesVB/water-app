@@ -1,10 +1,48 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import { Goal } from 'src/shared/models/goal';
 import { Activity, ActivityData } from '../../shared/models/activity';
 import { ModalService } from '../services/modal.service';
 
 @Component({
   selector: 'app-activity-modal',
   templateUrl: './activity-modal.component.html',
+  animations: [
+    trigger('leaveEnter', [
+      transition(':enter', [
+        style({ opacity: 0, width: 0, height: 0 }),
+        animate(150, style({ opacity: 1, width: 20, height: 20 }))
+      ]),
+      transition(':leave', [
+        animate(150, style({ opacity: 0, width: 0, height: 0 }))
+      ])
+    ]),
+    trigger('slideInOut', [
+      state('in', style({
+        marginLeft: 8
+      })),
+      state('out', style({
+        marginLeft: 0
+      })),
+      transition('in => out', [
+        animate('150ms')
+      ]),
+      transition('out => in', [
+        animate('150ms')
+      ]),
+    ]),
+
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate(300, style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        style({ opacity: 1 }),
+        animate(300, style({ opacity: 0 }))
+      ]),
+    ]),
+  ]
 })
 export class ActivityModalComponent implements OnInit {
 
@@ -14,6 +52,7 @@ export class ActivityModalComponent implements OnInit {
 
   @Input() isVisible!: boolean;
   @Input() activity!: Activity;
+  @Input() goals!: Goal;
   @Output() deleteActivityNotifier = new EventEmitter<ActivityData>();
 
   @HostListener('document:keydown.escape', ['$event'])
@@ -21,6 +60,23 @@ export class ActivityModalComponent implements OnInit {
     if (this.isVisible) {
       this.closeModal();
     }
+  }
+
+  getMostRecentGoal(): number {
+    let arr = Object.keys(this.goals).sort((a, b) => +new Date(a) - +new Date(b));
+    arr = arr.reverse(); // recent to oldest
+
+    return this.goals[arr[0]];
+  }
+
+  getGoalByDate(date: string) {
+    const dateFound = Object.keys(this.goals).find(d => date === d);
+
+    if (!dateFound || dateFound.length === 0) {
+      return this.getMostRecentGoal();
+    }
+
+    return this.goals[date];
   }
 
   sortByDate(activity: Activity) {
