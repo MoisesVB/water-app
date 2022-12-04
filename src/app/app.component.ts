@@ -57,7 +57,6 @@ export class AppComponent implements OnInit {
   }
 
   handleData() {
-    this.handleDate();
     this.handleCups();
     this.handleIntake();
     this.handleActivity();
@@ -113,61 +112,12 @@ export class AppComponent implements OnInit {
     return this.messageService.isVisible('alert');
   }
 
-  handleDate() {
-    let storedDay;
-
-    try {
-      storedDay = this.getCurrentDay();
-    } catch (err) {
-      if (err instanceof Error && err.message === 'Date is invalid') {
-        const day = this.service.addCurrentDay();
-        this.addCurrentDayLocal(day);
-      }
-    }
-
-    const today = new Date().getDate();
-
-    if (storedDay) {
-      if (storedDay !== today) {
-        // clear intake because it's another day
-
-        let storedIntake: number | undefined;
-
-        try {
-          storedIntake = this.service.getIntake();
-        } catch (err) { }
-
-        if (storedIntake) {
-          this.service.deleteIntake(storedIntake);
-        }
-
-        // update day to today
-        const day = this.service.addCurrentDay();
-        this.addCurrentDayLocal(day);
-      }
-
-      this.addCurrentDayLocal(storedDay);
-    }
-  }
-
-  getCurrentDay() {
-    try {
-      return this.service.getCurrentDay();
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  addCurrentDayLocal(day: number) {
-    this.userData.currentDay = day;
-  }
-
   handleGoal() {
     let goal: Goal;
     let hasAnyGoal: boolean;
 
     try {
-      goal = this.getGoal();
+      goal = this.service.getGoal();
       hasAnyGoal = Object.keys(goal!).length > 0;
     } catch (err) {
       if (err instanceof Error) {
@@ -181,14 +131,6 @@ export class AppComponent implements OnInit {
     if (hasAnyGoal!) {
       this.addGoalLocal(goal!);
       this.setGoalView(false);
-    }
-  }
-
-  getGoal() {
-    try {
-      return this.service.getGoal();
-    } catch (err) {
-      throw err;
     }
   }
 
@@ -218,7 +160,7 @@ export class AppComponent implements OnInit {
     let cups: Cup[] = [];
 
     try {
-      cups = this.getAllCups();
+      cups = this.service.getAllCups();
     } catch (err) {
       if (err instanceof Error) {
         const model = [
@@ -237,14 +179,6 @@ export class AppComponent implements OnInit {
 
     if (cups.length > 0) {
       cups.forEach(cup => this.addCupLocal(cup));
-    }
-  }
-
-  getAllCups() {
-    try {
-      return this.service.getAllCups();
-    } catch (err) {
-      throw err;
     }
   }
 
@@ -353,11 +287,10 @@ export class AppComponent implements OnInit {
     let intake: number | undefined;
 
     try {
-      intake = this.getIntake();
+      intake = this.getDayIntake();
     } catch (err) {
-      if (err instanceof Error) {
-        const addedIntake = this.service.addIntake(0);
-        this.addIntakeLocal(addedIntake);
+      if (err) {
+        this.addIntakeLocal(0);
       }
     }
 
@@ -367,12 +300,24 @@ export class AppComponent implements OnInit {
     }
   }
 
-  getIntake() {
+  getDayIntake() {
+    let todayDate = new Date().toLocaleDateString();
+
+    let activity: Activity;
+    let todayActivity: ActivityData[];
+
     try {
-      return this.service.getIntake();
+      activity = this.service.getAllActivity();
+      todayActivity = activity[todayDate];
     } catch (err) {
-      throw err;
+      return 0;
     }
+
+    if (!todayActivity || todayActivity.length === 0) {
+      return 0;
+    }
+
+    return todayActivity.reduce((acc, obj) => acc + obj.intake, 0);
   }
 
   addIntakeLocal(intake: number) {
@@ -383,7 +328,7 @@ export class AppComponent implements OnInit {
     let reminder: number | undefined;
 
     try {
-      reminder = this.getReminder();
+      reminder = this.service.getReminder();
     } catch (err) {
       if (err instanceof Error) {
         this.setReminderView(true);
@@ -399,14 +344,6 @@ export class AppComponent implements OnInit {
     }
   }
 
-  getReminder() {
-    try {
-      return this.service.getReminder();
-    } catch (err) {
-      throw err;
-    }
-  }
-
   addReminderLocal(reminder: number) {
     this.userData.reminder = reminder;
   }
@@ -415,7 +352,7 @@ export class AppComponent implements OnInit {
     let activity: Activity | undefined;
 
     try {
-      activity = this.getAllActivity();
+      activity = this.service.getAllActivity();
     } catch (err) {
       if (err instanceof Error) {
         return;
@@ -424,14 +361,6 @@ export class AppComponent implements OnInit {
 
     if (activity) {
       this.addActivityLocal(activity);
-    }
-  }
-
-  getAllActivity() {
-    try {
-      return this.service.getAllActivity();
-    } catch (err) {
-      throw err;
     }
   }
 
@@ -557,21 +486,18 @@ export class AppComponent implements OnInit {
         const leftIntake = Constants.MAX_WATER_TARGET - this.userData.intake;
 
         if (leftIntake > 0) {
-          // store to localstorage
-          this.service.addIntake(leftIntake);
           const addedActivity = this.service.addActivity(leftIntake);
           this.updateActivityLocal(addedActivity);
         } else {
           return;
         }
       } else {
-        this.service.addIntake(tempCup?.capacity!);
         const addedActivity = this.service.addActivity(tempCup?.capacity!);
         this.updateActivityLocal(addedActivity);
       }
 
-      // push local intake to be the same as stored
-      const desiredIntake = this.service.getIntake();
+      // push local intake to be the same as activity
+      const desiredIntake = this.getDayIntake();
 
       this.countUp(desiredIntake);
     }
@@ -692,7 +618,7 @@ export class AppComponent implements OnInit {
     this.toggleDeletingProcess();
 
     const deletedActivity = this.service.deleteActivityById(activity.id);
-    this.deleteIntake(activity.intake);
+    this.countDown(this.getDayIntake());
 
     for (let key in this.userData.activity) {
       this.userData.activity[key] = this.userData.activity[key].filter(obj => obj.id !== activity.id);
@@ -720,35 +646,22 @@ export class AppComponent implements OnInit {
       const leftIntake = Constants.MAX_WATER_TARGET - this.userData.intake;
 
       if (leftIntake > 0) {
-        // store to localstorage
-        this.service.addIntake(leftIntake);
         const addedActivity = this.service.recoverActivity(this.recycleBinService.lastDeletedItem as ActivityData);
         this.updateActivityLocal(addedActivity);
       } else {
         return;
       }
     } else {
-      this.service.addIntake(intake);
       const addedActivity = this.service.recoverActivity(this.recycleBinService.lastDeletedItem as ActivityData);
       this.updateActivityLocal(addedActivity);
     }
 
-    // push local intake to be the same as stored
-    const desiredIntake = this.service.getIntake();
+    // push local intake to be the same as activity
+    const desiredIntake = this.getDayIntake();
 
     this.countUp(desiredIntake);
 
     this.setSuccessView(true, 'Recovered activity successfully!');
-  }
-
-  deleteIntake(intake: number) {
-    this.service.deleteIntake(intake);
-
-    // push local intake to be the same as stored
-    // this.userData.intake = this.service.getIntake();
-    // this.setProgressBarPercentage();
-
-    this.countDown(this.service.getIntake());
   }
 
   deleteData() {
