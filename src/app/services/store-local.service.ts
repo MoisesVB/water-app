@@ -67,77 +67,6 @@ export class StoreLocalService {
     localStorage.removeItem('goal');
   }
 
-  // intake methods
-  addIntake(intake: number) {
-    if (intake < 0 || intake > Constants.MAX_WATER_TARGET || !Number.isInteger(intake)) {
-      throw new Error('To update intake is invalid');
-    }
-
-    let storedIntake: number | undefined;
-
-    try {
-      storedIntake = this.getIntake();
-    } catch (err) {
-      storedIntake = undefined;
-    }
-
-    let toUpdateIntake;
-
-    if (storedIntake) {
-      toUpdateIntake = storedIntake + intake;
-    } else {
-      toUpdateIntake = intake;
-    }
-
-    if (toUpdateIntake < 0 || toUpdateIntake > Constants.MAX_WATER_TARGET || !Number.isInteger(toUpdateIntake)) {
-      throw new Error('To update intake is invalid');
-    }
-
-    localStorage.setItem("intake", JSON.stringify(toUpdateIntake));
-
-    return toUpdateIntake;
-  }
-
-  getIntake() {
-    let intake: number;
-
-    try {
-      intake = JSON.parse(localStorage.getItem("intake")!);
-    } catch (err) {
-      throw new Error('Intake is invalid');
-    }
-
-    if (intake < 0 || intake > Constants.MAX_WATER_TARGET || !Number.isInteger(intake)) {
-      throw new Error('Intake is invalid');
-    }
-
-    return intake;
-  }
-
-  deleteIntake(intake: number) {
-    if (intake <= 0 || intake > Constants.MAX_WATER_TARGET || !Number.isInteger(intake)) {
-      throw new Error('Intake to delete is invalid');
-    }
-
-    let storedIntake: number;
-
-    try {
-      storedIntake = this.getIntake();
-    } catch (err) {
-      throw err;
-    }
-
-    const newIntake = storedIntake - intake;
-
-    if (newIntake < 0 || newIntake > Constants.MAX_WATER_TARGET || !Number.isInteger(newIntake)) {
-      throw new Error('Intake to delete is invalid');
-    }
-
-    localStorage.setItem("intake", JSON.stringify(newIntake));
-
-    return newIntake;
-  }
-
   // activity methods
   addActivity(intake: number) {
     if (intake <= 0 || intake > Constants.MAX_WATER_TARGET || !Number.isInteger(intake)) {
@@ -313,34 +242,6 @@ export class StoreLocalService {
     }
 
     return reminder;
-  }
-
-  // day methods
-  addCurrentDay() {
-    const date = new Date().getDate();
-
-    if (date <= 0 || date > 31 || !Number.isInteger(date)) {
-      throw new Error('Date is invalid');
-    }
-
-    localStorage.setItem("currentDay", JSON.stringify(date));
-
-    return date;
-  }
-
-  getCurrentDay() {
-    let currentDay: number;
-
-    try {
-      currentDay = JSON.parse(localStorage.getItem("currentDay")!);
-    } catch (err) {
-      throw new Error('Date is invalid');
-    }
-
-    if (currentDay <= 0 || currentDay > 31 || !Number.isInteger(currentDay)) {
-      throw new Error('Date is invalid');
-    }
-    return currentDay;
   }
 
   // cup methods
