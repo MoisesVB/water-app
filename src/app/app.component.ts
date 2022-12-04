@@ -313,6 +313,10 @@ export class AppComponent implements OnInit {
       return 0;
     }
 
+    if (!todayActivity || todayActivity.length === 0) {
+      return 0;
+    }
+
     return todayActivity.reduce((acc, obj) => acc + obj.intake, 0);
   }
 
