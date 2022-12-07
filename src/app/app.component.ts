@@ -56,10 +56,13 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.handleInitialModals();
 
-    // this.processData.notification = new Notification("Drink Water!", {
-    //   body: "Drink water to stay healthy!",
-    //   requireInteraction: true
-    // });
+    // setInterval(() => {
+    //   this.processData.notification = new Notification("Drink Water!", {
+    //     body: "Drink water to stay healthy!",
+    //     requireInteraction: true,
+    //     tag: 'water'
+    //   });
+    // }, 5000)
   }
 
   @HostListener('window:unload')
@@ -404,7 +407,11 @@ export class AppComponent implements OnInit {
 
   intervalNotify() {
     const interval = window.setInterval(() => {
-      this.processData.notification = new Notification("Drink Water!", { body: "Drink water to stay healthy!", requireInteraction: true });
+      this.processData.notification = new Notification("Drink Water!", {
+        body: "Drink water to stay healthy!",
+        requireInteraction: true,
+        tag: 'water'
+      });
 
       // go to tab when clicking notification
       this.processData.notification.onclick = () => {
