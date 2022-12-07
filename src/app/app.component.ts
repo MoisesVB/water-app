@@ -67,7 +67,9 @@ export class AppComponent implements OnInit {
 
   @HostListener('window:unload')
   closeNotifications() {
-    this.closeNotification();
+    if (this.processData.notification) {
+      this.closeNotification();
+    }
   }
 
   handleData() {
@@ -518,7 +520,10 @@ export class AppComponent implements OnInit {
       const desiredIntake = this.getDayIntake();
 
       this.countUp(desiredIntake);
-      this.closeNotification();
+
+      if (this.processData.notification) {
+        this.closeNotification();
+      }
     }
   }
 
@@ -711,7 +716,9 @@ export class AppComponent implements OnInit {
     this.processData.reminderIntervals = [];
     this.processData.progressBarPercentage = 0;
 
-    this.closeNotification();
+    if (this.processData.notification) {
+      this.closeNotification();
+    }
 
     this.handleInitialModals();
   }
