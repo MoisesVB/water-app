@@ -3,4 +3,5 @@ export interface ProcessData {
     reminderIntervals?: number[];
     countUpInterval?: number;
     isDeletingIntake?: boolean;
+    notification?: Notification;
 }

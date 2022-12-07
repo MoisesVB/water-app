@@ -1,5 +1,5 @@
 import { trigger, transition, style, animate } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Cup } from '../shared/models/cup';
 import { Activity, ActivityData } from '../shared/models/activity';
 import { ProcessData } from './models/process-data';
@@ -42,7 +42,8 @@ export class AppComponent implements OnInit {
     progressBarPercentage: 0,
     reminderIntervals: [],
     countUpInterval: undefined,
-    isDeletingIntake: false
+    isDeletingIntake: false,
+    notification: undefined
   }
 
   constructor(
@@ -54,6 +55,21 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.handleInitialModals();
+
+    // setInterval(() => {
+    //   this.processData.notification = new Notification("Drink Water!", {
+    //     body: "Drink water to stay healthy!",
+    //     requireInteraction: true,
+    //     tag: 'water'
+    //   });
+    // }, 5000)
+  }
+
+  @HostListener('window:unload')
+  closeNotifications() {
+    if (this.processData.notification) {
+      this.closeNotification();
+    }
   }
 
   handleData() {
@@ -392,10 +408,14 @@ export class AppComponent implements OnInit {
 
   intervalNotify() {
     const interval = window.setInterval(() => {
-      const notification = new Notification("Drink Water!", { body: "Drink water to stay healthy!", requireInteraction: true });
+      this.processData.notification = new Notification("Drink Water!", {
+        body: "Drink water to stay healthy!",
+        requireInteraction: true,
+        tag: 'water'
+      });
 
       // go to tab when clicking notification
-      notification.onclick = () => {
+      this.processData.notification.onclick = () => {
         window.focus();
       }
     }, 1000 * 60 * this.userData.reminder!)
@@ -500,7 +520,16 @@ export class AppComponent implements OnInit {
       const desiredIntake = this.getDayIntake();
 
       this.countUp(desiredIntake);
+
+      if (this.processData.notification) {
+        this.closeNotification();
+      }
     }
+  }
+
+  closeNotification() {
+    this.processData.notification?.close();
+    this.processData.notification = undefined;
   }
 
   countUp(desiredIntake: number) {
@@ -686,6 +715,10 @@ export class AppComponent implements OnInit {
 
     this.processData.reminderIntervals = [];
     this.processData.progressBarPercentage = 0;
+
+    if (this.processData.notification) {
+      this.closeNotification();
+    }
 
     this.handleInitialModals();
   }
