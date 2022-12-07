@@ -56,15 +56,14 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.handleInitialModals();
 
-    this.processData.notification = new Notification("Drink Water!", {
-      body: "Drink water to stay healthy!",
-      requireInteraction: true
-    });
+    // this.processData.notification = new Notification("Drink Water!", {
+    //   body: "Drink water to stay healthy!",
+    //   requireInteraction: true
+    // });
   }
 
   @HostListener('window:unload')
-  closeNotificationsBeforeClosing() {
-    console.log('this process is running....')
+  closeNotifications() {
     this.processData.notification?.close();
     this.processData.notification = undefined;
   }
