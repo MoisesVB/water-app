@@ -232,7 +232,7 @@ export class AppComponent implements OnInit {
     this.addCupLocal(addedCup);
     this.setCupView(false);
 
-    this.userData.selectedCup = undefined;
+    this.handleCupClick(addedCup.id); // select added cup
 
     this.setSuccessView(true, 'Added cup successfully!');
   }

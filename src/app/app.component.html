@@ -23,7 +23,7 @@
       [progressBarPercentage]="processData.progressBarPercentage">
     </app-progress-bar>
 
-    <div class="flex mt-28 pb-4 gap-5 overflow-x-auto scroll justify-start">
+    <div class="flex mt-28 pb-4 gap-5 overflow-x-auto scroll justify-start scroll-smooth">
       <app-card *ngFor="let cup of sortCupsByCapacity(this.userData.cups!)" [cup]="cup"
         [selectedCup]="userData.selectedCup" (selected)="handleCupClick($event)">
       </app-card>
