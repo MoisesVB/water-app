@@ -36,6 +36,13 @@
         <hr class="border border-blue-300 rounded w-full mx-auto opacity-10">
 
         <div class="flex justify-between p-6 items-center">
+            <label class="text-lg">Reminders even if goal is achieved:</label>
+            <app-toggle-button [width]="56" [height]="30" [isOn]="false"></app-toggle-button>
+        </div>
+
+        <hr class="border border-blue-300 rounded w-full mx-auto opacity-10">
+
+        <div class="flex justify-between p-6 items-center">
             <label class="text-lg">Reset data:</label>
             <button
                 class="border border-red-900 bg-red-700 p-1 w-32 rounded ml-4 hover:bg-red-800 transition-all duration-300"
