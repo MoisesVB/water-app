@@ -19,6 +19,7 @@ import { ErrorMessageComponent } from './error-message/error-message.component';
 import { CupIconComponent } from './cup-icon/cup-icon.component';
 import { SuccessMessageComponent } from './success-message/success-message.component';
 import { AlertMessageComponent } from './alert-message/alert-message.component';
+import { ToggleButtonComponent } from './toggle-button/toggle-button.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { AlertMessageComponent } from './alert-message/alert-message.component';
     ErrorMessageComponent,
     CupIconComponent,
     SuccessMessageComponent,
-    AlertMessageComponent
+    AlertMessageComponent,
+    ToggleButtonComponent
   ],
   imports: [
     BrowserModule,

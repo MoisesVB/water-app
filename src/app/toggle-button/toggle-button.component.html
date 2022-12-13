@@ -1,0 +1,5 @@
+<div [ngStyle]="{ width : width + 'px', height: height + 'px'}" class="border-1 border-white rounded-full flex"
+    [ngClass]="isOn ? 'bg-green-400 justify-end' : 'bg-gray-400'">
+    <div (click)="toggle()" class="h-full rounded-full bg-white w-8 cursor-pointer hover:bg-slate-100">
+    </div>
+</div>
