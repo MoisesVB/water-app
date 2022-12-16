@@ -377,16 +377,39 @@ export class StoreLocalService {
   }
 
   deleteAllData() {
-    if (!localStorage.getItem('goal') && !localStorage.getItem('intake') && !localStorage.getItem('cups') && !localStorage.getItem('reminder') && !localStorage.getItem('activity') && !localStorage.getItem('currentDay')) {
+    if (!localStorage.getItem('goal') && !localStorage.getItem('intake') && !localStorage.getItem('cups') && !localStorage.getItem('reminder') && !localStorage.getItem('activity')) {
       throw new Error('LocalStorage is empty');
     }
 
     localStorage.clear();
 
-    if (localStorage.getItem('goal') || localStorage.getItem('intake') || localStorage.getItem('cups') || localStorage.getItem('reminder') || localStorage.getItem('activity') || localStorage.getItem('currentDay')) {
+    if (localStorage.getItem('goal') || localStorage.getItem('intake') || localStorage.getItem('cups') || localStorage.getItem('reminder') || localStorage.getItem('activity')) {
       throw new Error('LocalStorage is not empty');
     }
 
     return true;
+  }
+
+  // remindIfGoalAchieved methods
+  addRemindIfGoalAchieved(state: boolean): boolean {
+    localStorage.setItem("remindIfGoalAchieved", JSON.stringify(state));
+
+    return state;
+  }
+
+  getRemindIfGoalAchieved(): boolean {
+    let remindIfGoalAchieved: boolean;
+
+    try {
+      remindIfGoalAchieved = JSON.parse(localStorage.getItem("remindIfGoalAchieved")!);
+    } catch (err) {
+      throw new Error('Value is invalid');
+    }
+
+    if (typeof (remindIfGoalAchieved) !== 'boolean') {
+      throw new Error('Value is invalid');
+    }
+
+    return remindIfGoalAchieved;
   }
 }

@@ -34,8 +34,8 @@ export class AppComponent implements OnInit {
     selectedCup: undefined,
     reminder: undefined,
     activity: {},
-    currentDay: undefined,
-    cups: undefined
+    cups: undefined,
+    remindIfGoalAchieved: false
   }
 
   processData: ProcessData = {
@@ -77,6 +77,7 @@ export class AppComponent implements OnInit {
     this.handleIntake();
     this.handleActivity();
     this.requestNotificationPermission();
+    this.handleRemindIfGoalAchieved();
   }
 
   handleInitialModals() {
@@ -148,6 +149,27 @@ export class AppComponent implements OnInit {
       this.addGoalLocal(goal!);
       this.setGoalView(false);
     }
+  }
+
+  handleRemindIfGoalAchieved() {
+    let remindIfGoalAchieved: boolean;
+
+    try {
+      remindIfGoalAchieved = this.service.getRemindIfGoalAchieved();
+    } catch (err) {
+      if (err instanceof Error) {
+        this.service.addRemindIfGoalAchieved(false);
+        this.userData.remindIfGoalAchieved = false;
+        return;
+      }
+    }
+
+    this.userData.remindIfGoalAchieved = remindIfGoalAchieved!;
+  }
+
+  updateRemindIfGoalAchieved(state: boolean) {
+    this.service.addRemindIfGoalAchieved(state);
+    this.userData.remindIfGoalAchieved = state;
   }
 
   addGoalLocal(goal: Goal) {
@@ -408,15 +430,36 @@ export class AppComponent implements OnInit {
 
   intervalNotify() {
     const interval = window.setInterval(() => {
-      this.processData.notification = new Notification("Drink Water!", {
-        body: "Drink water to stay healthy!",
-        requireInteraction: true,
-        tag: 'water'
-      });
+      const goalAchieved = this.userData.intake >= this.getMostRecentGoal();
+      let canNotify: boolean;
 
-      // go to tab when clicking notification
-      this.processData.notification.onclick = () => {
-        window.focus();
+      /*
+        by default the intervalNotify always push the notification
+
+        not remind && goal achieved      => break
+        not remind && goal not achieved  => continue
+
+        remind && goal achieved          => continue
+        remind && goal not achieved      => continue
+      */
+
+      if (!this.userData.remindIfGoalAchieved && goalAchieved) {
+        canNotify = false;
+      } else {
+        canNotify = true;
+      }
+
+      if (canNotify) {
+        this.processData.notification = new Notification("Drink Water!", {
+          body: "Drink water to stay healthy!",
+          requireInteraction: true,
+          tag: 'water'
+        });
+
+        // go to tab when clicking notification
+        this.processData.notification.onclick = () => {
+          window.focus();
+        }
       }
     }, 1000 * 60 * this.userData.reminder!)
 
@@ -709,7 +752,6 @@ export class AppComponent implements OnInit {
     this.userData.intake = 0;
     this.userData.selectedCup = undefined;
     this.userData.activity = {};
-    this.userData.currentDay = undefined;
     this.userData.cups = undefined;
     this.userData.reminder = undefined;
 

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { Cup } from '../../shared/models/cup';
 import { ModalService } from '../services/modal.service';
+import { StoreLocalService } from '../services/store-local.service';
 
 @Component({
   selector: 'app-settings-modal',
@@ -8,7 +9,10 @@ import { ModalService } from '../services/modal.service';
 })
 export class SettingsModalComponent implements OnInit {
 
-  constructor(private modalService: ModalService) { }
+  constructor(
+    private modalService: ModalService,
+    public storeLocal: StoreLocalService
+  ) { }
 
   ngOnInit(): void {
   }
@@ -25,10 +29,12 @@ export class SettingsModalComponent implements OnInit {
   @Output() changeReminderNotifier = new EventEmitter();
   @Output() deleteDataNotifier = new EventEmitter();
   @Output() deleteCustomCupNotifier = new EventEmitter<string>();
+  @Output() remindIfGoalAchieved = new EventEmitter<boolean>();
 
   @Input() reminder?: number;
   @Input() cups?: Cup[];
   @Input() isVisible!: boolean;
+  @Input() notificationSetting?: boolean;
 
   customCupsIsPresent() {
     const customCups = this.cups?.filter(cup => cup.isCustom);

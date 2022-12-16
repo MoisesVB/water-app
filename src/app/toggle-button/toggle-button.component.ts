@@ -1,15 +1,18 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-toggle-button',
-  templateUrl: './toggle-button.component.html',
+  templateUrl: './toggle-button.component.html'
 })
 export class ToggleButtonComponent {
-  @Input() width?: number;
+  @Input() outerWidth?: number;
+  @Input() innerWidth?: number;
   @Input() height?: number;
   @Input() isOn?: boolean;
 
+  @Output() action = new EventEmitter<boolean>();
+
   toggle() {
-    this.isOn = !this.isOn;
+    this.action.emit(!this.isOn);
   }
 }
