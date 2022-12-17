@@ -35,7 +35,8 @@ export class AppComponent implements OnInit {
     reminder: undefined,
     activity: {},
     cups: undefined,
-    remindIfGoalAchieved: false
+    remindIfGoalAchieved: undefined,
+    notificationStatus: undefined
   }
 
   processData: ProcessData = {
@@ -77,6 +78,7 @@ export class AppComponent implements OnInit {
     this.handleIntake();
     this.handleActivity();
     this.requestNotificationPermission();
+    this.handleNotificationStatus();
     this.handleRemindIfGoalAchieved();
   }
 
@@ -170,6 +172,29 @@ export class AppComponent implements OnInit {
   updateRemindIfGoalAchieved(state: boolean) {
     this.service.addRemindIfGoalAchieved(state);
     this.userData.remindIfGoalAchieved = state;
+  }
+
+  handleNotificationStatus() {
+    let notificationStatus: boolean;
+
+    try {
+      notificationStatus = this.service.getNotificationStatus();
+    } catch (err) {
+      if (err instanceof Error) {
+        this.service.addNotificationStatus(true);
+        this.userData.notificationStatus = true;
+        return;
+      }
+    }
+
+    this.userData.notificationStatus = notificationStatus!;
+  }
+
+  updateNotificationStatus(state: boolean) {
+    this.service.addNotificationStatus(state);
+    this.userData.notificationStatus = state;
+
+    this.requestNotificationPermission();
   }
 
   addGoalLocal(goal: Goal) {
@@ -428,7 +453,28 @@ export class AppComponent implements OnInit {
     }
   }
 
+  clearIntervals() {
+    this.processData.reminderIntervals?.map(item => clearInterval(item)); // remove intervals in array
+    this.processData.reminderIntervals = []; // empty array after
+  }
+
   intervalNotify() {
+    // if notification is disabled
+    if (!this.userData.notificationStatus) {
+
+      // if there are intervals then clear them
+      if (this.processData.reminderIntervals?.length! >= 1) {
+        this.clearIntervals();
+      }
+
+      // if there's a notification then close it
+      if (this.processData.notification) {
+        this.closeNotification();
+      }
+
+      return;
+    }
+
     const interval = window.setInterval(() => {
       const goalAchieved = this.userData.intake >= this.getMostRecentGoal();
       let canNotify: boolean;
@@ -491,9 +537,7 @@ export class AppComponent implements OnInit {
     const addedReminder = this.service.addReminder(valueNumber);
     this.userData.reminder = addedReminder;
 
-    this.processData.reminderIntervals?.map(item => clearInterval(item)); // remove intervals in array
-    this.processData.reminderIntervals = []; // empty array after
-
+    this.clearIntervals();
     this.intervalNotify(); // set interval again for the new updated value
   }
 
@@ -754,6 +798,8 @@ export class AppComponent implements OnInit {
     this.userData.activity = {};
     this.userData.cups = undefined;
     this.userData.reminder = undefined;
+    this.userData.remindIfGoalAchieved = undefined;
+    this.userData.notificationStatus = undefined;
 
     this.processData.reminderIntervals = [];
     this.processData.progressBarPercentage = 0;

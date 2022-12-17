@@ -10,4 +10,5 @@ export interface UserData {
     activity: Activity;
     cups?: Cup[];
     remindIfGoalAchieved?: boolean;
+    notificationStatus?: boolean;
 }

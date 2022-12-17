@@ -59,7 +59,8 @@
   (changeGoalNotifier)="setSettingsAndGoalView()" (changeReminderNotifier)="addReminderFromView($event)"
   [reminder]="userData.reminder" (deleteDataNotifier)="deleteData()" [cups]="this.userData.cups"
   (deleteCustomCupNotifier)="deleteCupByIdFromView($event)" [notificationSetting]="this.userData.remindIfGoalAchieved"
-  (remindIfGoalAchieved)="updateRemindIfGoalAchieved($event)">
+  (remindIfGoalAchieved)="updateRemindIfGoalAchieved($event)" [notificationStatus]="this.userData.notificationStatus"
+  (emitNotificationStatus)="updateNotificationStatus($event)">
 </app-settings-modal>
 
 <app-activity-modal *ngIf="isActivityModalVisible()" [@leaveEnter] [activity]="this.userData.activity"

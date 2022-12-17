@@ -30,11 +30,13 @@ export class SettingsModalComponent implements OnInit {
   @Output() deleteDataNotifier = new EventEmitter();
   @Output() deleteCustomCupNotifier = new EventEmitter<string>();
   @Output() remindIfGoalAchieved = new EventEmitter<boolean>();
+  @Output() emitNotificationStatus = new EventEmitter<boolean>();
 
   @Input() reminder?: number;
   @Input() cups?: Cup[];
   @Input() isVisible!: boolean;
   @Input() notificationSetting?: boolean;
+  @Input() notificationStatus?: boolean;
 
   customCupsIsPresent() {
     const customCups = this.cups?.filter(cup => cup.isCustom);

@@ -412,4 +412,27 @@ export class StoreLocalService {
 
     return remindIfGoalAchieved;
   }
+
+  // notificationStatus methods
+  addNotificationStatus(state: boolean): boolean {
+    localStorage.setItem("notificationStatus", JSON.stringify(state));
+
+    return state;
+  }
+
+  getNotificationStatus(): boolean {
+    let notificationStatus: boolean;
+
+    try {
+      notificationStatus = JSON.parse(localStorage.getItem("notificationStatus")!);
+    } catch (err) {
+      throw new Error('Value is invalid');
+    }
+
+    if (typeof (notificationStatus) !== 'boolean') {
+      throw new Error('Value is invalid');
+    }
+
+    return notificationStatus;
+  }
 }
