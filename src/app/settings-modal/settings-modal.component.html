@@ -14,16 +14,17 @@
     <hr class="border border-blue-300 rounded mt-2 opacity-20">
 
     <div class="overflow-y-auto scroll h-80">
-        <div class="flex justify-between p-6 items-center">
+        <app-settings-section [disabled]="!notificationStatus">
             <label class="text-lg" for="reminder">Remind me every:</label>
-            <select name="reminder" id="reminder" class="bg-black border border-white rounded p-1 w-32"
-                (change)="changeReminderNotifier.emit($event)">
+            <select name="reminder" id="reminder"
+                class="bg-black border border-white rounded p-1 w-32 disabled:cursor-not-allowed"
+                (change)="changeReminderNotifier.emit($event)" [disabled]="!notificationStatus">
                 <option value="15" [defaultSelected]="reminder === 15">15 minutes</option>
                 <option value="30" [defaultSelected]="reminder === 30">30 minutes</option>
                 <option value="60" [defaultSelected]="reminder === 60">1 hour
                 </option>
             </select>
-        </div>
+        </app-settings-section>
         <hr class="border border-blue-300 rounded w-full mx-auto opacity-10">
 
         <div class="flex justify-between p-6 items-center">
@@ -35,11 +36,11 @@
 
         <hr class="border border-blue-300 rounded w-full mx-auto opacity-10">
 
-        <div class="flex justify-between p-6 items-center">
+        <app-settings-section [disabled]="!notificationStatus">
             <label class="text-lg">Reminders even if goal is achieved:</label>
             <app-toggle-button [outerWidth]="56" [innerWidth]="32" [height]="30" [isOn]="notificationSetting"
-                (action)="this.remindIfGoalAchieved.emit($event)"></app-toggle-button>
-        </div>
+                (action)="this.remindIfGoalAchieved.emit($event)" [disabled]="!notificationStatus"></app-toggle-button>
+        </app-settings-section>
 
         <hr class="border border-blue-300 rounded w-full mx-auto opacity-10">
 

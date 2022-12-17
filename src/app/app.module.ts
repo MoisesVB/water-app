@@ -20,6 +20,7 @@ import { CupIconComponent } from './cup-icon/cup-icon.component';
 import { SuccessMessageComponent } from './success-message/success-message.component';
 import { AlertMessageComponent } from './alert-message/alert-message.component';
 import { ToggleButtonComponent } from './toggle-button/toggle-button.component';
+import { SettingsSectionComponent } from './settings-section/settings-section.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { ToggleButtonComponent } from './toggle-button/toggle-button.component';
     CupIconComponent,
     SuccessMessageComponent,
     AlertMessageComponent,
-    ToggleButtonComponent
+    ToggleButtonComponent,
+    SettingsSectionComponent
   ],
   imports: [
     BrowserModule,
