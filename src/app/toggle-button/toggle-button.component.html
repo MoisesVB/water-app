@@ -1,0 +1,8 @@
+<div (click)="toggle()" [ngStyle]="{ width : outerWidth + 'px', height: height + 'px'}"
+    class="cursor-pointer border-1 border-white rounded-full transition-all duration-150"
+    [ngClass]="[isOn ? 'bg-green-400' : 'bg-gray-400', disabled ? 'cursor-not-allowed' : '']">
+    <div [ngStyle]="{ width: innerWidth + 'px'}"
+        class="h-full rounded-full bg-white hover:bg-slate-100 shadow-[0_0_10px_2px_rgba(0,0,0,0.3)]"
+        [ngClass]="isOn ? 'ml-auto' : 'mr-auto'">
+    </div>
+</div>

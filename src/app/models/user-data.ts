@@ -8,6 +8,7 @@ export interface UserData {
     selectedCup?: string;
     reminder?: number;
     activity: Activity;
-    currentDay?: number;
     cups?: Cup[];
+    remindIfGoalAchieved?: boolean;
+    notificationStatus?: boolean;
 }
